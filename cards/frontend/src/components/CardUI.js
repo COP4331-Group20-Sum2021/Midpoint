@@ -14,7 +14,21 @@ function CardUI()
     var userId = ud.id;
     var firstName = ud.firstName;
     var lastName = ud.lastName;
-	
+
+    const app_name = 'group20-midpoint';
+    function buildPath(route)
+    {
+        if (process.env.NODE_ENV === 'production') 
+        {
+            return 'https://' + app_name +  '.herokuapp.com/' + route;
+        }
+        else
+        {        
+            return 'http://localhost:5000/' + route;
+        }
+    }
+
+
     const addCard = async event => 
     {
 	    event.preventDefault();
@@ -24,7 +38,7 @@ function CardUI()
 
         try
         {
-            const response = await fetch('http://localhost:5000/api/addcard',
+            const response = await fetch(buildPath('api/addcard'),
             {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
             var txt = await response.text();
@@ -55,7 +69,7 @@ function CardUI()
 
         try
         {
-            const response = await fetch('http://localhost:5000/api/searchcards',
+            const response = await fetch(buildPath('api/searchcards'),
             {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
 
             var txt = await response.text();
