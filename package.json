@@ -1,0 +1,12 @@
+{
+  "name": "group20-big",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "npm run start --prefix backend",
+    "postinstall": "npm install --prefix web && npm install --prefix backend && npm run build --prefix web"
+  },
+  "cacheDirectories": [
+    "web/node_modules",
+    "backend/node_modules"
+  ]
+}
