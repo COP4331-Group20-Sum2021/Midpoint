@@ -1,0 +1,24 @@
+.testing {
+    background-color: rgba(159, 179, 209, .6);
+    box-shadow: 0px 4px 10px 2px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    position: relative;
+    display: block;
+    margin-top: 5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+    height: 200px;
+
+    #title {
+        color: white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    }
+
+    #section {
+        color: white;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    }
+}
+
+
