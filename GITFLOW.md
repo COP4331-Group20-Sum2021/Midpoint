@@ -5,6 +5,7 @@ This document will contain the git flow process for the Large Project for Group 
 To get started on working on a new feature, create a new branch off of `main`.
 ```
 git checkout main
+git pull
 git checkout -b <branch-name>
 ```
 All of your code for the feature you are working on will go in this branch. 
