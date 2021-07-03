@@ -8,7 +8,7 @@ export default function Nav() {
       <ul className={style.navItems}>
         <Link to='/' className={style.navItem}><li>Home</li></Link>
         <Link to='/about' className={style.navItem}><li>About</li></Link>
-        <Link to='/login' className={style.navItem}><li>Login</li></Link>
+        <Link to='/signup' className={style.navItem}><li>Signup</li></Link>
       </ul>
     </nav>
   )
