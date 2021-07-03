@@ -3,6 +3,7 @@ import Home from './components/home'
 import Login from './components/login'
 import Nav from './components/nav'
 import About from './components/about'
+import Signup from './components/signup'
 import './styles/App.scss'
 
 export default function App() {
@@ -11,6 +12,7 @@ export default function App() {
       <Nav />
       <Route exact path='/' component={Home} />
       <Route path='/login' component={Login} />
+      <Route path='/signup' component={Signup} />
       <Route path='/about' component={About} />
     </Router>
   )
