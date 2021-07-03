@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import style from '../styles/login.module.scss'
@@ -41,7 +42,7 @@ function LoginForm() {
           </div>
 
           <div className={style.btn}><button type='submit'>Login</button></div>
-          <div className={style.btn}><p>Forgot your password?</p></div>
+          <div className={style.btn}><Link to='/forgotpassword'><p>Forgot your password?</p></Link></div>
         </Form>
       )}
     </Formik>
