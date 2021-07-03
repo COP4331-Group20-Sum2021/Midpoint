@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import style from '../styles/login.module.scss'
@@ -11,7 +12,7 @@ export default function Signup() {
   )
 }
 
-const LoginSchema = Yup.object().shape({
+const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   password: Yup.string().required('Required'),
   passwordConfim: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -20,7 +21,7 @@ function SignupForm() {
   return (
     <Formik
       initialValues={{ email: '', password: '', passwordConfim: '' }}
-      validationSchema={LoginSchema}
+      validationSchema={SignupSchema}
       onSubmit={async (values, { resetForm }) => {
         alert(values)
         resetForm()
@@ -48,7 +49,7 @@ function SignupForm() {
           </div>
 
           <div className={style.btn}><button type='submit'>Signup</button></div>
-          <div className={style.btn}><p>Already have an account? Login</p></div>
+          <div className={style.btn}><Link to='/login'><p>Already have an account? Login</p></Link></div>
         </Form>
       )}
     </Formik>
