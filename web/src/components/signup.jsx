@@ -3,24 +3,25 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import style from '../styles/login.module.scss'
 
-export default function Login() {
+export default function Signup() {
   return (
     <>
       <img id={style.gmap} src='/googlemaps_3.png' alt='google maps' />
-      <LoginForm />
+      <SignupForm />
     </>
   )
 }
 
-const LoginSchema = Yup.object().shape({
+const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().required('Required')
+  password: Yup.string().required('Required'),
+  passwordConfim: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
-function LoginForm() {
+function SignupForm() {
   return (
     <Formik
-      initialValues={{ email: '', password: '' }}
-      validationSchema={LoginSchema}
+      initialValues={{ email: '', password: '', passwordConfim: '' }}
+      validationSchema={SignupSchema}
       onSubmit={async (values, { resetForm }) => {
         alert(values)
         resetForm()
@@ -28,7 +29,7 @@ function LoginForm() {
       >
       {({ errors, touched }) => (
         <Form className={style.form}>
-          <h1 className={style.title}>Midpoint Login</h1>
+          <h1 className={style.title}>Midpoint Signup</h1>
           <div className={style.field}>
             <h2>Email</h2>
             <Field name='email' type='email' />
@@ -41,8 +42,14 @@ function LoginForm() {
             {errors.password && touched.password ? <p className={style.error}>{errors.password}</p> : null}
           </div>
 
-          <div className={style.btn}><button type='submit'>Login</button></div>
-          <div className={style.btn}><Link to='/forgotpassword'><p>Forgot your password?</p></Link></div>
+          <div className={style.field}>
+            <h2>Confirm Password</h2>
+            <Field name='passwordConfim' type='password' />
+            {errors.passwordConfim && touched.passwordConfim ? <p className={style.error}>{errors.passwordConfim}</p> : null}
+          </div>
+
+          <div className={style.btn}><button type='submit'>Signup</button></div>
+          <div className={style.btn}><Link to='/login'><p>Already have an account? Login</p></Link></div>
         </Form>
       )}
     </Formik>
