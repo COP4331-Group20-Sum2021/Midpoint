@@ -1,0 +1,74 @@
+#gmap {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
+.form {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: rgba(159, 179, 209, 0.6);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  width: fit-content;
+  height: fit-content;
+  padding: 1rem;
+
+  .title {
+    color: white;
+    text-align: center;
+  }
+
+  .btn {
+    display: flex;
+    justify-content: center;
+
+    button {
+      cursor: pointer;
+      width: 242px;
+      height: 53px;
+      background: #9FB3D1;
+      mix-blend-mode: normal;
+      border: 2px solid #000000;
+      box-sizing: border-box;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      font-family: 'Poppins';
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    p {
+      cursor: pointer;
+      color: white;
+    }
+  }
+}
+
+.field {
+  margin: 2rem 0;
+
+  h2 {
+    margin: .5rem 0;
+    color: white;
+  }
+
+  input {
+    font-family: 'Poppins';
+    font-size: 1.5rem;
+    border-radius: .5rem;
+    width: 25rem;
+    padding: .5rem;
+  }
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin: 0;
+}
