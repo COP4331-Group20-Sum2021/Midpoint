@@ -4,6 +4,7 @@ import Login from './components/login'
 import Nav from './components/nav'
 import About from './components/about'
 import Signup from './components/signup'
+import ForgotPassword from './components/forgotPassword'
 import './styles/App.scss'
 
 export default function App() {
@@ -13,6 +14,7 @@ export default function App() {
       <Route exact path='/' component={Home} />
       <Route path='/login' component={Login} />
       <Route path='/signup' component={Signup} />
+      <Route path='/forgotpassword' component={ForgotPassword} />
       <Route path='/about' component={About} />
     </Router>
   )
