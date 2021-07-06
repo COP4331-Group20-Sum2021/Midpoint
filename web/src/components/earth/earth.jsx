@@ -29,7 +29,7 @@ export function Earth(props) {
         <>
             <ambientLight intensity={.8} />
             <pointLight color="#f6f3ea" position={[50, 0, 50]} intensity={1.2} />
-            <mesh ref={cloudsRef} position={[0, -0.45, 0]}>
+            <mesh ref={cloudsRef} position={[0, 0, 0]}>
                 <sphereGeometry args={[2.605, 50, 50]} />
                 <meshPhongMaterial 
                     map={cloudsMap} 
@@ -39,9 +39,9 @@ export function Earth(props) {
                     side={THREE.DoubleSide}
                 />
             </mesh>
-            <mesh ref={earthRef} position={[0, -0.45, 0]}>
-                <sphereGeometry args={[2.6, 50, 50]}  />
-                <meshPhongMaterial specularMap={specularMap} />
+            <mesh ref={earthRef} position={[0, 0, 0]}>
+                <sphereGeometry args={[2.6, 50, 50]} />
+                <meshPhongMaterial specularMap={specularMap}/>
                 <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7}/>
                 <OrbitControls 
                     enableZoom={false} 
