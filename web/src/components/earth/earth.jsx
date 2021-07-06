@@ -1,5 +1,5 @@
-import React from "react";
-import { useLoader } from "@react-three/fiber"
+import React, { useRef } from "react";
+import { useFrame, useLoader } from "@react-three/fiber"
 import { TextureLoader } from "three";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -15,35 +15,40 @@ export function Earth(props) {
         TextureLoader, 
         [EarthDayMap, EarthNormalMap, EarthSpecularMap, EarthCloudsMap]
     );
+    
+    const earthRef = useRef();
+    const cloudsRef = useRef();
 
+    useFrame(({ clock }) => {
+        const elapsedTime = clock.getElapsedTime();
+        earthRef.current.rotation.y = elapsedTime / 6;
+        cloudsRef.current.rotation.y = elapsedTime / 6;
+    });
 
     return (
         <>
-            <ambientLight intensity={1} />
-            <mesh >
-                
-                <sphereGeometry args={[2.605, 50, 50]} />
+            <ambientLight intensity={.8} />
+            <pointLight color="#f6f3ea" position={[50, 0, 50]} intensity={1.2} />
+            <mesh ref={cloudsRef}>
+                <sphereGeometry args={[2.805, 50, 50]} />
                 <meshPhongMaterial 
                     map={cloudsMap} 
                     opacity={0.4} 
-                    depthWrite={false} 
+                    depthWrite={true} 
                     transparent={true} 
                     side={THREE.DoubleSide}
                 />
             </mesh>
-            <mesh>
-                <sphereGeometry args={[2.6, 50, 50]} />
+            <mesh ref={earthRef}>
+                <sphereGeometry args={[2.8, 50, 50]} />
                 <meshPhongMaterial specularMap={specularMap} />
-                <meshStandardMaterial map={colorMap} normalMap={normalMap} />
+                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7}/>
                 <OrbitControls 
                     enableZoom={false} 
-                    enablePan={true} 
+                    enablePan={false} 
                     enableRotate={true}
                     zoomSpeed={0.6}
-                    panSpeed={0.5}
                     rotateSpeed={0.4}
-                    autoRotate={true}
-                    autoRotateSpeed={0.2}
                 />
             </mesh>
         </>
