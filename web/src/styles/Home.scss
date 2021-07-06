@@ -4,9 +4,9 @@
 {
     .earth
     {
-        width: 100%;
+        width: 100vw;
         height: 600px;
-        background: repeating-radial-gradient(circle at center, #FFFFFF 0, #FFFFFF 50px, #7DAAD0 300px,  #2A3C6B 100%);
+        background: repeating-radial-gradient(circle at center 21rem, #FFFFFF 0, #FFFFFF 50px, #7DAAD0 300px,  #2A3C6B 100%);
         z-index: -1;
     }
 
@@ -15,6 +15,7 @@
         background-color: #9FB3D1;
         box-shadow: 0px -4px 10px 2px rgba(0, 0, 0, 0.25);
         padding-bottom: 5rem;
+        width: 100vw;
 
         .information
         {
