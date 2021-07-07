@@ -2,6 +2,9 @@ import "../styles/Home.scss"
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import { Earth } from "./earth/earth";
+import creategroupsPicture from '../assets/images/create-groups.png';
+import findmidpointsPicture from '../assets/images/find-midpoints.png';
+import meetupPicture from '../assets/images/meet-up.png';
 
 export default function Home() {
   return (
@@ -19,8 +22,11 @@ export default function Home() {
 
         <div className="information">
 
-          <div></div>
-          <div>
+          <div className="information-images"><img src={creategroupsPicture}  alt="Create Groups"></img></div>
+
+          <div className="seperator"></div>
+
+          <div className="information-text">
             <h1>CREATE GROUPS</h1>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
@@ -31,7 +37,7 @@ export default function Home() {
             </p>
           </div>
           
-          <div>
+          <div className="information-text">
             <h1>FIND MIDPOINTS</h1>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
@@ -41,9 +47,16 @@ export default function Home() {
               teur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
-          <div></div>
-          <div></div>
-          <div>
+
+          <div className="seperator"></div>
+
+          <div className="information-images"><img src={findmidpointsPicture} alt="Create Groups"></img></div>
+
+          <div className="information-images"><img src={meetupPicture} alt="Create Groups"></img></div>
+
+          <div className="seperator"></div>
+
+          <div className="information-text">
             <h1>MEET UP</h1>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
