@@ -24,18 +24,39 @@
             padding-top: 5rem;
             width: min(90%, 75rem);
             display: grid;
-            grid-template-columns: 50% 50%;
-            gap: 1em;
-            color: white;
+            grid-template-columns: 50% 1px 50%;
+            gap: 2em;
+            row-gap: 10em;
+            color: white;         
+            
+            
+            .information-text
+            {
+                margin:auto;
+            }
+
+            .information-images
+            {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .seperator
+            {
+                background-color: white;
+            }
             
             h1 
             {
                 font-weight: 600;
+                margin: 0;
             }
 
             p 
             {
                 font-weight: 200;
+                margin: 0;
             }
         }
     }
