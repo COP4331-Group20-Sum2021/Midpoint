@@ -52,6 +52,7 @@ function LoginForm() {
 
           <div className={style.btn}><button type='submit'>Login</button></div>
           <div className={style.btn}><Link to='/forgotpassword'><p>Forgot your password?</p></Link></div>
+          <div className={style.btn}><Link to='/signup'><p>Don't have an account? Signup</p></Link></div>
         </Form>
       )}
     </Formik>

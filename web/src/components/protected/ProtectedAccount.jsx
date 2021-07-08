@@ -8,7 +8,6 @@ export default function ProtectedAccount({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props => {
-        console.log(user)
         return !user ? <Component {...props} /> : <Redirect to='/' />
       }}
     >
