@@ -8,7 +8,7 @@ import { useState } from 'react'
 export default function Signup() {
   return (
     <>
-      <img id={style.gmap} src='/googlemaps_3.png' alt='google maps' />
+      <div id={style.background} />
       <SignupForm />
     </>
   )
