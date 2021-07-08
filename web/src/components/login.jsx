@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
+import { useAuth } from '../contexts/authContext'
 import style from '../styles/login.module.scss'
 
 export default function Login() {
@@ -17,13 +18,21 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Required')
 })
 function LoginForm() {
+  const { login } = useAuth()
+  const history = useHistory()
+
   return (
     <Formik
       initialValues={{ email: '', password: '' }}
       validationSchema={LoginSchema}
       onSubmit={async (values, { resetForm }) => {
-        alert(values)
-        resetForm()
+        const error = await login(values.email, values.password)
+        if (error === -1) {
+          alert('Failed to Login')
+        } else {
+          resetForm()
+          history.push('/')
+        }
       }}
       >
       {({ errors, touched }) => (

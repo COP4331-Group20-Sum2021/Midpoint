@@ -18,6 +18,12 @@ export function AuthProvider({ children }) {
       })
   }
 
+  function login(email, password) {
+    return auth.signInWithEmailAndPassword(email, password).catch(e => {
+      return -1
+    })
+  }
+
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(user => setUser(user))
     setLoading(false)
@@ -27,7 +33,8 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
-    signup
+    signup,
+    login
   }
 
   return (
