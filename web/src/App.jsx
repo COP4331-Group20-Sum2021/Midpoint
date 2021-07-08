@@ -6,6 +6,8 @@ import About from './components/about'
 import Signup from './components/signup'
 import ForgotPassword from './components/forgotPassword'
 import { AuthProvider } from './contexts/authContext'
+import ProtectedAccount from './components/protected/ProtectedAccount'
+import Protected from './components/protected/Protected'
 import './styles/App.scss'
 
 export default function App() {
@@ -14,10 +16,10 @@ export default function App() {
       <Router>
         <Nav />
         <Route exact path='/' component={Home} />
-        <Route path='/login' component={Login} />
-        <Route path='/signup' component={Signup} />
-        <Route path='/forgotpassword' component={ForgotPassword} />
-        <Route path='/about' component={About} />
+        <ProtectedAccount path='/login' component={Login} />
+        <ProtectedAccount path='/signup' component={Signup} />
+        <ProtectedAccount path='/forgotpassword' component={ForgotPassword} />
+        <Protected path='/about' component={About} /> {/* Protected to see how it works */}
       </Router>
     </AuthProvider>
   )
