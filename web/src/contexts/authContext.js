@@ -24,6 +24,10 @@ export function AuthProvider({ children }) {
     })
   }
 
+  function logout() {
+    return auth.signOut()
+  }
+
   useEffect(() => {
     const unsub = auth.onAuthStateChanged(user => setUser(user))
     setLoading(false)
@@ -34,7 +38,8 @@ export function AuthProvider({ children }) {
   const value = {
     user,
     signup,
-    login
+    login,
+    logout
   }
 
   return (
