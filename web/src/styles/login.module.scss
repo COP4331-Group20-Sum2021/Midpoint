@@ -1,13 +1,7 @@
-#background {
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding: 0;
-  margin: 0;
+.background {
+  background: repeating-radial-gradient(circle at center, #9cc5e7 0, #9cc5e7 10%, #7DAAD0 40%,  #2A3C6B 100%);
   height: 100%;
   width: 100%;
-  z-index: -1;
-  // background: repeating-radial-gradient(circle at center, #9cc5e7 0, #9cc5e7 10%, #7DAAD0 40%,  #2A3C6B 100%);
 }
 
 .form {
