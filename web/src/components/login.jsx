@@ -7,7 +7,7 @@ import style from '../styles/login.module.scss'
 export default function Login() {
   return (
     <>
-      <img id={style.gmap} src='/googlemaps_3.png' alt='google maps' />
+      <div className={style.background}></div>
       <LoginForm />
     </>
   )

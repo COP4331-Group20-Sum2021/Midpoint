@@ -8,7 +8,7 @@ import { useState } from 'react'
 export default function Signup() {
   return (
     <>
-      <div id={style.background} />
+      <div className={style.background}></div>
       <SignupForm />
     </>
   )
