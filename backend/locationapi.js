@@ -21,6 +21,7 @@ const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?
 // returns error
 app.post('/api/updatelocation', async (req, res, next) => {
     const {userId, userToken} = req.body;
+    var status = 200;
     var error = '';
 
     const userRef = db.collection('user').doc(`${userId}`);
@@ -32,6 +33,7 @@ app.post('/api/updatelocation', async (req, res, next) => {
         snapshot => {
             if (!snapshot.exists) {
                 error = 'User does not exist';
+                status = 404;
             }
         });
 
@@ -51,16 +53,17 @@ app.post('/api/updatelocation', async (req, res, next) => {
 
     var ret = { error: error };
 
-    res.status(200).json(ret);
+    res.status(status).json(ret);
 });
 
 // retrieve group data
-// receives userid + auth token+ groupid
+// receives userid + auth token + groupid
 // gets groupmember locations
 // returns list of groupmember locations, midpoint location, list of nearby establishments
 app.post('/api/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var radius = 1500; // **in meters**
+    var status = 200;
     var error = '';
     var groupMemberLocations = [];
     var nearbyEstablishments = [];
@@ -99,11 +102,12 @@ app.post('/api/retrievegroupdata', async (req, res, next) => {
     }
     catch(e) {
         error = e.toString();
+        status = 404;
     }
 
     var ret = { grouplocations: groupMemberLocations, midpoint: midpointLocation, nearbyestablishments: nearbyEstablishments, error: error };
     
-    res.status(200).json(ret);
+    res.status(status).json(ret);
 });
 
 // function for finding the mathematical midpoint from a list of coordinates
