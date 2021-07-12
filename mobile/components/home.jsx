@@ -1,20 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Text, View } from 'react-native';
 
-export default function Home({ item }) {
+export default function Home({ navigation }) {
     return (
-        <Text>Hello</Text>
+        <View>
+            <Text>This is the home screen in "components/home.jsx"</Text>
+        </View>
     )
 }
-
-
-const styles = StyleSheet.create({
-    item: {
-        padding: 16,
-        marginTop: 16,
-        borderColor: '#bbb',
-        borderWidth: 1,
-        borderStyle: 'dashed',
-        borderRadius: 10,
-    }
-})

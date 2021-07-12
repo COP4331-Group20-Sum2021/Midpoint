@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// THIS FILE IS HERE BECAUSE I WANTED TO PUT THE SCREENS IN A SEPARATE FILE TO MAKE APP.JSX CLEANER BUT I COULDN'T FIGURE OUT HOW :)
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 import * as React from 'react';
 import { Button, View, Image, Text } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -5,10 +12,10 @@ import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import Home from './components/home';
-import About from './components/about';
-import Login from './components/login';
-import Register from './components/register';
+import Home from '../components/home';
+import About from '../components/about';
+import Login from '../components/login';
+import Register from '../components/register';
 
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
@@ -87,32 +94,3 @@ const RegisterStackScreen = ({ navigation }) => (
         }} />
     </RegisterStack.Navigator>
 );
-
-function LogoTitle() {
-  return (
-    <Image
-      style={{ 
-        maxWidth: '100%',
-        maxHeight: '100%',
-        width: 220,
-        height: 40,
-
-        
-    }}
-      source={require('./assets/MidpointLogo.png')}
-    />
-  )
-}
-
-export default function App() {
-  return(
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
-        <Drawer.Screen name="About" component={ AboutStackScreen } />
-        <Drawer.Screen name="Login" component={ LoginStackScreen } />
-        <Drawer.Screen name="Register" component={ RegisterStackScreen } />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
-}
