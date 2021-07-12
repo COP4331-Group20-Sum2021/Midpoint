@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
@@ -10,7 +9,8 @@ const app = express();
 app.set('port', (PORT));
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 if (process.env.NODE_ENV === 'production') {  
     // Set static folder
