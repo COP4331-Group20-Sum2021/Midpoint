@@ -17,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+// on heroku, set to statically serve the react (TODO is this how we want to do this?)
 if (process.env.NODE_ENV === 'production') {  
     // Set static folder
     app.use(express.static(path.join(__dirname, '..', 'web', 'build')));
@@ -24,5 +25,9 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path.resolve(__dirname, '..', 'web', 'build', 'index.html'));  
     });
 }
+
+// api routes
+let locatonAPI = require('./locationapi');
+app.use('/api', locatonAPI);
 
 app.listen(PORT, () => {console.log('Server listening on port ' + PORT);});

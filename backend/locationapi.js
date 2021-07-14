@@ -1,17 +1,11 @@
 const express = require('express');
 const axios = require('axios');
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
+const { admin, db } = require('./auth/firebase');
 const { Navigator } = require('node-navigator');
 require('dotenv').config();
 
-const app = express();
+const router = express.Router();
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
-
-const db = admin.firestore();
 const navigator = new Navigator();
 const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?)
 
@@ -19,7 +13,7 @@ const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?
 // receives userid + auth token
 // posts location to database
 // returns error
-app.post('/api/updatelocation', async (req, res, next) => {
+router.post('/updatelocation', async (req, res, next) => {
     const {userId, userToken} = req.body;
     var status = 200;
     var error = '';
@@ -60,7 +54,7 @@ app.post('/api/updatelocation', async (req, res, next) => {
 // receives userid + auth token + groupid
 // gets groupmember locations
 // returns list of groupmember locations, midpoint location, list of nearby establishments
-app.post('/api/retrievegroupdata', async (req, res, next) => {
+router.post('/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var radius = 1500; // **in meters**
     var status = 200;
@@ -135,3 +129,5 @@ function getMidpoint(locations) {
 
     return { latitude: midPointLat, longitude: midPointLong };
 }
+
+module.exports = router;
