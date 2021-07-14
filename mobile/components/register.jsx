@@ -54,6 +54,7 @@ export default function Register({ navigation }) {
                     <View style={style.section}>
                         <Text style={style.fieldName}>Password</Text>
                         <TextInput
+                            secureTextEntry
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
@@ -64,6 +65,7 @@ export default function Register({ navigation }) {
                     <View style={style.section}>
                         <Text style={style.fieldName}>Confirm Password</Text>
                         <TextInput
+                            secureTextEntry
                             onChangeText={handleChange('passwordConfirm')}
                             onBlur={handleBlur('passwordConfirm')}
                             value={values.passwordConfirm}
