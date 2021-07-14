@@ -40,8 +40,8 @@ router.post('/createuser', async (req, res, next) => {
     var error = '';
 
     const data = {
-        userId: userId,
-        email, email,
+        userid: userId,
+        username: email,
         latitude: lat,
         longitude: lon,
         token: auth
@@ -92,7 +92,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
 
 
     // "accept" invitation by deleting from invitations and then adding to the group
-    const response = await db.collection('invitation').doc(userId+groupId).delete();
+    const response = await db.collection('invitations').doc(userId+groupId).delete();
 
     const data = {
         groupid: groupId,
