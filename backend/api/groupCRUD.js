@@ -3,7 +3,58 @@ const { admin, db } = require('../auth/firebase');
 
 const router = express.Router();
 
-// = = = = = = = = = = API HERE = = = = = = = = = = 
+// = = = = = = = = = = @Wes & Nate = = = = = = = = = = 
+
+
+// List groups
+router.post('/listgroups', async (req, res, next) => {
+    // returns all groups that userid is a part of.
+});
+
+
+// Add group
+router.post('/creategroup', async (req, res, next) => {
+    // Create a new group record and returns if the operation was successful
+});
+
+// Edit group
+router.post('/editgroup', async (req, res, next) => {
+    // Edits the group record and returns if the operation was successful
+});
+
+// Delete group
+router.post('/deletegroup', async (req, res, next) => {
+    // Delete all groupmembers that participate in groupid.
+    // Delete the group record and returns if the operation was successful
+});
+
+
+// = = = = = = = = = = @Nate = = = = = = = = = = 
+
+
+// Create a new user & relate the auth token
+// receives userId from firebase, email, user's lat, user's lon & auth token
+router.post('/createuser', async (req, res, next) => {
+    const {userId, email, lat, lon, auth} = req.body;
+    var status = 200;
+    var error = '';
+
+    const data = {
+        userId: userId,
+        email, email,
+        latitude: lat,
+        longitude: lon,
+        token: auth
+    };
+      
+      // Add a new document in collection "invitations" with auto-ID
+    const response = await db.collection('user').doc(userId).set(data);
+
+    var ret = { error: error };
+
+    res.status(status).json(ret);
+});
+
 
 // Invite participant userId to groupId
 router.post('/inviteparticipant', async (req, res, next) => {
