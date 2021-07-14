@@ -12,6 +12,11 @@ export default function Nav() {
         <Link to='/' className={style.navItem}><li>Home</li></Link>
         <Link to='/about' className={style.navItem}><li>About</li></Link>
         {user
+          ? <Link to='/myprofile' className={style.navItem}>Dashboard</Link>
+          : null
+        }
+
+        {user
           ? <Link to='/' className={style.navItem}><li onClick={logout}>Logout</li></Link>
           : <Link to='/login' className={style.navItem}><li>Login</li></Link>
         }

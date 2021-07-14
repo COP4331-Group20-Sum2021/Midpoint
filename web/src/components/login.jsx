@@ -31,7 +31,7 @@ function LoginForm() {
           alert('Failed to Login')
         } else {
           resetForm()
-          history.push('/')
+          history.push('/myprofile')
         }
       }}
       >
