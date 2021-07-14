@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // api routes
-let locatonAPI = require('./locationapi');
+let locatonAPI = require('./api/locationapi');
 app.use('/api', locatonAPI);
 
 app.listen(PORT, () => {console.log('Server listening on port ' + PORT);});
