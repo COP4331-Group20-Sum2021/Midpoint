@@ -1,4 +1,4 @@
-import firebase from 'firebase-admin';
+const firebase = require('firebase-admin');
 
 const authJson = (function() {
     // if on heroku, do generate json from env vars
@@ -20,7 +20,7 @@ const authJson = (function() {
 })();
 
 const admin = firebase.initalizeApp(authJson);
+const auth = app.auth();
+const db = app.firestore();
 
-export default admin;
-export const auth = app.auth();
-export const db = app.firestore();
+module.exports = {admin, auth, db};
