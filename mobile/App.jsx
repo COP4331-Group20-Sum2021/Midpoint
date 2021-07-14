@@ -9,6 +9,7 @@ import Home from './components/home';
 import About from './components/about';
 import Login from './components/login';
 import Register from './components/register';
+import { AuthProvider } from './context/AuthContext';
 
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
@@ -106,13 +107,15 @@ function LogoTitle() {
 
 export default function App() {
   return(
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
-        <Drawer.Screen name="About" component={ AboutStackScreen } />
-        <Drawer.Screen name="Login" component={ LoginStackScreen } />
-        <Drawer.Screen name="Register" component={ RegisterStackScreen } />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Home">
+          <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
+          <Drawer.Screen name="About" component={ AboutStackScreen } />
+          <Drawer.Screen name="Login" component={ LoginStackScreen } />
+          <Drawer.Screen name="Register" component={ RegisterStackScreen } />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
