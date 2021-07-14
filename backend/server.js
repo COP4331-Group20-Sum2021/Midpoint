@@ -1,7 +1,6 @@
 // express
 const express = require('express');
 require('dotenv').config();
-console.log(process.env);
 
 // Firebase
 const { admin, db } = require('./auth/firebase');
