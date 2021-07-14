@@ -16,11 +16,11 @@ const authJson = (function() {
             "client_x509_cert_url": process.env.BACKEND_FIREBASE_CLIENT_X509
         }
     }
-    return require('./serviceAccountKey.json');
+    return require('../serviceAccountKey.json');
 })();
 
-const admin = firebase.initalizeApp(authJson);
-const auth = app.auth();
-const db = app.firestore();
+const admin = firebase.initializeApp(authJson);
+const auth = admin.auth();
+const db = admin.firestore();
 
 module.exports = {admin, auth, db};
