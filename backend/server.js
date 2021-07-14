@@ -1,13 +1,18 @@
+// express
 const express = require('express');
+
+// Firebase
+const { admin, db } = require('./auth/firebase');
 const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 5000;
-
+// Init express app and set the port
 const app = express();
+const PORT = process.env.PORT || 5000;
 app.set('port', (PORT));
 
+// TODO properly initialize CORS
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
