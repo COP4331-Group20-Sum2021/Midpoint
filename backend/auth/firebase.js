@@ -19,8 +19,8 @@ const authJson = (function() {
     return require('./serviceAccountKey.json');
 })();
 
-const app = firebase.initalizeApp(authJson);
+const admin = firebase.initalizeApp(authJson);
 
-export default app;
+export default admin;
 export const auth = app.auth();
 export const db = app.firestore();
