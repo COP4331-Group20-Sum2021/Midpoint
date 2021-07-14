@@ -3,11 +3,12 @@ const axios = require('axios');
 const { admin, db } = require('../auth/firebase');
 const { Navigator } = require('node-navigator');
 
+// require('dotenv').config()
 const router = express.Router();
 
 const navigator = new Navigator();
 const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?)
-
+console.log(key);
 // update location
 // receives userid + auth token
 // posts location to database
