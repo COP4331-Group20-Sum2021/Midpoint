@@ -1,11 +1,12 @@
 // express
 const express = require('express');
+require('dotenv').config();
+console.log(process.env);
 
 // Firebase
 const { admin, db } = require('./auth/firebase');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config();
 
 // Init express app and set the port
 const app = express();
