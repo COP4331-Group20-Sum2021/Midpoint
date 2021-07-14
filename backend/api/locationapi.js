@@ -2,7 +2,6 @@ const express = require('express');
 const axios = require('axios');
 const { admin, db } = require('../auth/firebase');
 const { Navigator } = require('node-navigator');
-require('dotenv').config();
 
 const router = express.Router();
 
