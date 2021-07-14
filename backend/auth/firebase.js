@@ -19,7 +19,17 @@ const authJson = (function() {
     return require('../serviceAccountKey.json');
 })();
 
-const admin = firebase.initializeApp(authJson);
+// commented this line that JOseph had
+//const admin = firebase.initializeApp(authJson);
+const admin = firebase.initializeApp({
+  credential: firebase.credential.cert({
+    "projectId": process.env.BACKEND_FIREBASE_PROJECT_ID,
+    "private_key": process.env.BACKEND_FIREBASE_PRIVATE_KEY,
+    "client_email": process.env.BACKEND_FIREBASE_CLIENT_EMAIL,
+  }),
+  databaseURL: "https://group20-midpoint.firebaseio.com"
+});
+
 const auth = admin.auth();
 const db = admin.firestore();
 
