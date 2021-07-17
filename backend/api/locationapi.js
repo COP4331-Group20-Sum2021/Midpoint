@@ -9,10 +9,33 @@ const router = express.Router();
 const navigator = new Navigator();
 const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?)
 console.log(key);
+
 // update location
 // receives userid + auth token
 // posts location to database
 // returns error
+/**
+ *  @swagger
+ * /api/updateLocation:
+ *      post:
+ *          description: Update User Location
+ *          tags:
+ *          - user
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase Auth Token of user
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/updatelocation', async (req, res, next) => {
     const {userId, userToken} = req.body;
     var status = 200;
@@ -54,6 +77,32 @@ router.post('/updatelocation', async (req, res, next) => {
 // receives userid + auth token + groupid
 // gets groupmember locations
 // returns list of groupmember locations, midpoint location, list of nearby establishments
+/**
+ *  @swagger
+ * /api/retrievegroupdata:
+ *      post:
+ *          description: Get Group Data
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase Auth Token of user
+ *            in: query
+ *            type: String
+ *          - name: groupId 
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var radius = 1500; // **in meters**
@@ -89,6 +138,8 @@ router.post('/retrievegroupdata', async (req, res, next) => {
             `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${midpointLocation.latitude},${midpointLocation.longitude}&radius=${radius}&key=${key}`
         );
         
+        console.log(snapshot);
+
         // push all search results into return array
         for (let i in snapshot.data.results) {
             nearbyEstablishments.push(snapshot.data.results[i]);

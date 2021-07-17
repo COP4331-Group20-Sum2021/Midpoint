@@ -7,6 +7,28 @@ const router = express.Router();
 
 
 // List groups
+/**
+ *  @swagger
+ * /api/listgroups:
+ *      post:
+ *          description: Get list of groups
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase Auth Token of user
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/listgroups', async (req, res, next) => {
     const {userId, userToken} = req.body;
     const groupmemberRef = db.collection('groupmember');
@@ -43,6 +65,32 @@ router.post('/listgroups', async (req, res, next) => {
 
 
 // Add group
+/**
+ *  @swagger
+ * /api/creategroup:
+ *      post:
+ *          description: Create a new group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase Auth Token of user
+ *            in: query
+ *            type: String
+ *          - name: groupname 
+ *            description: Name of the new group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/creategroup', async (req, res, next) => {
     const {userId, userToken, groupname} = req.body;
     var status = 200;
@@ -61,6 +109,36 @@ router.post('/creategroup', async (req, res, next) => {
 });
 
 // Edit group
+/**
+ *  @swagger
+ * /api/editgroup:
+ *      post:
+ *          description: Edit a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase Auth Token of user
+ *            in: query
+ *            type: String
+ *          - name: groupId 
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          - name: groupname 
+ *            description: New name of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/editgroup', async (req, res, next) => {
     const {userId, userToken, groupId, groupname} = req.body;
     var status = 200;
@@ -79,6 +157,32 @@ router.post('/editgroup', async (req, res, next) => {
 });
 
 // Delete group
+/**
+ *  @swagger
+ * /api/deletegroup:
+ *      post:
+ *          description: Delete a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase Auth Token of user
+ *            in: query
+ *            type: String
+ *          - name: groupId 
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/deletegroup', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     const groupmemberRef = db.collection('groupmember');
@@ -115,6 +219,40 @@ router.post('/deletegroup', async (req, res, next) => {
 
 // Create a new user & relate the auth token
 // receives userId from firebase, email, user's lat, user's lon & auth token
+/**
+ *  @swagger
+ * /api/createuser:
+ *      post:
+ *          description: Create a new user
+ *          tags:
+ *          - user
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of new user
+ *            in: query
+ *            type: String
+ *          - name: email 
+ *            description: Email of new user
+ *            in: query
+ *            type: String
+ *          - name: lat 
+ *            description: Latitude of new user
+ *            in: query
+ *            type: String
+ *          - name: lon 
+ *            description: Longitude of new user
+ *            in: query
+ *            type: String
+ *          - name: auth 
+ *            description: Firebase auth token
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/createuser', async (req, res, next) => {
     const {userId, email, lat, lon, auth} = req.body;
     var status = 200;
@@ -144,6 +282,36 @@ function checkUser(email){
 }
 
 // Invite participant by email to groupId.
+/**
+ *  @swagger
+ * /api/inviteparticipant:
+ *      post:
+ *          description: Invite a user
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: ownerId 
+ *            description: ID of group owner
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase auth token
+ *            in: query
+ *            type: String
+ *          - name: email 
+ *            description: Email of invitee
+ *            in: query
+ *            type: String
+ *          - name: groupId 
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/inviteparticipant', async (req, res, next) => {
     const {ownerId, userToken, email, groupId} = req.body;
     var status = 200;
@@ -181,6 +349,32 @@ function checkInvitation(email, groupId){
 }
 
 // email accepts the invitation to join the groupId
+/**
+ *  @swagger
+ * /api/acceptinvitation:
+ *      post:
+ *          description: Accept an open invitation
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: email 
+ *            description: Email of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase auth token
+ *            in: query
+ *            type: String
+ *          - name: groupId 
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/acceptinvitation', async (req, res, next) => {
     const {email, userToken, groupId} = req.body;
     var status = 200;
@@ -223,6 +417,32 @@ router.post('/acceptinvitation', async (req, res, next) => {
 // Remove participant userId from groupId
 // If the user is not on the group, it doesn't matter
 // If the group doesn't exist, that's fine too lol firebase is magical
+/**
+ *  @swagger
+ * /api/removemyself:
+ *      post:
+ *          description: Remove myself from a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: userId 
+ *            description: ID of user
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase auth token
+ *            in: query
+ *            type: String
+ *          - name: groupId
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/removemyself', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var status = 200;
@@ -237,6 +457,36 @@ router.post('/removemyself', async (req, res, next) => {
 });
 
 // Ownerid is kicking userid from groupid
+/**
+ *  @swagger
+ * /api/kickfromgroup:
+ *      post:
+ *          description: Remove a user from a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - name: ownerId 
+ *            description: ID of group owner
+ *            in: query
+ *            type: String
+ *          - name: userToken 
+ *            description: Firebase auth token
+ *            in: query
+ *            type: String
+ *          - name: userId
+ *            description: ID of user being kicked
+ *            in: query
+ *            type: String
+ *          - name: groupId
+ *            description: ID of group
+ *            in: query
+ *            type: String
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/kickfromgroup', async (req, res, next) => {
     const {ownerId, userToken, userId, groupId} = req.body;
     var status = 200;
