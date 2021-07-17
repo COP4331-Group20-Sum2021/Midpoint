@@ -1,18 +1,19 @@
 import React from 'react'
 import * as FaIcons from "react-icons/fa";
-import * as HiIcons from "react-icons/hi";
+import GroupIcon from '@material-ui/icons/Group';
+import PersonIcon from '@material-ui/icons/Person';
 
 export const SidebarData = [
     {
         title: 'Profile',
         path: '/myprofile',
-        icon: <HiIcons.HiUser />,
+        icon: <PersonIcon />,
         cName: 'sidebar-text'
     },
     {
         title: 'Groups',
         path: '/groups',
-        icon: <HiIcons.HiUserGroup />,
+        icon: <GroupIcon />,
         cName: 'sidebar-text'
     },
     {

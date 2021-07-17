@@ -1,12 +1,16 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext'
 import style from '../styles/nav.module.scss'
+import '../styles/nav.module.scss'
+import { SidebarData } from "./sidebardata";
+
 
 export default function Nav() {
   const { user, logout } = useAuth()
+  let location = useLocation()
 
   return (
-    <nav className={style.nav}>
+    <nav className={style.nav} id={location.pathname === '/myprofile' || location.pathname === '/groups' || location.pathname === '/map' ? style.active : ""}>
       <img src='/logo.png' id={style.navLogo} alt='logo' />
       <ul className={style.navItems}>
         <Link to='/' className={style.navItem}><li>Home</li></Link>
