@@ -23,6 +23,7 @@ const loginSchema = yup.object().shape({
 export default function Register({ navigation }) {
     const { signup } = useAuth()
     const [clicked, setClicked] = useState(false)
+    const [error, setError] = useState()
 
     return (
         <Formik
@@ -32,10 +33,11 @@ export default function Register({ navigation }) {
                 try {
                   await signup(values.email, values.password)
                   setClicked(true)
+                  setError(null)
+                  resetForm()
                 } catch(e) {
-                  alert('Failed to Signup: ' + e)
+                    setError(e.message)
                 }
-                resetForm()
             }}
         >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid}) => (
@@ -76,6 +78,11 @@ export default function Register({ navigation }) {
                     <View style={style.section}>
                         <Button style={style.submit} onPress={handleSubmit} title="Submit" />
                     </View>
+                    {error &&
+                        <View style={style.section}>
+                            <Text style={style.error}>{error}</Text>
+                        </View>
+                    }
                 </>
                 }
                 {clicked && <>
