@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
 
-const loginSchema = yup.object().shape({
+const registerSchema = yup.object().shape({
     email: yup
         .string()
         .email("Please enter valid email")
@@ -28,7 +28,7 @@ export default function Register({ navigation }) {
     return (
         <Formik
             initialValues={{ email: '', password: '', passwordConfirm: '' }}
-            validationSchema={loginSchema}
+            validationSchema={registerSchema}
             onSubmit={async (values, { resetForm }) => {
                 try {
                   await signup(values.email, values.password)
@@ -40,7 +40,7 @@ export default function Register({ navigation }) {
                 }
             }}
         >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, isValid}) => (
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
             <View style={style.container}>
                 {!clicked && <>
                     <View style={style.section}>
@@ -76,7 +76,7 @@ export default function Register({ navigation }) {
                         {(errors.passwordConfirm && touched.passwordConfirm) && <Text style={style.error}>{errors.passwordConfirm}</Text>}
                     </View>
                     <View style={style.section}>
-                        <Button style={style.submit} onPress={handleSubmit} title="Submit" />
+                        <Button style={style.submit} onPress={handleSubmit} title="Signup" />
                     </View>
                     {error &&
                         <View style={style.section}>
