@@ -8,6 +8,7 @@ import ForgotPassword from './components/forgotPassword'
 import { AuthProvider } from './contexts/authContext'
 import ProtectedAccount from './components/protected/ProtectedAccount'
 import Protected from './components/protected/Protected'
+import Verify from './components/verify'
 import './styles/App.scss'
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
         <ProtectedAccount path='/signup' component={Signup} />
         <ProtectedAccount path='/forgotpassword' component={ForgotPassword} />
         <Protected path='/about' component={About} /> {/* Protected to see how it works */}
+        <Route path='/verify' component={Verify} /> {/* Protected to see how it works */}
       </Router>
     </AuthProvider>
   )
