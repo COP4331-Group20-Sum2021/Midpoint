@@ -8,7 +8,9 @@ export default function ProtectedAccount({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props => {
-        return !user ? <Component {...props} /> : <Redirect to='/' />
+        if (user)
+          return !user.emailVerified ? <Component {...props} /> : <Redirect to='/' />
+        return <Component {...props} />
       }}
     >
     </Route>

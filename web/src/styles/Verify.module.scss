@@ -1,0 +1,12 @@
+.container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: repeating-radial-gradient(circle at center, #9cc5e7 0, #9cc5e7 10%, #7DAAD0 40%,  #2A3C6B 100%);
+  color: white;
+
+  h1 {
+    text-align: center;
+  }
+}
