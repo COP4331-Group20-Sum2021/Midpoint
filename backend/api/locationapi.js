@@ -8,7 +8,6 @@ const router = express.Router();
 
 const navigator = new Navigator();
 const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?)
-console.log(key);
 // update location
 // receives userid + auth token
 // posts location to database

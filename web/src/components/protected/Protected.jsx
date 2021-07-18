@@ -8,7 +8,7 @@ export default function Protected({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props => {
-        return (user && user.emailVerified) ? <Component {...props} /> : <Redirect to='/login' />
+        return (user && user.emailVerified) ? <Component {...props} /> : <Redirect to='/verify' />
       }}
     >
     </Route>
