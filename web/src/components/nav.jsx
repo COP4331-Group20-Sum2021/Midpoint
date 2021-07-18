@@ -2,8 +2,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/authContext'
 import style from '../styles/nav.module.scss'
 import '../styles/nav.module.scss'
-import { SidebarData } from "./sidebardata";
-
 
 export default function Nav() {
   const { user, logout } = useAuth()

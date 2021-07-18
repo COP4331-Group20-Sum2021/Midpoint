@@ -7,7 +7,7 @@ import Signup from './components/signup'
 import ForgotPassword from './components/forgotPassword'
 import { AuthProvider } from './contexts/authContext'
 import ProtectedAccount from './components/protected/ProtectedAccount'
-// import Protected from './components/protected/Protected'
+import Protected from './components/protected/Protected'
 import './styles/App.scss'
 import MyProfile from './components/myprofile'
 import Groups from './components/groups'
@@ -23,9 +23,9 @@ export default function App() {
         <ProtectedAccount path='/signup' component={Signup} />
         <ProtectedAccount path='/forgotpassword' component={ForgotPassword} />
         <Route path='/about' component={About} />
-        <Route path='/myprofile' component={MyProfile} />
-        <Route path='/groups' component={Groups} />
-        <Route path='/map' component={Maps} />
+        <Protected path='/myprofile' component={MyProfile} />
+        <Protected path='/groups' component={Groups} />
+        <Protected path='/map' component={Maps} />
       </Router>
     </AuthProvider>
   )
