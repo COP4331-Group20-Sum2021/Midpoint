@@ -1,14 +1,23 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Button, View, Image, Text } from 'react-native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
+import { NavigationContainer, StackActions, DrawerActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
+
+// import { useAuth } from './contexts/authContext';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Home from './components/home';
 import About from './components/about';
 import Login from './components/login';
 import Register from './components/register';
+
+
 
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
@@ -104,14 +113,39 @@ function LogoTitle() {
   )
 }
 
+function CustomDrawerContent(props) {
+  const {user, logout} = useAuth();
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      {!user ? (
+        <DrawerItem
+          label="Logout"
+          onPress={() => props.navigation.dispatch(DrawerActions.closeDrawer())}
+        />
+      ) : (
+        <></>
+      )}
+    </DrawerContentScrollView>
+  );
+}
+
 export default function App() {
+  const {user, logout} = useAuth();
   return(
     <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
         <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
         <Drawer.Screen name="About" component={ AboutStackScreen } />
-        <Drawer.Screen name="Login" component={ LoginStackScreen } />
-        <Drawer.Screen name="Register" component={ RegisterStackScreen } />
+        {!user ? (
+          <>
+          <Drawer.Screen name="Login" component={ LoginStackScreen } />
+          <Drawer.Screen name="Register" component={ RegisterStackScreen } />
+          </>
+        ) : (
+          <></>
+        )}
+
       </Drawer.Navigator>
     </NavigationContainer>
   );
