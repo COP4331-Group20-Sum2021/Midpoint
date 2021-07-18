@@ -9,6 +9,9 @@ import { AuthProvider } from './contexts/authContext'
 import ProtectedAccount from './components/protected/ProtectedAccount'
 import Protected from './components/protected/Protected'
 import './styles/App.scss'
+import MyProfile from './components/myprofile'
+import Groups from './components/groups'
+import Maps from './components/map'
 
 export default function App() {
   return (
@@ -19,7 +22,10 @@ export default function App() {
         <ProtectedAccount path='/login' component={Login} />
         <ProtectedAccount path='/signup' component={Signup} />
         <ProtectedAccount path='/forgotpassword' component={ForgotPassword} />
-        <Protected path='/about' component={About} /> {/* Protected to see how it works */}
+        <Route path='/about' component={About} />
+        <Protected path='/myprofile' component={MyProfile} />
+        <Protected path='/groups' component={Groups} />
+        <Protected path='/map' component={Maps} />
       </Router>
     </AuthProvider>
   )
