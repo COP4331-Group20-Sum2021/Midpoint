@@ -144,8 +144,6 @@ router.post('/retrievegroupdata', async (req, res, next) => {
         var snapshot = await axios.get(
             `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${midpointLocation.latitude},${midpointLocation.longitude}&radius=${radius}&key=${key}`
         );
-        
-        console.log(snapshot);
 
         // push all search results into return array
         for (let i in snapshot.data.results) {
