@@ -134,7 +134,6 @@ function CustomDrawerContent(props) {
 export default function App() {
   const {user, logout} = useAuth();
   return(
-<<<<<<< HEAD
     <NavigationContainer>
       <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
         <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
@@ -150,17 +149,5 @@ export default function App() {
 
       </Drawer.Navigator>
     </NavigationContainer>
-=======
-    <AuthProvider>
-      <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Home">
-          <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
-          <Drawer.Screen name="About" component={ AboutStackScreen } />
-          <Drawer.Screen name="Login" component={ LoginStackScreen } />
-          <Drawer.Screen name="Register" component={ RegisterStackScreen } />
-        </Drawer.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
->>>>>>> origin/main
   );
 }
