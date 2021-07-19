@@ -17,26 +17,30 @@ console.log(key);
 /**
  *  @swagger
  * /api/updateLocation:
- *      get:
+ *      post:
  *          description: Update User Location
  *          tags:
  *          - user
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase Auth Token of user
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
  *              404:
  *                  description: Failure
  */
-router.get('/updatelocation', async (req, res, next) => {
+router.post('/updatelocation', async (req, res, next) => {
     const {userId, userToken} = req.body;
     var status = 200;
     var error = '';
@@ -80,30 +84,33 @@ router.get('/updatelocation', async (req, res, next) => {
 /**
  *  @swagger
  * /api/retrievegroupdata:
- *      get:
+ *      post:
  *          description: Get Group Data
  *          tags:
  *          - group
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase Auth Token of user
- *            in: query
- *            type: String
- *          - name: groupId 
- *            description: ID of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
  *              404:
  *                  description: Failure
  */
-router.get('/retrievegroupdata', async (req, res, next) => {
+router.post('/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var radius = 1500; // **in meters**
     var status = 200;

@@ -10,26 +10,30 @@ const router = express.Router();
 /**
  *  @swagger
  * /api/listgroups:
- *      get:
+ *      post:
  *          description: Get list of groups
  *          tags:
  *          - group
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase Auth Token of user
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
  *              404:
  *                  description: Failure
  */
-router.get('/listgroups', async (req, res, next) => {
+router.post('/listgroups', async (req, res, next) => {
     const {userId, userToken} = req.body;
     const groupmemberRef = db.collection('groupmember');
     const groupRef = db.collection('group');
@@ -73,18 +77,21 @@ router.get('/listgroups', async (req, res, next) => {
  *          tags:
  *          - group
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase Auth Token of user
- *            in: query
- *            type: String
- *          - name: groupname 
- *            description: Name of the new group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupname
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupname:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -117,22 +124,24 @@ router.post('/creategroup', async (req, res, next) => {
  *          tags:
  *          - group
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase Auth Token of user
- *            in: query
- *            type: String
- *          - name: groupId 
- *            description: ID of group
- *            in: query
- *            type: String
- *          - name: groupname 
- *            description: New name of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              - groupname
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *                  groupname:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -165,18 +174,21 @@ router.put('/editgroup', async (req, res, next) => {
  *          tags:
  *          - group
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase Auth Token of user
- *            in: query
- *            type: String
- *          - name: groupId 
- *            description: ID of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -227,26 +239,27 @@ router.delete('/deletegroup', async (req, res, next) => {
  *          tags:
  *          - user
  *          parameters:
- *          - name: userId 
- *            description: ID of new user
- *            in: query
- *            type: String
- *          - name: email 
- *            description: Email of new user
- *            in: query
- *            type: String
- *          - name: lat 
- *            description: Latitude of new user
- *            in: query
- *            type: String
- *          - name: lon 
- *            description: Longitude of new user
- *            in: query
- *            type: String
- *          - name: auth 
- *            description: Firebase auth token
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - email
+ *              - lat
+ *              - lon
+ *              - auth
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  email:
+ *                      type: string
+ *                  lat:
+ *                      type: string
+ *                  long:
+ *                      type: string
+ *                  auth:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -290,22 +303,24 @@ function checkUser(email){
  *          tags:
  *          - group
  *          parameters:
- *          - name: ownerId 
- *            description: ID of group owner
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase auth token
- *            in: query
- *            type: String
- *          - name: email 
- *            description: Email of invitee
- *            in: query
- *            type: String
- *          - name: groupId 
- *            description: ID of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - ownerId
+ *              - userToken
+ *              - email
+ *              - groupId
+ *              properties:
+ *                  ownerId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  email:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -357,18 +372,21 @@ function checkInvitation(email, groupId){
  *          tags:
  *          - group
  *          parameters:
- *          - name: email 
- *            description: Email of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase auth token
- *            in: query
- *            type: String
- *          - name: groupId 
- *            description: ID of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - email
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  email:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -425,18 +443,21 @@ router.post('/acceptinvitation', async (req, res, next) => {
  *          tags:
  *          - group
  *          parameters:
- *          - name: userId 
- *            description: ID of user
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase auth token
- *            in: query
- *            type: String
- *          - name: groupId
- *            description: ID of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
@@ -465,22 +486,24 @@ router.delete('/removemyself', async (req, res, next) => {
  *          tags:
  *          - group
  *          parameters:
- *          - name: ownerId 
- *            description: ID of group owner
- *            in: query
- *            type: String
- *          - name: userToken 
- *            description: Firebase auth token
- *            in: query
- *            type: String
- *          - name: userId
- *            description: ID of user being kicked
- *            in: query
- *            type: String
- *          - name: groupId
- *            description: ID of group
- *            in: query
- *            type: String
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - ownerId
+ *              - userToken
+ *              - userId
+ *              - groupId
+ *              properties:
+ *                  ownerId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  userId:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
  *          responses:
  *              200:
  *                  description: Success
