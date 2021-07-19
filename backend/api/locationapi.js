@@ -17,7 +17,7 @@ console.log(key);
 /**
  *  @swagger
  * /api/updateLocation:
- *      post:
+ *      get:
  *          description: Update User Location
  *          tags:
  *          - user
@@ -36,7 +36,7 @@ console.log(key);
  *              404:
  *                  description: Failure
  */
-router.post('/updatelocation', async (req, res, next) => {
+router.get('/updatelocation', async (req, res, next) => {
     const {userId, userToken} = req.body;
     var status = 200;
     var error = '';
@@ -80,7 +80,7 @@ router.post('/updatelocation', async (req, res, next) => {
 /**
  *  @swagger
  * /api/retrievegroupdata:
- *      post:
+ *      get:
  *          description: Get Group Data
  *          tags:
  *          - group
@@ -103,7 +103,7 @@ router.post('/updatelocation', async (req, res, next) => {
  *              404:
  *                  description: Failure
  */
-router.post('/retrievegroupdata', async (req, res, next) => {
+router.get('/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var radius = 1500; // **in meters**
     var status = 200;

@@ -10,7 +10,7 @@ const router = express.Router();
 /**
  *  @swagger
  * /api/listgroups:
- *      post:
+ *      get:
  *          description: Get list of groups
  *          tags:
  *          - group
@@ -29,7 +29,7 @@ const router = express.Router();
  *              404:
  *                  description: Failure
  */
-router.post('/listgroups', async (req, res, next) => {
+router.get('/listgroups', async (req, res, next) => {
     const {userId, userToken} = req.body;
     const groupmemberRef = db.collection('groupmember');
     const groupRef = db.collection('group');
@@ -112,7 +112,7 @@ router.post('/creategroup', async (req, res, next) => {
 /**
  *  @swagger
  * /api/editgroup:
- *      post:
+ *      put:
  *          description: Edit a group
  *          tags:
  *          - group
@@ -139,7 +139,7 @@ router.post('/creategroup', async (req, res, next) => {
  *              404:
  *                  description: Failure
  */
-router.post('/editgroup', async (req, res, next) => {
+router.put('/editgroup', async (req, res, next) => {
     const {userId, userToken, groupId, groupname} = req.body;
     var status = 200;
     var error = "";
@@ -160,7 +160,7 @@ router.post('/editgroup', async (req, res, next) => {
 /**
  *  @swagger
  * /api/deletegroup:
- *      post:
+ *      delete:
  *          description: Delete a group
  *          tags:
  *          - group
@@ -183,7 +183,7 @@ router.post('/editgroup', async (req, res, next) => {
  *              404:
  *                  description: Failure
  */
-router.post('/deletegroup', async (req, res, next) => {
+router.delete('/deletegroup', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     const groupmemberRef = db.collection('groupmember');
     var error = "";
@@ -420,7 +420,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
 /**
  *  @swagger
  * /api/removemyself:
- *      post:
+ *      delete:
  *          description: Remove myself from a group
  *          tags:
  *          - group
@@ -443,7 +443,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
  *              404:
  *                  description: Failure
  */
-router.post('/removemyself', async (req, res, next) => {
+router.delete('/removemyself', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var status = 200;
     var error = '';
@@ -460,7 +460,7 @@ router.post('/removemyself', async (req, res, next) => {
 /**
  *  @swagger
  * /api/kickfromgroup:
- *      post:
+ *      delete:
  *          description: Remove a user from a group
  *          tags:
  *          - group
@@ -487,7 +487,7 @@ router.post('/removemyself', async (req, res, next) => {
  *              404:
  *                  description: Failure
  */
-router.post('/kickfromgroup', async (req, res, next) => {
+router.delete('/kickfromgroup', async (req, res, next) => {
     const {ownerId, userToken, userId, groupId} = req.body;
     var status = 200;
     var error = '';
