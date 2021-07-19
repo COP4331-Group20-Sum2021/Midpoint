@@ -1,13 +1,21 @@
+.container
+{
+    display: flex;
+}
+
 .groups-content
 {
-    align-items: center;
-    display: flex;
-    padding: 10rem 50rem;
+    padding: 8rem 0 0 0;
     min-height: 100vh;
     background-color: #9FB3D1;
+    flex: 8;
 
-    .map
+    .groups
     {
-        background-color: #5F7595;
+        color: white;
+        display: grid;
+        margin-left: 5rem;
+        width: 250px;
     }
 }
+
