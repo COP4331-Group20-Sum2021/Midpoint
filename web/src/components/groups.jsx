@@ -4,9 +4,11 @@ import "../styles/groups.scss";
 export default function Groups() {
     return (
       <>
-        <SideBar />
-        <div className="groups-content">
-          <div className="map"><h1>groups</h1></div>
+        <div className="container">
+          <SideBar />
+          <div className="groups-content">
+            <div className="groups"><h1>GROUPS</h1></div>
+          </div>
         </div>
       </>
     )

@@ -4,9 +4,13 @@ import "../styles/myprofile.scss";
 export default function MyProfile() {
     return (
       <>
-        <SideBar />
-        <div className="profile-content">
-          <div className="map"><h1>myprofile</h1></div>
+        <div className="container">
+          <SideBar />
+          <div className="profile-content">
+            <div className="header">
+              <h1>MY PROFILE</h1>
+            </div>
+          </div>
         </div>
       </>
     )

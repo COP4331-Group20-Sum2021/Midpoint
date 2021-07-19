@@ -1,10 +1,8 @@
 .sidebar
 {
     background-color: #7E94B4;
-    width: 250px;
-    height: 100%;
-    display: block;
-    position: fixed;
+    flex: 1.4;
+    height: 100vh;
 
     .sidebar-items
     {
