@@ -28,14 +28,12 @@ const HomeStackScreen = ({ navigation }) => (
     },
   }}>
 
-    <HomeStack.Screen name="Home" component={ Home } options={{
-      headerTitle: props => <LogoTitle {...props} />,
-      headerLeft: () => (
-        <View>
-        <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}}>
-        </Icon.Button>
-        </View>
-      )
+  <HomeStack.Screen name="Home" component={ Home } options={{
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
     }} />
   </HomeStack.Navigator>
 );
@@ -50,47 +48,45 @@ const AboutStackScreen = ({ navigation }) => (
   <AboutStack.Screen name="About" component={ About } options={{
     headerTitle: props => <LogoTitle {...props} />,
     headerLeft: () => (
-      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}}>
-      </Icon.Button>
-    )
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
     }} />
   </AboutStack.Navigator>
 );
 
 const LoginStackScreen = ({ navigation }) => (
-    <LoginStack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: 'rgba(159, 179, 209, 1)',
-      },
-    }}>
+  <LoginStack.Navigator screenOptions={{
+    headerStyle: {
+      backgroundColor: 'rgba(159, 179, 209, 1)',
+    },
+  }}>
   
-      <LoginStack.Screen name="Login" component={ Login } options={{
-        headerTitle: props => <LogoTitle {...props} />,
-        headerLeft: () => (
-          <View>
-          <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}}>
-          </Icon.Button>
-          </View>
-        )
-      }} />
-    </LoginStack.Navigator>
+  <LoginStack.Screen name="Login" component={ Login } options={{
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
+    }} />
+  </LoginStack.Navigator>
 );
   
 const RegisterStackScreen = ({ navigation }) => (
-    <RegisterStack.Navigator screenOptions={{
-        headerStyle: {
-        backgroundColor: 'rgba(159, 179, 209, 1)',
-        },
-    }}>
+  <RegisterStack.Navigator screenOptions={{
+      headerStyle: {
+      backgroundColor: 'rgba(159, 179, 209, 1)',
+      },
+  }}>
 
-    <RegisterStack.Screen name="Register" component={ Register } options={{
-        headerTitle: props => <LogoTitle {...props} />,
-        headerLeft: () => (
-        <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}}>
-        </Icon.Button>
-        )
-        }} />
-    </RegisterStack.Navigator>
+  <RegisterStack.Screen name="Register" component={ Register } options={{
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
+    }} />
+  </RegisterStack.Navigator>
 );
 
 function LogoTitle() {
@@ -101,8 +97,9 @@ function LogoTitle() {
         maxHeight: '100%',
         width: 220,
         height: 40,
-
-        
+        marginRight: 'auto',
+        marginLeft: 'auto',
+        alignSelf: 'center',
     }}
       source={require('../assets/MidpointLogo.png')}
     />
@@ -130,18 +127,17 @@ export default function Navigator() {
   const {user} = useAuth();
 
   return (       
-      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
-      <Drawer.Screen name="About" component={ AboutStackScreen } />
-      {!user ? (
-          <>
-          <Drawer.Screen name="Login" component={ LoginStackScreen } />
-          <Drawer.Screen name="Register" component={ RegisterStackScreen } />
-          </>
-      ) : (
-          <></>
-      )}
-      </Drawer.Navigator>
-
+    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+    <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
+    <Drawer.Screen name="About" component={ AboutStackScreen } />
+    {!user ? (
+        <>
+        <Drawer.Screen name="Login" component={ LoginStackScreen } />
+        <Drawer.Screen name="Register" component={ RegisterStackScreen } />
+        </>
+    ) : (
+        <></>
+    )}
+    </Drawer.Navigator>
   );
 }
