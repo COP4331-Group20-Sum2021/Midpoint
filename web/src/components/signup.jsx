@@ -16,12 +16,13 @@ export default function Signup() {
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().required('Required'),
+  password: Yup.string().required('Required').min(6, ({ min }) => `Password must be at least ${min} characters`),
   passwordConfim: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
 function SignupForm() {
   const { signup } = useAuth()
   const [clicked, setClicked] = useState(false)
+  const [error, setError] = useState()
 
   return (
     <Formik
@@ -31,10 +32,11 @@ function SignupForm() {
         try {
           await signup(values.email, values.password)
           setClicked(true)
+          setError(null)
+          resetForm()
         } catch(e) {
-          alert('Failed to Signup: ' + e)
+          setError(e.message)
         }
-        resetForm()
       }}
       >
       {({ errors, touched }) => (
@@ -65,6 +67,12 @@ function SignupForm() {
 
             <div className={style.btn}><button type='submit'>Signup</button></div>
             <div className={style.btn}><Link to='/login'><p>Already have an account? Login</p></Link></div>
+
+            {error &&
+              <div className={style.field}>
+                  <p className={style.error}>{error}</p>
+              </div>
+            }
           </>}
         </Form>
       )}
