@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik'
 import * as Yup from 'yup'
 import { useAuth } from '../contexts/authContext'
 import style from '../styles/login.module.scss'
+import { useState } from 'react'
 
 export default function Login() {
   return (
@@ -20,6 +21,7 @@ const LoginSchema = Yup.object().shape({
 function LoginForm() {
   const { login } = useAuth()
   const history = useHistory()
+  const [error, setError] = useState()
 
   return (
     <Formik
@@ -28,8 +30,9 @@ function LoginForm() {
       onSubmit={async (values, { resetForm }) => {
         const error = await login(values.email, values.password)
         if (error === -1) {
-          alert('Failed to Login')
+          setError('Invalid Credentials')
         } else {
+          setError(null)
           resetForm()
           history.push('/myprofile')
         }
@@ -53,6 +56,11 @@ function LoginForm() {
           <div className={style.btn}><button type='submit'>Login</button></div>
           <div className={style.btn}><Link to='/forgotpassword'><p>Forgot your password?</p></Link></div>
           <div className={style.btn}><Link to='/signup'><p>Don't have an account? Signup</p></Link></div>
+          {error &&
+            <div className={style.field}>
+                <p className={style.error}>{error}</p>
+            </div>
+          }
         </Form>
       )}
     </Formik>
