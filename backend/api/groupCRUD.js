@@ -7,6 +7,32 @@ const router = express.Router();
 
 
 // List groups
+/**
+ *  @swagger
+ * /api/listgroups:
+ *      post:
+ *          description: Get list of groups
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/listgroups', async (req, res, next) => {
     const {userId, userToken} = req.body;
     const groupmemberRef = db.collection('groupmember');
@@ -43,6 +69,35 @@ router.post('/listgroups', async (req, res, next) => {
 
 
 // Add group
+/**
+ *  @swagger
+ * /api/creategroup:
+ *      post:
+ *          description: Create a new group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupname
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupname:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/creategroup', async (req, res, next) => {
     const {userId, userToken, groupname} = req.body;
     var status = 200;
@@ -61,7 +116,39 @@ router.post('/creategroup', async (req, res, next) => {
 });
 
 // Edit group
-router.post('/editgroup', async (req, res, next) => {
+/**
+ *  @swagger
+ * /api/editgroup:
+ *      put:
+ *          description: Edit a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              - groupname
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *                  groupname:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
+router.put('/editgroup', async (req, res, next) => {
     const {userId, userToken, groupId, groupname} = req.body;
     var status = 200;
     var error = "";
@@ -79,7 +166,36 @@ router.post('/editgroup', async (req, res, next) => {
 });
 
 // Delete group
-router.post('/deletegroup', async (req, res, next) => {
+/**
+ *  @swagger
+ * /api/deletegroup:
+ *      delete:
+ *          description: Delete a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
+router.delete('/deletegroup', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     const groupmemberRef = db.collection('groupmember');
     var error = "";
@@ -115,6 +231,41 @@ router.post('/deletegroup', async (req, res, next) => {
 
 // Create a new user & relate the auth token
 // receives userId from firebase, email, user's lat, user's lon & auth token
+/**
+ *  @swagger
+ * /api/createuser:
+ *      post:
+ *          description: Create a new user
+ *          tags:
+ *          - user
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - email
+ *              - lat
+ *              - lon
+ *              - auth
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  email:
+ *                      type: string
+ *                  lat:
+ *                      type: string
+ *                  long:
+ *                      type: string
+ *                  auth:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/createuser', async (req, res, next) => {
     const {userId, email, lat, lon, auth} = req.body;
     var status = 200;
@@ -144,6 +295,38 @@ function checkUser(email){
 }
 
 // Invite participant by email to groupId.
+/**
+ *  @swagger
+ * /api/inviteparticipant:
+ *      post:
+ *          description: Invite a user
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - ownerId
+ *              - userToken
+ *              - email
+ *              - groupId
+ *              properties:
+ *                  ownerId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  email:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/inviteparticipant', async (req, res, next) => {
     const {ownerId, userToken, email, groupId} = req.body;
     var status = 200;
@@ -181,6 +364,35 @@ function checkInvitation(email, groupId){
 }
 
 // email accepts the invitation to join the groupId
+/**
+ *  @swagger
+ * /api/acceptinvitation:
+ *      post:
+ *          description: Accept an open invitation
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - email
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  email:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/acceptinvitation', async (req, res, next) => {
     const {email, userToken, groupId} = req.body;
     var status = 200;
@@ -223,7 +435,36 @@ router.post('/acceptinvitation', async (req, res, next) => {
 // Remove participant userId from groupId
 // If the user is not on the group, it doesn't matter
 // If the group doesn't exist, that's fine too lol firebase is magical
-router.post('/removemyself', async (req, res, next) => {
+/**
+ *  @swagger
+ * /api/removemyself:
+ *      delete:
+ *          description: Remove myself from a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
+router.delete('/removemyself', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var status = 200;
     var error = '';
@@ -237,7 +478,39 @@ router.post('/removemyself', async (req, res, next) => {
 });
 
 // Ownerid is kicking userid from groupid
-router.post('/kickfromgroup', async (req, res, next) => {
+/**
+ *  @swagger
+ * /api/kickfromgroup:
+ *      delete:
+ *          description: Remove a user from a group
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - ownerId
+ *              - userToken
+ *              - userId
+ *              - groupId
+ *              properties:
+ *                  ownerId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  userId:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
+router.delete('/kickfromgroup', async (req, res, next) => {
     const {ownerId, userToken, userId, groupId} = req.body;
     var status = 200;
     var error = '';

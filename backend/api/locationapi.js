@@ -8,10 +8,37 @@ const router = express.Router();
 
 const navigator = new Navigator();
 const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?)
+
 // update location
 // receives userid + auth token
 // posts location to database
 // returns error
+/**
+ *  @swagger
+ * /api/updateLocation:
+ *      post:
+ *          description: Update User Location
+ *          tags:
+ *          - user
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/updatelocation', async (req, res, next) => {
     const {userId, userToken} = req.body;
     var status = 200;
@@ -53,6 +80,35 @@ router.post('/updatelocation', async (req, res, next) => {
 // receives userid + auth token + groupid
 // gets groupmember locations
 // returns list of groupmember locations, midpoint location, list of nearby establishments
+/**
+ *  @swagger
+ * /api/retrievegroupdata:
+ *      post:
+ *          description: Get Group Data
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - groupId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: string
+ *                  groupId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              404:
+ *                  description: Failure
+ */
 router.post('/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     var radius = 1500; // **in meters**
@@ -87,7 +143,7 @@ router.post('/retrievegroupdata', async (req, res, next) => {
         var snapshot = await axios.get(
             `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${midpointLocation.latitude},${midpointLocation.longitude}&radius=${radius}&key=${key}`
         );
-        
+
         // push all search results into return array
         for (let i in snapshot.data.results) {
             nearbyEstablishments.push(snapshot.data.results[i]);
