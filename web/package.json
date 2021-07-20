@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
+    "@react-google-maps/api": "^2.2.0",
     "@react-three/drei": "^7.0.6",
     "@react-three/fiber": "^7.0.2",
     "@react-three/postprocessing": "^2.0.4-alpha.2",
