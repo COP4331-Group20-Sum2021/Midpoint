@@ -1,21 +1,19 @@
-import React, { useState } from 'react';
-import { Button, View, Image, Text } from 'react-native';
+import * as React from 'react'
+import {  View, Image } from 'react-native'
+import { useAuth } from '../context/AuthContext'
+import { createStackNavigator } from '@react-navigation/stack'
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
   DrawerItem,
-} from '@react-navigation/drawer';
-import { NavigationContainer, StackActions, DrawerActions } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
+} from '@react-navigation/drawer'
 
-import { useAuth } from '../context/AuthContext';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Home from './home';
-import About from './about';
-import Login from './login';
-import Register from './register';
-import { AuthProvider } from '../context/AuthContext';
+import Icon from 'react-native-vector-icons/Ionicons'
+import Home from './home'
+import About from './about'
+import Login from './login'
+import Register from './register'
 
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
@@ -129,23 +127,21 @@ function CustomDrawerContent(props) {
 }
 
 export default function Navigator() {
-    // console.log(user);
-    console.log("hello");
-    const {user} = useAuth();
+  const {user} = useAuth();
 
-    return(       
-        <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
-        <Drawer.Screen name="About" component={ AboutStackScreen } />
-        {!user ? (
-            <>
-            <Drawer.Screen name="Login" component={ LoginStackScreen } />
-            <Drawer.Screen name="Register" component={ RegisterStackScreen } />
-            </>
-        ) : (
-            <></>
-        )}
-        </Drawer.Navigator>
+  return (       
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
+      <Drawer.Screen name="About" component={ AboutStackScreen } />
+      {!user ? (
+          <>
+          <Drawer.Screen name="Login" component={ LoginStackScreen } />
+          <Drawer.Screen name="Register" component={ RegisterStackScreen } />
+          </>
+      ) : (
+          <></>
+      )}
+      </Drawer.Navigator>
 
-    )
+  );
 }
