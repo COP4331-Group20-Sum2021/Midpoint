@@ -10,7 +10,7 @@ const navigator = new Navigator();
 const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?)
 
 // update location
-// receives userid + auth token
+// receives userid + auth token + lat + lon
 // posts location to database
 // returns error
 /**
@@ -28,10 +28,16 @@ const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?
  *              required:
  *              - userId
  *              - userToken
+ *              - latitude
+ *              - longitude
  *              properties:
  *                  userId:
  *                      type: string
  *                  userToken:
+ *                      type: string
+ *                  latitude:
+ *                      type: string
+ *                  longitude:
  *                      type: string
  *          responses:
  *              200:
@@ -40,7 +46,7 @@ const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?
  *                  description: Failure
  */
 router.post('/updatelocation', async (req, res, next) => {
-    const {userId, userToken} = req.body;
+    const {userId, userToken, latitude, longitude} = req.body;
     var status = 200;
     var error = '';
 
@@ -56,19 +62,13 @@ router.post('/updatelocation', async (req, res, next) => {
                 status = 404;
             }
         });
-
+       
     if (!error) {
-        // create data to be insterted into collection (updated location)
-        // first param: callback function for handling location data
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                // update data in user
-                const result = userRef.update({
-                    latitude: position.latitude,
-                    longitude: position.longitude
-                });
-            }
-        );
+        // update data in user
+        const result = userRef.update({
+            latitude: latitude,
+            longitude: longitude
+        });
     }
 
     var ret = { error: error };
@@ -79,7 +79,7 @@ router.post('/updatelocation', async (req, res, next) => {
 // retrieve group data
 // receives userid + auth token + groupid
 // gets groupmember locations
-// returns list of groupmember locations, midpoint location, list of nearby establishments
+// returns list of groupmember locations/names, midpoint location
 /**
  *  @swagger
  * /api/retrievegroupdata:
@@ -111,11 +111,11 @@ router.post('/updatelocation', async (req, res, next) => {
  */
 router.post('/retrievegroupdata', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
-    var radius = 1500; // **in meters**
+    //var radius = 1500; // **in meters**
     var status = 200;
     var error = '';
     var groupMemberLocations = [];
-    var nearbyEstablishments = [];
+    //var nearbyEstablishments = [];
     var midpointLocation;
 
     const groupmemberRef = db.collection('groupmember');
@@ -133,12 +133,13 @@ router.post('/retrievegroupdata', async (req, res, next) => {
             const userDoc = await userRef.doc(`${currUserData.userid}`).get();
             const userData = userDoc.data();
 
-            groupMemberLocations.push({ latitude: userData.latitude, longitude: userData.longitude});
+            groupMemberLocations.push({ firstname: userData.firstname, lastname: userData.lastname, latitude: userData.latitude, longitude: userData.longitude});
         }
         
         // get midpoint location between all group members
         midpointLocation = getMidpoint(groupMemberLocations);
 
+        /*
         // get list of nearby establishments, relative to midpoint
         var snapshot = await axios.get(
             `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${midpointLocation.latitude},${midpointLocation.longitude}&radius=${radius}&key=${key}`
@@ -148,13 +149,14 @@ router.post('/retrievegroupdata', async (req, res, next) => {
         for (let i in snapshot.data.results) {
             nearbyEstablishments.push(snapshot.data.results[i]);
         }
+        */
     }
     catch(e) {
         error = e.toString();
         status = 404;
     }
 
-    var ret = { grouplocations: groupMemberLocations, midpoint: midpointLocation, nearbyestablishments: nearbyEstablishments, error: error };
+    var ret = { grouplocations: groupMemberLocations, midpoint: midpointLocation, error: error };
     
     res.status(status).json(ret);
 });
