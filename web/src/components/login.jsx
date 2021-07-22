@@ -8,8 +8,9 @@ import { useState } from 'react'
 export default function Login() {
   return (
     <>
-      <div className={style.background}></div>
-      <LoginForm />
+      <div className={style.background}>
+        <LoginForm />
+      </div>
     </>
   )
 }

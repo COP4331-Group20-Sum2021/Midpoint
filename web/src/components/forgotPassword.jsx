@@ -7,8 +7,9 @@ import style from '../styles/login.module.scss'
 export default function ForgotPassword() {
   return (
     <>
-      <div className={style.background}></div>
-      <ForgotPasswordForm />
+      <div className={style.background}>
+        <ForgotPasswordForm />
+      </div>
     </>
   )
 }
