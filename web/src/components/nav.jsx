@@ -9,7 +9,7 @@ export default function Nav() {
 
   return (
     <nav className={style.nav} id={location.pathname === '/myprofile' || location.pathname === '/groups' || location.pathname === '/map' ? style.active : ""}>
-      <img src='/logo.png' id={style.navLogo} alt='logo' />
+      <img src='/MidpointLogo.png' id={style.navLogo} alt='logo' />
       <ul className={style.navItems}>
         <Link to='/' className={style.navItem}><li>Home</li></Link>
         <Link to='/about' className={style.navItem}><li>About</li></Link>

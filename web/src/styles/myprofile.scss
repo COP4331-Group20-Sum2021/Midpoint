@@ -10,11 +10,104 @@
     background-color: #9FB3D1;
     flex: 8;
 
-    .header
+    .profile
     {
         color: white;
         display: grid;
-        margin-left: 5rem;
-        width: 250px;
-    }
+        margin: 0 auto 5rem auto;
+        grid-auto-flow: row;
+        gap: 1rem;
+        width: min(90%, 75rem);
+        border: 5px solid #5F7595;
+
+        #profile-picture 
+        {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+        }
+
+
+        .top-section
+        {
+            display: flex;
+            flex-direction: column;
+            row-gap: 1rem;
+
+            .title
+            {
+                background-color: #5F7595;
+                
+                h1 
+                {
+                    margin: 1rem;
+                }
+            }
+
+            .profile-information
+            {
+                display: flex;
+                flex-direction: row;
+                column-gap: 2rem;
+                margin: 1rem;
+
+                .form-rows
+                {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 1rem;
+                    width: 50%;
+
+                    .fl-form
+                    {
+                        display: flex;
+                        flex-direction: row;
+                        column-gap: 2rem;
+
+                        div
+                        {
+                            width: 100%;
+                        }
+                    }
+                }
+
+                .form-buttons
+                {
+                    display: flex;
+                    justify-content: flex-end;
+                    flex-direction: row;
+                    column-gap: 2rem;
+                }
+
+                form 
+                {
+                    input 
+                    {
+                        width: 100%;
+                        border: 1px solid #84A0C9;
+                        border-radius: 5px;
+                        padding: 6px 10px;
+                    }
+                }
+            }
+        }
+        
+
+        .bottom-section
+        {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .title
+            {
+                background-color: #5F7595;
+                
+                h2 
+                {
+                    margin: 1rem;
+                }
+            }
+        }   
+    }   
 }
