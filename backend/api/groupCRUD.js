@@ -115,14 +115,19 @@ router.post('/creategroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
-    const group = {
+    const group = await db.collection('group').add({
         groupname: groupname,
         ownerid: userId
+    });
+
+    const data = {
+        groupid: group.id,
+        userid: userId
     };
 
-    const response = await db.collection('group').doc().set(group);
+    const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
 
-    var ret = { error: error };
+    var ret = { groupid: group.id, ownerid: userId, error: error };
     res.status(status).json(ret);
     // Create a new group record and returns if the operation was successful
 });
