@@ -4,7 +4,19 @@ const { admin, db } = require('../auth/firebase');
 const router = express.Router();
 
 // = = = = = = = = = = @Wes & Nate = = = = = = = = = = 
-
+async function getParticipantsOfGroupId(groupId){
+    var allMembers = [];
+    const groupmemberRef = db.collection('groupmember');
+    const userRef = db.collection('user');
+    var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
+    for (let i in querySnapshot.docs) {
+        const currGroupMember = querySnapshot.docs[i].data();
+        const userDoc = await userRef.doc(`${currGroupMember.userid}`).get();
+        const userData = userDoc.data();
+        allMembers.push({ userid: `${currGroupMember.userid}`, name: userData.name, email: userData.email, lat: userData.latitude, lon: userData.longitude, });
+    }
+    return allMembers;
+}
 
 // List groups
 /**
@@ -51,8 +63,8 @@ router.post('/listgroups', async (req, res, next) => {
             const currGroupMember = querySnapshot.docs[i].data();
             const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
             const groupData = groupDoc.data();
-
-            allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname});
+            var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
+            allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
         }
         
         console.log(allGroups);
