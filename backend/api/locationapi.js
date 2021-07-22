@@ -36,9 +36,9 @@ const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?
  *                  userToken:
  *                      type: string
  *                  latitude:
- *                      type: string
+ *                      type: number
  *                  longitude:
- *                      type: string
+ *                      type: number
  *          responses:
  *              200:
  *                  description: Success
