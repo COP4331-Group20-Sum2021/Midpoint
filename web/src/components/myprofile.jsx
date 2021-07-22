@@ -15,7 +15,7 @@ const options = {
 };
 
 export default function MyProfile() {
-  const googleAPIKey = process.env.NODE_ENV == "production" ? process.env.GOOGLE_API_KEY : process.env.REACT_APP_GOOGLE_API_KEY;
+  const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
 
   const [libraries] = React.useState(["places"]);
 
