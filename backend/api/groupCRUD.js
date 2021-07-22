@@ -120,6 +120,7 @@ router.post('/creategroup', async (req, res, next) => {
         ownerid: userId
     });
 
+
     const data = {
         groupid: group.id,
         userid: userId
