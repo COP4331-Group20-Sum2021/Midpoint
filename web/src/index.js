@@ -1,12 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { config } from 'dotenv';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-// run the config
-config();
 
 ReactDOM.render(
   <React.StrictMode>
