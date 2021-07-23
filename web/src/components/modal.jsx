@@ -37,7 +37,7 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
         <div style={OVERLAY_STYLES} />
         <div style={MODAL_STYLES}>
             <div>Create a new group</div>
-            <label for="group">Group Name:</label>
+            <label for="gname">Group Name:</label>
             <input type="text" id="gname" name="gname" />
             <button onClick={() => {
                 onClose()

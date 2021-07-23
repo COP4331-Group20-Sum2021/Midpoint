@@ -3,11 +3,35 @@ import "../styles/groups.scss";
 import Modal from './modal';
 import React, { useState, useEffect } from 'react';
 
+function Cards({ isGroup, dp, ep, kp, lp }) {
+  let cards = isGroup && isGroup.map((group, i) => {
+    var cid = "card" + i
+    return (
+      <div className="card" id={cid} key={i}>
+      {group.groupname}<br />
+      {group.participants.length} members<br />
+        <button onClick={dp}>Delete</button>
+        <button onClick={ep}>Edit</button>
+        <button onClick={kp}>Kick</button>
+        <button onClick={lp}>Leave</button>
+      </div>
+    )
+  })
 
+  if (cards === false) {
+    return (
+      <div>You currently have no groups. Please click "Create New" or visit the invitations page.</div>
+    )
+  }
+  
+  // console.log(cards)
 
+  return (<div className="wrapper" id="wrapper">{cards}</div>)
+}
 
 export default function Groups() {
   // const [newGroupName, createNewGroupName] = useState()
+  const [stale, setStale] = useState(false) // dont care about value, only care if this changed. This changing re renders the cards
   const [isGroup, setIsGroup] = useState()
   const [isOpen, setIsOpen] = useState(false)
   const [isCrud, setCrud] = useState(0)
@@ -32,10 +56,12 @@ export default function Groups() {
         setIsGroup(j.groupdata)
       }
     }
-    run();
-  }, [])
+    run()
+  }, [stale])
 
-  function CreateNewGroupName(groupName) {
+
+  // CRUD Functionality
+  function createCard(groupName) {
     fetch('https://group20-midpoint.herokuapp.com/api/creategroup', {
       method: "POST",
       headers: {
@@ -50,15 +76,8 @@ export default function Groups() {
     })
     .then(response => response.json())
     .then(data => console.log(data))
+    .then(() => setStale(!stale))
   }
-
-
-
-
-
-
-
-  // CRUD Functionality
   function deleteCard() {
     alert("Card has been deleted")
     var myobj = document.getElementById("card");
@@ -113,32 +132,21 @@ export default function Groups() {
             <Modal
               open={isOpen}
               crud={isCrud}
-              create={CreateNewGroupName}
+              create={createCard}
               del={deleteCard}
               edit={editCard}
               kick={kickCard}
               leave={leaveCard}
               onClose={() => {
                 setIsOpen(false)
-                window.location.reload()
+                // window.location.reload()
               }}>
             </Modal>
           </div>
 
-          <div className="wrapper" id="wrapper">
-          {isGroup && isGroup.map((group, i) => {
-            return (
-              <div id="card" key={i}>
-              {group.groupname}<br />
-              {group.participants.length} members<br />
-                <button onClick={deletePortal}>Delete</button>
-                <button onClick={editPortal}>Edit</button>
-                <button onClick={kickPortal}>Kick</button>
-                <button onClick={leavePortal}>Leave</button>
-              </div>
-            )
-          })}
-          </div>
+          
+          <Cards isGroup={isGroup} dp={deletePortal} ep={editPortal} kp={kickPortal} lp={leavePortal}/>
+          
 
         </div>
       </div>
