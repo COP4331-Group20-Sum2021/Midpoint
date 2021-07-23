@@ -115,14 +115,19 @@ router.post('/creategroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
-    const group = {
+    const group = await db.collection('group').add({
         groupname: groupname,
         ownerid: userId
+    });
+
+    const data = {
+        groupid: group.id,
+        userid: userId
     };
 
-    const response = await db.collection('group').doc().set(group);
+    const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
 
-    var ret = { error: error };
+    var ret = { groupid: group.id, ownerid: userId, error: error };
     res.status(status).json(ret);
     // Create a new group record and returns if the operation was successful
 });
@@ -278,21 +283,67 @@ router.delete('/deletegroup', async (req, res, next) => {
  *              404:
  *                  description: Failure
  */
-router.post('/createuser', async (req, res, next) => {
-    const {userId, email, lat, lon, auth} = req.body;
+router.post('/login', async (req, res, next) => {
+    const userRef = db.collection('user');
+    const {userId, email, lat, lon, auth, expiration} = req.body;
+    var status = 200;
+    var error = '';
+
+    const userDoc = await userRef.doc(userId).get();
+    const userData = userDoc.data();
+    
+    if(userData === undefined){
+        const userDocEmail = await userRef.doc(email).get();
+        const userDataEmail = userDocEmail.data();
+        if(userDataEmail === undefined){
+            // BAD
+            status = 401;
+            error = "User not registered so login failed";
+        }
+        else{
+            const data = {
+                userid: userId,
+                firstname: userDataEmail.firstname,
+                lastname: userDataEmail.lastname,
+                latitude: lat,
+                longitude: lon,
+                token: auth,
+                expiration: expiration,
+                email: email
+            };
+            const response = await userRef.doc(email).delete();
+            const responseTwo = await userRef.doc(userId).set(data);
+        }
+    }
+    else{
+        const result = userRef.doc(userId).update({
+            latitude: lat,
+            longitude: lon,
+            token:auth,
+            expiration: expiration
+        });
+    }
+    var ret = { error: error };
+    res.status(status).json(ret);
+});
+
+router.post('/register', async (req, res, next) => {
+    const {email, firstname, lastname} = req.body;
     var status = 200;
     var error = '';
 
     const data = {
-        userid: userId,
-        username: email,
-        latitude: lat,
-        longitude: lon,
-        token: auth
+        userid: -1,
+        firstname: firstname,
+        lastname: lastname,
+        latitude: -1,
+        longitude: -1,
+        token: 'temp',
+        expiration: "temp",
+        email: email
     };
       
-      // Add a new document in collection "invitations" with auto-ID
-    const response = await db.collection('user').doc(userId).set(data);
+    const response = await db.collection('user').doc(email).set(data);
 
     var ret = { error: error };
 
