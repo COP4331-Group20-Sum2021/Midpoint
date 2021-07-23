@@ -8,14 +8,17 @@ import { useState } from 'react'
 export default function Signup() {
   return (
     <>
-      <div className={style.background}></div>
-      <SignupForm />
+      <div className={style.background}>
+        <SignupForm />
+      </div>
     </>
   )
 }
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
+  firstName: Yup.string().required('Required'),
+  lastName: Yup.string().required('Required'),
   password: Yup.string().required('Required').min(6, ({ min }) => `Password must be at least ${min} characters`),
   passwordConfim: Yup.string().required('Required').oneOf([Yup.ref('password'), null], 'Passwords must match')
 })
@@ -26,11 +29,11 @@ function SignupForm() {
 
   return (
     <Formik
-      initialValues={{ email: '', password: '', passwordConfim: '' }}
+      initialValues={{ email: '', firstName: '', lastName: '', password: '', passwordConfim: '' }}
       validationSchema={SignupSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
-          await signup(values.email, values.password)
+          await signup(values.email, values.firstName, values.lastName, values.password)
           setClicked(true)
           setError(null)
           resetForm()
@@ -51,6 +54,18 @@ function SignupForm() {
               <h2>Email</h2>
               <Field name='email' type='email' />
               {errors.email && touched.email ? <p className={style.error}>{errors.email}</p> : null}
+            </div>
+
+            <div className={style.field}>
+              <h2>First Name</h2>
+              <Field name='firstName' />
+              {errors.firstName && touched.firstName ? <p className={style.error}>{errors.firstName}</p> : null}
+            </div>
+
+            <div className={style.field}>
+              <h2>Last Name</h2>
+              <Field name='lastName' />
+              {errors.lastName && touched.lastName ? <p className={style.error}>{errors.lastName}</p> : null}
             </div>
 
             <div className={style.field}>

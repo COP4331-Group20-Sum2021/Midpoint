@@ -16,7 +16,7 @@ const options = {
 
 export default function MyProfile() {
   const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
-
+  
   const [libraries] = React.useState(["places"]);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -60,18 +60,18 @@ export default function MyProfile() {
                   <form className="form-rows">
                     <div className="fl-form">
                       <div>
-                        <label for="fname">FIRST NAME</label>
-                        <input type="text" id="fname" value="First Name"/>
+                        <label htmlFor="fname">FIRST NAME</label>
+                        <h2 style={{margin: 0}}>Firstname</h2>
                       </div>
                       <div>
-                        <label for="lname">LAST NAME</label>
-                        <input type="text" id="lname" value="Last Name"/>
+                        <label htmlFor="lname">LAST NAME</label>
+                        <h2 style={{margin: 0}}>Lastname</h2>
                       </div>
                     </div>
 
                     <div>
-                        <label for="email">EMAIL</label>
-                        <input type="text" id="email" value="Email"/>
+                        <label htmlFor="email">EMAIL</label>
+                        <h2 style={{margin: 0}}>Email@email.com</h2>
                     </div> 
                     
                   </form>
