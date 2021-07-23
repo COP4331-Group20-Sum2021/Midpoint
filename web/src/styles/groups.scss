@@ -5,17 +5,73 @@
 
 .groups-content
 {
-    padding: 8rem 0 0 0;
-    min-height: 100vh;
-    background-color: #9FB3D1;
-    flex: 8;
+  padding: 8rem 2rem 0 2rem;
+  min-height: 100vh;
+  background-color: #9FB3D1;
+  flex: 8;
 
-    .groups
-    {
-        color: white;
-        display: grid;
-        margin-left: 5rem;
-        width: 250px;
-    }
+  .groups
+  {
+      color: white;
+      display: inline-block;
+      margin-left: 5rem;
+      width: 200px;
+  }
+
+  // #sample {
+  //   display: none;
+  // }
+
+  .icons {
+      color: black;
+      display: inline-block;
+
+      .buttons {
+          font-size: 40px;
+          
+      }
+      
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20%;
+    grid-column-gap: 5em;
+    grid-row-gap: 5em;
+  }
+  .wrapper > div {
+    background: #eee;
+    padding: 1em;
+
+  }
+  .table {
+      width: 400px;
+  }
+  
+  #card {
+    color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    padding: 16px;
+    text-align: center;
+    background-color: rgba(95, 117, 149, 1);
+    border-radius: .5em;
+    font-weight: bold;
+    font-size: 1.5em;
+    height: 300px;
+    width: 300px;
+    line-height: 2.8;
+    
+  }
 }
 
+@media (max-width: 800px) {
+  .groups-content {
+    
+    .wrapper {
+      grid-template-columns: 20%;
+    }
+
+    #card {
+      width: 300px;
+    }
+  }
+}
