@@ -27,7 +27,7 @@ export default function App() {
         <Protected path='/myprofile' component={MyProfile} />
         <Protected path='/groups' component={Groups} />
         <Protected path='/map' component={Maps} />
-        <Route path='/verify' component={Verify} />
+        <Protected path='/verify' component={Verify} />
       </Router>
     </AuthProvider>
   )
