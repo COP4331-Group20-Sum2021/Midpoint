@@ -11,7 +11,42 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState()
   const [loading, setLoading] = useState(true)
 
-  function signup(email, password) {
+  function updateLoc() {
+    const data = {}
+    const dbRequest = window.indexedDB.open('firebaseLocalStorageDb')
+    dbRequest.onsuccess = ev => {
+      const db = ev.target.result
+      const tx = db.transaction('firebaseLocalStorage', 'readonly')
+      const store = tx.objectStore('firebaseLocalStorage')
+      const getReq = store.getAll()
+  
+      getReq.onsuccess = async ev => {
+        const target = ev.target.result[0].value
+        data['email'] = target.email
+        data['userId'] = target.uid
+        data['auth'] = target.stsTokenManager.accessToken
+        data['expiration'] = target.stsTokenManager.expirationTime
+        
+        navigator.geolocation.getCurrentPosition(pos => {
+          data['lat'] = pos.coords.latitude
+          data['lon'] = pos.coords.longitude
+        })
+
+        // send login update request
+        await fetch('https://group20-midpoint.herokuapp.com/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        })
+      }
+    }
+  }
+
+  function signup(email, firstName, lastName, password) {
+    // send request to signup api
+
     return auth.createUserWithEmailAndPassword(email, password)
       .then(user => {
         user.user.sendEmailVerification()
@@ -33,7 +68,12 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const unsub = auth.onAuthStateChanged(user => setUser(user))
+    const unsub = auth.onAuthStateChanged(user => {
+      setUser(user)
+      if (user) {
+        updateLoc()
+      }
+    })
     setLoading(false)
 
     return unsub
