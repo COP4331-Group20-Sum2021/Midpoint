@@ -36,17 +36,19 @@ export function AuthProvider({ children }) {
         data['auth'] = target.stsTokenManager.accessToken
         data['expiration'] = target.stsTokenManager.expirationTime
         
-        navigator.geolocation.getCurrentPosition(pos => {
-          data['lat'] = pos.coords.latitude
-          data['lon'] = pos.coords.longitude
-        })
+        data['lat'] = 10
+        data['lon'] = 10
+        // navigator.geolocation.getCurrentPosition(pos => {
+        //   data['lat'] = pos.coords.latitude
+        //   data['lon'] = pos.coords.longitude
+        // })
 
         
         // send login update request
         if (data.userId && target.emailVerified) {
           console.log(data)
           // fetch('https://group20-midpoint.herokuapp.com/api/login', {
-          fetch('http://127.0.0.1:5000/api/login', {
+          fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
