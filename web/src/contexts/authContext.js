@@ -11,6 +11,15 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState()
   const [loading, setLoading] = useState(true)
 
+  function toTitleCase(str) {
+    return str.replace(
+      /\w\S*/g,
+      function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+      }
+    )
+  }
+
   function updateLoc() {
     const data = {}
     const dbRequest = window.indexedDB.open('firebaseLocalStorageDb')
@@ -44,12 +53,21 @@ export function AuthProvider({ children }) {
     }
   }
 
-  function signup(email, firstName, lastName, password) {
-    // send request to signup api
-
+  function signup(email, firstname, lastname, password) {
     return auth.createUserWithEmailAndPassword(email, password)
-      .then(user => {
+      .then(async user => {
         user.user.sendEmailVerification()
+        await fetch('https://group20-midpoint.herokuapp.com/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            firstname: toTitleCase(firstname),
+            lastname: toTitleCase(lastname)
+          })
+        })
       })
   }
 
