@@ -311,8 +311,8 @@ router.post('/login', async (req, res, next) => {
                 expiration: expiration,
                 email: email
             };
-            const response = await userRef.doc(email).delete();
             const responseTwo = await userRef.doc(userId).set(data);
+            const response = await userRef.doc(email).delete();
         }
     }
     else{
