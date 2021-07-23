@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
       const store = tx.objectStore('firebaseLocalStorage')
       const getReq = store.getAll()
   
-      getReq.onsuccess = async ev => {
+      getReq.onsuccess = ev => {
         const target = ev.target.result[0].value
         data['email'] = target.email
         data['userId'] = target.uid
@@ -41,14 +41,19 @@ export function AuthProvider({ children }) {
           data['lon'] = pos.coords.longitude
         })
 
+        
         // send login update request
-        await fetch('https://group20-midpoint.herokuapp.com/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        })
+        if (data.userId && target.emailVerified) {
+          console.log(data)
+          // fetch('https://group20-midpoint.herokuapp.com/api/login', {
+          fetch('http://127.0.0.1:5000/api/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          })
+        }
       }
     }
   }
@@ -57,7 +62,8 @@ export function AuthProvider({ children }) {
     return auth.createUserWithEmailAndPassword(email, password)
       .then(async user => {
         user.user.sendEmailVerification()
-        await fetch('https://group20-midpoint.herokuapp.com/api/register', {
+        // await fetch('https://group20-midpoint.herokuapp.com/api/register', {
+        await fetch('http://localhost:5000/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
