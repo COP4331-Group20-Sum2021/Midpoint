@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
     )
   }
 
-  function updateLoc() {
+  function updateLoc(lat, lon) {
     const data = {}
     const dbRequest = window.indexedDB.open('firebaseLocalStorageDb')
     dbRequest.onsuccess = ev => {
@@ -28,27 +28,18 @@ export function AuthProvider({ children }) {
       const tx = db.transaction('firebaseLocalStorage', 'readonly')
       const store = tx.objectStore('firebaseLocalStorage')
       const getReq = store.getAll()
-  
+
       getReq.onsuccess = ev => {
         const target = ev.target.result[0].value
         data['email'] = target.email
         data['userId'] = target.uid
         data['auth'] = target.stsTokenManager.accessToken
         data['expiration'] = target.stsTokenManager.expirationTime
-        
-        data['lat'] = 10
-        data['lon'] = 10
-        // navigator.geolocation.getCurrentPosition(pos => {
-        //   data['lat'] = pos.coords.latitude
-        //   data['lon'] = pos.coords.longitude
-        // })
+        data['lat'] = lat
+        data['lon'] = lon
 
-        
-        // send login update request
         if (data.userId && target.emailVerified) {
-          console.log(data)
-          // fetch('https://group20-midpoint.herokuapp.com/api/login', {
-          fetch('http://localhost:5000/api/login', {
+          fetch('https://group20-midpoint.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -64,8 +55,7 @@ export function AuthProvider({ children }) {
     return auth.createUserWithEmailAndPassword(email, password)
       .then(async user => {
         user.user.sendEmailVerification()
-        // await fetch('https://group20-midpoint.herokuapp.com/api/register', {
-        await fetch('http://localhost:5000/api/register', {
+        await fetch('https://group20-midpoint.herokuapp.com/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -97,7 +87,25 @@ export function AuthProvider({ children }) {
     const unsub = auth.onAuthStateChanged(user => {
       setUser(user)
       if (user) {
-        updateLoc()
+        // https://stackoverflow.com/questions/11747440/wait-for-callback-in-javascript
+        let geoloc
+        const successful = function (position) {
+          geoloc = {
+            longitude: position.coords.longitude,
+            latitude: position.coords.latitude
+          }
+        }
+
+        const getLocation = function(callback) {
+          navigator.geolocation.getCurrentPosition(pos => {
+            successful(pos)
+            typeof callback === 'function' && callback(geoloc)
+          })
+        }
+
+        getLocation(function(pos){
+          updateLoc(pos.latitude, pos.longitude)
+        })
       }
     })
     setLoading(false)
