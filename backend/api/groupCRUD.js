@@ -501,7 +501,8 @@ router.post('/inviteparticipant', async (req, res, next) => {
         const data = {
             groupid: groupId,
             email: email,
-            inviter: userId    
+            inviter: userId,
+            inviteId: email+groupId
         };
           
         // Add a new document in collection "invitations" with an invitation
@@ -702,24 +703,80 @@ router.delete('/kickfromgroup', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
+async function getUserData(userId){
+    const userRef = db.collection('user');
+    const userDoc = await userRef.doc(userId).get();
+    const userData = userDoc.data();
+    var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
+    return ret;
+}
 router.post('/getuserdata', async (req, res, next) => {
     const {userId} = req.body;
     var status = 200;
     var error = '';
     var ret = {};
+
     if (!checkParameters([userId])) {
         error = 'Incorrect parameters';
         status = 400;
         ret = { error: error };
     }
     else{
-        const userRef = db.collection('user');
-        const userDoc = await userRef.doc(userId).get();
-        const userData = userDoc.data();
-        ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
+        ret = await getUserData(userId);
     }
 
     res.status(status).json(ret);
+});
+
+router.post('/listinvites', async (req, res, next) => {
+    const {userId, userToken, email} = req.body;
+
+    var error = '';
+    var status = 200;
+    var allInvites = [];
+
+    if (!checkParameters([userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        const invitationsRef = db.collection('invitations');
+        const groupRef = db.collection('group');
+
+        try {
+            // get all open invitations for email
+            var querySnapshot = await invitationsRef.where('email', '==', email).get();
+            
+            console.log(querySnapshot.docs.length);
+    
+            for (let i in querySnapshot.docs) {
+                const currInvitation = querySnapshot.docs[i].data();
+
+                const groupDoc = await groupRef.doc(currInvitation.groupid).get();
+                console.log(currInvitation.groupid);
+                const groupData = groupDoc.data();
+                var gpName = groupData.groupname;
+
+                var inviterData = await getUserData(currInvitation.inviter);
+                var inviteFrom = inviterData.firstname + " " + inviterData.lastname;
+
+                allInvites.push({ inviteId: currInvitation.inviteId, groupname: gpName, from: inviteFrom});
+            }
+            console.log(allInvites);
+        }
+        catch(e) {
+            error = e.toString();
+            status = 404;
+        }
+    }
+
+    var ret = { invitedata: allInvites, error: error };
+    res.status(status).json(ret);
+    // returns all groups that userid is a part of.
 });
 
 module.exports = router;
