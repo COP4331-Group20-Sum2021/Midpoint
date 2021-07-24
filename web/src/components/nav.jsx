@@ -8,7 +8,7 @@ export default function Nav() {
   let location = useLocation()
 
   return (
-    <nav className={style.nav} id={location.pathname === '/myprofile' || location.pathname === '/groups' || location.pathname === '/map' ? style.active : ""}>
+    <nav className={style.nav} id={location.pathname === '/myprofile' || location.pathname === '/groups' || location.pathname === '/map' || location.pathname === '/map' ? style.active : ""}>
       <img src='/MidpointLogo.png' id={style.navLogo} alt='logo' />
       <ul className={style.navItems}>
         <Link to='/' className={style.navItem}><li>Home</li></Link>
