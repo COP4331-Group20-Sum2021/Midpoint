@@ -483,7 +483,7 @@ router.post('/inviteparticipant', async (req, res, next) => {
     else if(!(await authorizeUser(userId, userToken))){
         error = 'User unauthorized';
         status = 401;
-    } // TODO: CHECK IF userID is owner of groupid.
+    } // TODO: CHECK IF ownerid is owner of groupid.
     else{
         const data = {
             groupid: groupId,
@@ -500,17 +500,11 @@ router.post('/inviteparticipant', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
-// Todo: find the userid of the user with the respective email
-function getUserId(email){
-    return 1;
-}
-
 // Todo: Check if there's a valid invitation with email & groupid.
-function checkInvitation(email, groupId){
+function checkInvitation(inviteId, userId){
     return true;
 }
 
-// email accepts the invitation to join the groupId
 /**
  *  @swagger
  * /api/acceptinvitation:
@@ -541,37 +535,35 @@ function checkInvitation(email, groupId){
  *                  description: Failure
  */
 router.post('/acceptinvitation', async (req, res, next) => {
-    const {email, userToken, groupId} = req.body;
+    const {inviteId, userId, userToken} = req.body;
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    // Todo: Check if userid is a valid user (important)
-    // Todo: Check if groupId is a valid group (important)
-    // Todo: Check if the invitation exists email + groupId
-
-    // If the user is registered, we will get his userId
-    var userId = getUserId(email);
-    
-    // If an invitation for this group exists we will get true
-    var doesInvitationExist = checkInvitation(email, groupId);
-
-    if (userId < 0){
-        error = "User is not currently registered.";
+    if (!checkParameters([inviteId, userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
-    else if(!doesInvitationExist){
-        error = "An invitation for this user doesn't exist."
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
     }
     else{
-        // "accept" invitation by deleting from invitations and then adding to the group
-        const response = await db.collection('invitations').doc(email+groupId).delete();
-
-        const data = {
-            groupid: groupId,
-            userid: userId
-        };
-
-        const addtogroup = await db.collection('groupmember').doc(userId+groupId).set(data);
+        // Check if userid and inviteId are valid
+        var doesInvitationExist = checkInvitation(inviteId, userId);
+    
+        if(!doesInvitationExist){
+            error = "An invitation for this user doesn't exist."
+        }
+        else{
+            const response = await db.collection('invitations').doc(inviteId).delete();
+    
+            const data = {
+                groupid: groupId,
+                userid: userId
+            };
+    
+            const addtogroup = await db.collection('groupmember').doc(userId+groupId).set(data);
+        }
     }
 
     var ret = { error: error };
