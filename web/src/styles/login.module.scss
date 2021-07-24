@@ -8,11 +8,12 @@
 }
 
 .form {
-  margin: auto;
+  margin: 8rem auto;
   background: rgba(159, 179, 209, 0.6);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: fit-content;
-  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
   padding: 1rem;
 
   .title {
@@ -42,21 +43,22 @@
     p {
       cursor: pointer;
       color: white;
+      margin: 0;
     }
   }
 }
 
 .field {
-  margin: 2rem 0;
 
   h2 {
-    margin: .5rem 0;
+    margin: 0;
     color: white;
+    font-size: 1.2rem;
   }
 
   input {
     font-family: 'Poppins';
-    font-size: 1.5rem;
+    font-size: 1rem;
     border-radius: .5rem;
     width: 25rem;
     padding: .5rem;
