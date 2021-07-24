@@ -702,4 +702,24 @@ router.delete('/kickfromgroup', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
+router.post('/getuserdata', async (req, res, next) => {
+    const {userId} = req.body;
+    var status = 200;
+    var error = '';
+    var ret = {};
+    if (!checkParameters([userId])) {
+        error = 'Incorrect parameters';
+        status = 400;
+        ret = { error: error };
+    }
+    else{
+        const userRef = db.collection('user');
+        const userDoc = await userRef.doc(userId).get();
+        const userData = userDoc.data();
+        ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
+    }
+
+    res.status(status).json(ret);
+});
+
 module.exports = router;
