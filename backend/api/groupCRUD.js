@@ -153,7 +153,8 @@ router.post('/creategroup', async (req, res, next) => {
     const {userId, userToken, groupname} = req.body;
     var status = 200;
     var error = "";
-    var ret = {}
+    var ret = {};
+    
     if (!checkParameters([userId, userToken, groupname])) {
         error = 'Incorrect parameters';
         status = 400;
@@ -224,12 +225,10 @@ router.put('/editgroup', async (req, res, next) => {
     if (!checkParameters([userId, userToken, groupId, groupname])) {
         error = 'Incorrect parameters';
         status = 400;
-        ret = {error: error};
     }
     else if(!(await authorizeUser(userId, userToken))){
         error = 'User unauthorized';
         status = 401;
-        ret = {error: error};
     } // TODO: CHECK IF userID is owner of groupid.
     else{
         const group = {
@@ -283,12 +282,10 @@ router.delete('/deletegroup', async (req, res, next) => {
     if (!checkParameters([userId, userToken, groupId])) {
         error = 'Incorrect parameters';
         status = 400;
-        ret = {error: error};
     }
     else if(!(await authorizeUser(userId, userToken))){
         error = 'User unauthorized';
         status = 401;
-        ret = {error: error};
     } // TODO: CHECK IF userID is owner of groupid.
     else{
         try {
@@ -360,7 +357,7 @@ router.post('/login', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    if (!checkParameters([userId, userToken, groupId])) {
+    if (!checkParameters([userId, email, lat, lon, auth, expiration])) {
         error = 'Incorrect parameters';
         status = 400;
     }
