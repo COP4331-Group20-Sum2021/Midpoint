@@ -42,6 +42,8 @@ const key = process.env.GOOGLE_API_KEY; // **NEED TO FIX** (restart environment?
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
  *              401:
  *                  description: Unauthorized client
  *              404:
@@ -63,8 +65,12 @@ router.post('/updatelocation', async (req, res, next) => {
             }
         });
 
-    // authorize user
-    if (!(await authorizeUser(userId, userToken))) {
+    // check if all parameters were passed
+    // else check if user is authorized
+    if (!checkParameters([userId, userToken, latitude, longitude])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    } else if (!(await authorizeUser(userId, userToken))) {
         error = 'User unauthorized';
         status = 401;
     }
@@ -112,6 +118,8 @@ router.post('/updatelocation', async (req, res, next) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
  *              401:
  *                  description: Unauthorized client
  *              404:
@@ -126,11 +134,21 @@ router.post('/retrievegroupdata', async (req, res, next) => {
     //var nearbyEstablishments = [];
     var midpointLocation;
 
+    // check if all parameters were passed
+    // else check if user is authorized
+    if (!checkParameters([userId, userToken, groupId])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    } else if (!(await authorizeUser(userId, userToken))) {
+        error = 'User unauthorized';
+        status = 401;
+    }
+
     const groupmemberRef = db.collection('groupmember');
     const userRef = db.collection('user');
 
     // try to authorize user
-    if (await authorizeUser(userId, userToken)) {
+    if (!error) {
         try {
             // get all correct group members
             var querySnapshot = await groupmemberRef.where('groupid', '==', groupId).get();
@@ -163,9 +181,6 @@ router.post('/retrievegroupdata', async (req, res, next) => {
             error = e.toString();
             status = 404;
         }
-    } else {
-        error = 'User unauthorized';
-        status = 401;
     }
 
     var ret = { grouplocations: groupMemberLocations, midpoint: midpointLocation, error: error };
@@ -218,6 +233,17 @@ async function authorizeUser(userId, authToken) {
     }
 
     return false;
+}
+
+// function for checking if all parameters passed in are filled
+// receives an array of parameters
+// returns true if all parameters are filled
+function checkParameters(params) {
+    for (let i = 0; i < params.length; i++)
+        if (params[i] === undefined)
+            return false;
+        
+    return true;
 }
 
 module.exports = router;
