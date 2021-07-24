@@ -608,11 +608,18 @@ router.delete('/removemyself', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    const response = await db.collection('groupmember').doc(userId+groupId).delete();
-
+    if (!checkParameters([groupId, userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        const response = await db.collection('groupmember').doc(userId+groupId).delete();
+    }
     var ret = { error: error };
-
     res.status(status).json(ret);
 });
 
