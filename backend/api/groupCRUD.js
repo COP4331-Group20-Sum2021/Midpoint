@@ -1,9 +1,10 @@
 const express = require('express');
+const locationAPI = require('locationapi.js');
+
 const { admin, db } = require('../auth/firebase');
 
 const router = express.Router();
 
-// = = = = = = = = = = @Wes & Nate = = = = = = = = = = 
 async function getParticipantsOfGroupId(groupId){
     var allMembers = [];
     const groupmemberRef = db.collection('groupmember');
@@ -47,31 +48,42 @@ async function getParticipantsOfGroupId(groupId){
  */
 router.post('/listgroups', async (req, res, next) => {
     const {userId, userToken} = req.body;
-    const groupmemberRef = db.collection('groupmember');
-    const groupRef = db.collection('group');
+
     var error = '';
     var status = 200;
     var allGroups = [];
-    
-    try {
-        // get all correct group members
-        var querySnapshot = await groupmemberRef.where('userid', '==', `${userId}`).get();
-        
-        console.log(querySnapshot.docs.length);
 
-        for (let i in querySnapshot.docs) {
-            const currGroupMember = querySnapshot.docs[i].data();
-            const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
-            const groupData = groupDoc.data();
-            var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
-            allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
-        }
-        
-        console.log(allGroups);
+    if (!locationAPI.checkParameters([userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
-    catch(e) {
-        error = e.toString();
-        status = 404;
+    else if(!(await locationAPI.authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        const groupmemberRef = db.collection('groupmember');
+        const groupRef = db.collection('group');
+        try {
+            // get all correct group members
+            var querySnapshot = await groupmemberRef.where('userid', '==', `${userId}`).get();
+            
+            console.log(querySnapshot.docs.length);
+    
+            for (let i in querySnapshot.docs) {
+                const currGroupMember = querySnapshot.docs[i].data();
+                const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
+                const groupData = groupDoc.data();
+                var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
+                allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
+            }
+            
+            console.log(allGroups);
+        }
+        catch(e) {
+            error = e.toString();
+            status = 404;
+        }
     }
 
     var ret = { groupdata: allGroups, error: error };
@@ -272,9 +284,9 @@ router.delete('/deletegroup', async (req, res, next) => {
  *                  email:
  *                      type: string
  *                  lat:
- *                      type: string
+ *                      type: double
  *                  long:
- *                      type: string
+ *                      type: double
  *                  auth:
  *                      type: string
  *          responses:
