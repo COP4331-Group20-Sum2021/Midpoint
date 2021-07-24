@@ -154,7 +154,7 @@ router.post('/creategroup', async (req, res, next) => {
     var status = 200;
     var error = "";
     var ret = {};
-    
+
     if (!checkParameters([userId, userToken, groupname])) {
         error = 'Incorrect parameters';
         status = 400;
@@ -406,21 +406,25 @@ router.post('/register', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    const data = {
-        userid: -1,
-        firstname: firstname,
-        lastname: lastname,
-        latitude: -1,
-        longitude: -1,
-        token: 'temp',
-        expiration: "temp",
-        email: email
-    };
-      
-    const response = await db.collection('user').doc(email).set(data);
+    if (!checkParameters([email, firstname, lastname])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else{
+        const data = {
+            userid: -1,
+            firstname: firstname,
+            lastname: lastname,
+            latitude: -1,
+            longitude: -1,
+            token: 'temp',
+            expiration: "temp",
+            email: email
+        }; 
+        const response = await db.collection('user').doc(email).set(data);
+    }
 
     var ret = { error: error };
-
     res.status(status).json(ret);
 });
 
