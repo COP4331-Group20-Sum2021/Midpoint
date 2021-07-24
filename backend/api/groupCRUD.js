@@ -221,8 +221,7 @@ router.put('/editgroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
-    // TODO: CHECK IF userID is owner of groupid.
-    if (!checkParameters([userId, userToken, groupname])) {
+    if (!checkParameters([userId, userToken, groupId, groupname])) {
         error = 'Incorrect parameters';
         status = 400;
         ret = {error: error};
@@ -231,7 +230,7 @@ router.put('/editgroup', async (req, res, next) => {
         error = 'User unauthorized';
         status = 401;
         ret = {error: error};
-    }
+    } // TODO: CHECK IF userID is owner of groupid.
     else{
         const group = {
             groupname: groupname,
