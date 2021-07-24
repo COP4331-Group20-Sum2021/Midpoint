@@ -661,13 +661,19 @@ router.delete('/kickfromgroup', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    // Todo: Check if ownerId is the owner of groupId
-
-    const response = await db.collection('groupmember').doc(userId+groupId).delete();
+    if (!checkParameters([ownerId, userId, userToken, groupId])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(ownerId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }// Todo: Check if ownerId is owner of groupid 
+    else{
+        const response = await db.collection('groupmember').doc(userId+groupId).delete();
+    }
 
     var ret = { error: error };
-
     res.status(status).json(ret);
 });
 
