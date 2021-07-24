@@ -1,7 +1,7 @@
 .sidebar
 {
     background-color: #7E94B4;
-    flex: 1.4;
+    width: 250px;
     height: 100vh;
     position: sticky;
     top: 0;
@@ -10,8 +10,7 @@
     .sidebar-items
     {
         margin: 8rem auto 0 auto;
-        
-        
+  
         .sidebar-text
         {
             color: white;
