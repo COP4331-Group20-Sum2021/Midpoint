@@ -476,18 +476,24 @@ router.post('/inviteparticipant', async (req, res, next) => {
     // Todo: Check userToken
     // Todo: Check if ownerId is the owner of groupId
     // Todo: Check if groupId is a valid group (important)
-
-    var isUserRegistered = checkUser(email);
-
-    const data = {
-        groupid: groupId,
-        email: email,
-        verified: isUserRegistered, // true or false
-        inviter: ownerId    
-    };
-      
-    // Add a new document in collection "invitations" with an invitation
-    const response = await db.collection('invitations').doc(email+groupId).set(data);
+    if (!checkParameters([ownerId, userToken, groupId, email])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    } // TODO: CHECK IF userID is owner of groupid.
+    else{
+        const data = {
+            groupid: groupId,
+            email: email,
+            inviter: ownerId    
+        };
+          
+        // Add a new document in collection "invitations" with an invitation
+        const response = await db.collection('invitations').doc(email+groupId).set(data);
+    }
 
     var ret = { error: error };
 
