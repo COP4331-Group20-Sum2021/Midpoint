@@ -34,26 +34,35 @@ async function authorizeUser(userId, authToken) {
 
 async function getParticipantsOfGroupId(groupId){
     var allMembers = [];
+
     const groupmemberRef = db.collection('groupmember');
     const userRef = db.collection('user');
+
     var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
+
     for (let i in querySnapshot.docs) {
         const currGroupMember = querySnapshot.docs[i].data();
+
         const userDoc = await userRef.doc(`${currGroupMember.userid}`).get();
         const userData = userDoc.data();
+
         allMembers.push({ userid: `${currGroupMember.userid}`, name: userData.name, email: userData.email, lat: userData.latitude, lon: userData.longitude, });
     }
+
     return allMembers;
 }
 
 // Check if userid is the owner of the group
 async function isUserOwnerOfGroup(userid, groupid){
     const groupRef = db.collection('group');
+
     const groupDoc = await userRef.doc(groupid).get();
     const groupData = groupDoc.data();
+
     if(groupData === undefined || groupData.ownerId != userid){
         return false;
     }
+
     return true;
 }
 
@@ -102,6 +111,7 @@ router.post('/listgroups', async (req, res, next) => {
     else{
         const groupmemberRef = db.collection('groupmember');
         const groupRef = db.collection('group');
+
         try {
             // get all correct group members
             var querySnapshot = await groupmemberRef.where('userid', '==', `${userId}`).get();
@@ -109,10 +119,14 @@ router.post('/listgroups', async (req, res, next) => {
             console.log(querySnapshot.docs.length);
     
             for (let i in querySnapshot.docs) {
+
                 const currGroupMember = querySnapshot.docs[i].data();
+
                 const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
                 const groupData = groupDoc.data();
+
                 var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
+
                 allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
             }
             
@@ -516,11 +530,12 @@ router.post('/inviteparticipant', async (req, res, next) => {
 
 // check if there's a valid invitation with email & groupid.
 async function checkInvitation(inviteId, email){
+
     const invitationsRef = db.collection('invitations');
     const invitationsDoc = await invitationsRef.doc(inviteId).get();
-    const invitationsdata = invitationsDoc.data();
+    const invitationsData = invitationsDoc.data();
 
-    if(invitationsdata === undefined || invitationsdata.email != email){
+    if(invitationsData === undefined || invitationsData.email != email){
         return false;
     }
     return true;
@@ -722,7 +737,7 @@ router.delete('/kickfromgroup', async (req, res, next) => {
         error = 'User unauthorized';
         status = 401;
     }
-    else if (!(await isUserOwnerOfGroup(userId, groupId))){
+    else if (!(await isUserOwnerOfGroup(ownerId, groupId))){
         error = "Only the owner of the group can invite participants";
         status = 401;
     }
@@ -736,8 +751,10 @@ router.delete('/kickfromgroup', async (req, res, next) => {
 
 async function getUserData(userId){
     const userRef = db.collection('user');
+
     const userDoc = await userRef.doc(userId).get();
     const userData = userDoc.data();
+    
     var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
     return ret;
 }
