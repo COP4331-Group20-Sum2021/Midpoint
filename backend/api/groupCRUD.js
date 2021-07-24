@@ -1,21 +1,69 @@
 const express = require('express');
+// const locationAPI = require('locationapi'); --> module.exports only with router
+
 const { admin, db } = require('../auth/firebase');
 
 const router = express.Router();
 
-// = = = = = = = = = = @Wes & Nate = = = = = = = = = = 
+
+function checkParameters(params) {
+    for (let i = 0; i < params.length; i++)
+        if (params[i] === undefined)
+            return false;
+        
+    return true;
+}
+
+async function authorizeUser(userId, authToken) {
+    const currTime = Date.now();
+    const userRef = db.collection('user').doc(userId);
+
+    const userDoc = await userRef.get();
+
+    // check if user exists
+    if (!userDoc.exists)
+        return false;
+
+    // check if input token matches user's token and it is not past expiration
+    if (userDoc.data().token === authToken && userDoc.data().expiration >= currTime) {
+        return true;
+    }
+
+    return false;
+}
+
 async function getParticipantsOfGroupId(groupId){
     var allMembers = [];
+
     const groupmemberRef = db.collection('groupmember');
     const userRef = db.collection('user');
+
     var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
+
     for (let i in querySnapshot.docs) {
         const currGroupMember = querySnapshot.docs[i].data();
+
         const userDoc = await userRef.doc(`${currGroupMember.userid}`).get();
         const userData = userDoc.data();
+
         allMembers.push({ userid: `${currGroupMember.userid}`, name: userData.name, email: userData.email, lat: userData.latitude, lon: userData.longitude, });
     }
+
     return allMembers;
+}
+
+// Check if userid is the owner of the group
+async function isUserOwnerOfGroup(userid, groupid){
+    const groupRef = db.collection('group');
+
+    const groupDoc = await userRef.doc(groupid).get();
+    const groupData = groupDoc.data();
+
+    if(groupData === undefined || groupData.ownerId != userid){
+        return false;
+    }
+
+    return true;
 }
 
 // List groups
@@ -47,31 +95,47 @@ async function getParticipantsOfGroupId(groupId){
  */
 router.post('/listgroups', async (req, res, next) => {
     const {userId, userToken} = req.body;
-    const groupmemberRef = db.collection('groupmember');
-    const groupRef = db.collection('group');
+
     var error = '';
     var status = 200;
     var allGroups = [];
-    
-    try {
-        // get all correct group members
-        var querySnapshot = await groupmemberRef.where('userid', '==', `${userId}`).get();
-        
-        console.log(querySnapshot.docs.length);
 
-        for (let i in querySnapshot.docs) {
-            const currGroupMember = querySnapshot.docs[i].data();
-            const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
-            const groupData = groupDoc.data();
-            var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
-            allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
-        }
-        
-        console.log(allGroups);
+    if (!checkParameters([userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
-    catch(e) {
-        error = e.toString();
-        status = 404;
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        const groupmemberRef = db.collection('groupmember');
+        const groupRef = db.collection('group');
+
+        try {
+            // get all correct group members
+            var querySnapshot = await groupmemberRef.where('userid', '==', `${userId}`).get();
+            
+            console.log(querySnapshot.docs.length);
+    
+            for (let i in querySnapshot.docs) {
+
+                const currGroupMember = querySnapshot.docs[i].data();
+
+                const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
+                const groupData = groupDoc.data();
+
+                var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
+
+                allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
+            }
+            
+            console.log(allGroups);
+        }
+        catch(e) {
+            error = e.toString();
+            status = 404;
+        }
     }
 
     var ret = { groupdata: allGroups, error: error };
@@ -114,22 +178,35 @@ router.post('/creategroup', async (req, res, next) => {
     const {userId, userToken, groupname} = req.body;
     var status = 200;
     var error = "";
+    var ret = {};
 
-    const group = await db.collection('group').add({
-        groupname: groupname,
-        ownerid: userId
-    });
-
-    const data = {
-        groupid: group.id,
-        userid: userId
-    };
-
-    const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
-
-    var ret = { groupid: group.id, ownerid: userId, error: error };
+    if (!checkParameters([userId, userToken, groupname])) {
+        error = 'Incorrect parameters';
+        status = 400;
+        ret = {error: error};
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+        ret = {error: error};
+    }
+    else{
+        // Create the group on the db
+        const group = await db.collection('group').add({
+            groupname: groupname,
+            ownerid: userId
+        });
+    
+        // add the user as a the groupmember in the db
+        const data = {
+            groupid: group.id,
+            userid: userId
+        };
+    
+        const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
+        ret = { groupid: group.id, ownerid: userId, error: error };
+    }
     res.status(status).json(ret);
-    // Create a new group record and returns if the operation was successful
 });
 
 // Edit group
@@ -170,12 +247,25 @@ router.put('/editgroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
-    const group = {
-        groupname: groupname,
-        ownerid: userId
-    };
-
-    const response = await db.collection('group').doc(groupId).set(group);
+    if (!checkParameters([userId, userToken, groupId, groupname])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else if (!(await isUserOwnerOfGroup(userId, groupId))){
+        error = "Only the owner of the group can edit the group";
+        status = 401;
+    }
+    else{
+        const group = {
+            groupname: groupname,
+            ownerid: userId
+        };
+        const response = await db.collection('group').doc(groupId).set(group);
+    }    
 
     var ret = { error: error };
     res.status(status).json(ret);
@@ -218,32 +308,43 @@ router.delete('/deletegroup', async (req, res, next) => {
     var error = "";
     var status = 200;
 
-    try {
-        // get all correct group members
-        var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
-        
-        console.log(querySnapshot.docs.length);
-
-        for (let i in querySnapshot.docs) {
-
-            const currGroupMember = querySnapshot.docs[i].data();
-            const primaryKeyOfGroupMember = `${currGroupMember.userid}` + `${currGroupMember.groupid}`;
-            const response = await db.collection('groupmember').doc(primaryKeyOfGroupMember).delete();
-        }
-
-        const responseTwo = await db.collection('group').doc(groupId).delete();
+    if (!checkParameters([userId, userToken, groupId])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
-    catch(e) {
-        error = e.toString();
-        status = 404;
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    } 
+    else if (!(await isUserOwnerOfGroup(userId, groupId))){
+        error = "Only the owner of the group can delete the group";
+        status = 401;
+    }
+    else{
+        try {
+            // get all correct group members
+            var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
+            
+            console.log(querySnapshot.docs.length);
+    
+            for (let i in querySnapshot.docs) {
+    
+                const currGroupMember = querySnapshot.docs[i].data();
+                const primaryKeyOfGroupMember = `${currGroupMember.userid}` + `${currGroupMember.groupid}`;
+                const response = await db.collection('groupmember').doc(primaryKeyOfGroupMember).delete();
+            }
+    
+            const responseTwo = await db.collection('group').doc(groupId).delete();
+        }
+        catch(e) {
+            error = e.toString();
+            status = 404;
+        }
     }
 
     var ret = { error: error };
     res.status(status).json(ret);
 });
-
-
-// = = = = = = = = = = @Nate = = = = = = = = = = 
 
 
 // Create a new user & relate the auth token
@@ -272,9 +373,9 @@ router.delete('/deletegroup', async (req, res, next) => {
  *                  email:
  *                      type: string
  *                  lat:
- *                      type: string
+ *                      type: double
  *                  long:
- *                      type: string
+ *                      type: double
  *                  auth:
  *                      type: string
  *          responses:
@@ -289,39 +390,45 @@ router.post('/login', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    const userDoc = await userRef.doc(userId).get();
-    const userData = userDoc.data();
-    
-    if(userData === undefined){
-        const userDocEmail = await userRef.doc(email).get();
-        const userDataEmail = userDocEmail.data();
-        if(userDataEmail === undefined){
-            // BAD
-            status = 401;
-            error = "User not registered so login failed";
-        }
-        else{
-            const data = {
-                userid: userId,
-                firstname: userDataEmail.firstname,
-                lastname: userDataEmail.lastname,
-                latitude: lat,
-                longitude: lon,
-                token: auth,
-                expiration: expiration,
-                email: email
-            };
-            const responseTwo = await userRef.doc(userId).set(data);
-            const response = await userRef.doc(email).delete();
-        }
+    if (!checkParameters([userId, email, lat, lon, auth, expiration])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
     else{
-        const result = userRef.doc(userId).update({
-            latitude: lat,
-            longitude: lon,
-            token:auth,
-            expiration: expiration
-        });
+        const userDoc = await userRef.doc(userId).get();
+        const userData = userDoc.data();
+        
+        if(userData === undefined){
+            const userDocEmail = await userRef.doc(email).get();
+            const userDataEmail = userDocEmail.data();
+            if(userDataEmail === undefined){
+                // BAD
+                status = 401;
+                error = "User not registered so login failed";
+            }
+            else{
+                const data = {
+                    userid: userId,
+                    firstname: userDataEmail.firstname,
+                    lastname: userDataEmail.lastname,
+                    latitude: lat,
+                    longitude: lon,
+                    token: auth,
+                    expiration: expiration,
+                    email: email
+                };
+                const responseTwo = await userRef.doc(userId).set(data);
+                const response = await userRef.doc(email).delete();
+            }
+        }
+        else{
+            const result = userRef.doc(userId).update({
+                latitude: lat,
+                longitude: lon,
+                token:auth,
+                expiration: expiration
+            });
+        }
     }
     var ret = { error: error };
     res.status(status).json(ret);
@@ -332,30 +439,27 @@ router.post('/register', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    const data = {
-        userid: -1,
-        firstname: firstname,
-        lastname: lastname,
-        latitude: -1,
-        longitude: -1,
-        token: 'temp',
-        expiration: "temp",
-        email: email
-    };
-      
-    const response = await db.collection('user').doc(email).set(data);
+    if (!checkParameters([email, firstname, lastname])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else{
+        const data = {
+            userid: -1,
+            firstname: firstname,
+            lastname: lastname,
+            latitude: -1,
+            longitude: -1,
+            token: 'temp',
+            expiration: "temp",
+            email: email
+        }; 
+        const response = await db.collection('user').doc(email).set(data);
+    }
 
     var ret = { error: error };
-
     res.status(status).json(ret);
 });
-
-
-// Check if email exists in the list of users
-function checkUser(email){
-    // @Todo
-    return true;
-}
 
 // Invite participant by email to groupId.
 /**
@@ -391,42 +495,52 @@ function checkUser(email){
  *                  description: Failure
  */
 router.post('/inviteparticipant', async (req, res, next) => {
-    const {ownerId, userToken, email, groupId} = req.body;
+    const {userId, userToken, email, groupId} = req.body;
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    // Todo: Check if ownerId is the owner of groupId
-    // Todo: Check if groupId is a valid group (important)
-
-    var isUserRegistered = checkUser(email);
-
-    const data = {
-        groupid: groupId,
-        email: email,
-        verified: isUserRegistered, // true or false
-        inviter: ownerId    
-    };
-      
-    // Add a new document in collection "invitations" with an invitation
-    const response = await db.collection('invitations').doc(email+groupId).set(data);
+    if (!checkParameters([userId, userToken, groupId, email])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else if (!(await isUserOwnerOfGroup(userId, groupId))){
+        error = "Only the owner of the group can invite participants";
+        status = 401;
+    }
+    else{
+        const data = {
+            groupid: groupId,
+            email: email,
+            inviter: userId,
+            inviteId: email+groupId
+        };
+          
+        // Add a new document in collection "invitations" with an invitation
+        const response = await db.collection('invitations').doc(email+groupId).set(data);
+    }
 
     var ret = { error: error };
 
     res.status(status).json(ret);
 });
 
-// Todo: find the userid of the user with the respective email
-function getUserId(email){
-    return 1;
-}
+// check if there's a valid invitation with email & groupid.
+async function checkInvitation(inviteId, email){
 
-// Todo: Check if there's a valid invitation with email & groupid.
-function checkInvitation(email, groupId){
+    const invitationsRef = db.collection('invitations');
+    const invitationsDoc = await invitationsRef.doc(inviteId).get();
+    const invitationsData = invitationsDoc.data();
+
+    if(invitationsData === undefined || invitationsData.email != email){
+        return false;
+    }
     return true;
 }
 
-// email accepts the invitation to join the groupId
 /**
  *  @swagger
  * /api/acceptinvitation:
@@ -457,37 +571,67 @@ function checkInvitation(email, groupId){
  *                  description: Failure
  */
 router.post('/acceptinvitation', async (req, res, next) => {
-    const {email, userToken, groupId} = req.body;
+    const {inviteId, userId, userToken, email} = req.body;
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    // Todo: Check if userid is a valid user (important)
-    // Todo: Check if groupId is a valid group (important)
-    // Todo: Check if the invitation exists email + groupId
-
-    // If the user is registered, we will get his userId
-    var userId = getUserId(email);
-    
-    // If an invitation for this group exists we will get true
-    var doesInvitationExist = checkInvitation(email, groupId);
-
-    if (userId < 0){
-        error = "User is not currently registered.";
+    if (!checkParameters([inviteId, userId, userToken, email])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
-    else if(!doesInvitationExist){
-        error = "An invitation for this user doesn't exist."
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
     }
     else{
-        // "accept" invitation by deleting from invitations and then adding to the group
-        const response = await db.collection('invitations').doc(email+groupId).delete();
+        // Check if email and inviteId are valid
+        var doesInvitationExist = await checkInvitation(inviteId, email);
+    
+        if(!doesInvitationExist){
+            error = "An invitation for this user doesn't exist.";
+            status = 400;
+        }
+        else{
+            const response = await db.collection('invitations').doc(inviteId).delete();
+    
+            const data = {
+                groupid: groupId,
+                userid: userId
+            };
+    
+            const addtogroup = await db.collection('groupmember').doc(userId+groupId).set(data);
+        }
+    }
 
-        const data = {
-            groupid: groupId,
-            userid: userId
-        };
+    var ret = { error: error };
 
-        const addtogroup = await db.collection('groupmember').doc(userId+groupId).set(data);
+    res.status(status).json(ret);
+});
+
+router.post('/declineinvitation', async (req, res, next) => {
+    const {inviteId, userId, userToken, email} = req.body;
+    var status = 200;
+    var error = '';
+
+    if (!checkParameters([inviteId, userId, userToken, email])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        // Check if email and inviteId are valid
+        var doesInvitationExist = await checkInvitation(inviteId, email);
+    
+        if(!doesInvitationExist){
+            error = "An invitation for this user doesn't exist.";
+            status = 400;
+        }
+        else{
+            const response = await db.collection('invitations').doc(inviteId).delete();
+        }
     }
 
     var ret = { error: error };
@@ -532,11 +676,18 @@ router.delete('/removemyself', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    const response = await db.collection('groupmember').doc(userId+groupId).delete();
-
+    if (!checkParameters([groupId, userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        const response = await db.collection('groupmember').doc(userId+groupId).delete();
+    }
     var ret = { error: error };
-
     res.status(status).json(ret);
 });
 
@@ -578,17 +729,102 @@ router.delete('/kickfromgroup', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    // Todo: Check userToken
-    // Todo: Check if ownerId is the owner of groupId
-
-    const response = await db.collection('groupmember').doc(userId+groupId).delete();
+    if (!checkParameters([ownerId, userId, userToken, groupId])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(ownerId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else if (!(await isUserOwnerOfGroup(ownerId, groupId))){
+        error = "Only the owner of the group can invite participants";
+        status = 401;
+    }
+    else{
+        const response = await db.collection('groupmember').doc(userId+groupId).delete();
+    }
 
     var ret = { error: error };
+    res.status(status).json(ret);
+});
+
+async function getUserData(userId){
+    const userRef = db.collection('user');
+
+    const userDoc = await userRef.doc(userId).get();
+    const userData = userDoc.data();
+    
+    var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
+    return ret;
+}
+router.post('/getuserdata', async (req, res, next) => {
+    const {userId} = req.body;
+    var status = 200;
+    var error = '';
+    var ret = {};
+
+    if (!checkParameters([userId])) {
+        error = 'Incorrect parameters';
+        status = 400;
+        ret = { error: error };
+    }
+    else{
+        ret = await getUserData(userId);
+    }
 
     res.status(status).json(ret);
 });
 
+router.post('/listinvites', async (req, res, next) => {
+    const {userId, userToken, email} = req.body;
 
-// = = = = = = = = = = API ENDS = = = = = = = = = = 
+    var error = '';
+    var status = 200;
+    var allInvites = [];
+
+    if (!checkParameters([userId, userToken])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        const invitationsRef = db.collection('invitations');
+        const groupRef = db.collection('group');
+
+        try {
+            // get all open invitations for email
+            var querySnapshot = await invitationsRef.where('email', '==', email).get();
+            
+            console.log(querySnapshot.docs.length);
+    
+            for (let i in querySnapshot.docs) {
+                const currInvitation = querySnapshot.docs[i].data();
+
+                const groupDoc = await groupRef.doc(currInvitation.groupid).get();
+                console.log(currInvitation.groupid);
+                const groupData = groupDoc.data();
+                var gpName = groupData.groupname;
+
+                var inviterData = await getUserData(currInvitation.inviter);
+                var inviteFrom = inviterData.firstname + " " + inviterData.lastname;
+
+                allInvites.push({ inviteId: currInvitation.inviteId, groupname: gpName, from: inviteFrom});
+            }
+            console.log(allInvites);
+        }
+        catch(e) {
+            error = e.toString();
+            status = 404;
+        }
+    }
+
+    var ret = { invitedata: allInvites, error: error };
+    res.status(status).json(ret);
+    // returns all groups that userid is a part of.
+});
 
 module.exports = router;
