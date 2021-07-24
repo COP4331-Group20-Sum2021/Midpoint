@@ -153,14 +153,16 @@ router.post('/creategroup', async (req, res, next) => {
     const {userId, userToken, groupname} = req.body;
     var status = 200;
     var error = "";
-
+    var ret = {}
     if (!checkParameters([userId, userToken, groupname])) {
         error = 'Incorrect parameters';
         status = 400;
+        ret = {error: error};
     }
     else if(!(await authorizeUser(userId, userToken))){
         error = 'User unauthorized';
         status = 401;
+        ret = {error: error};
     }
     else{
         // Create the group on the db
@@ -176,9 +178,8 @@ router.post('/creategroup', async (req, res, next) => {
         };
     
         const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
+        ret = { groupid: group.id, ownerid: userId, error: error };
     }
-
-    var ret = { groupid: group.id, ownerid: userId, error: error };
     res.status(status).json(ret);
 });
 
