@@ -1,9 +1,36 @@
 const express = require('express');
-const locationAPI = require('locationapi.js');
+// const locationAPI = require('locationapi'); --> module.exports only with router
 
 const { admin, db } = require('../auth/firebase');
 
 const router = express.Router();
+
+
+function checkParameters(params) {
+    for (let i = 0; i < params.length; i++)
+        if (params[i] === undefined)
+            return false;
+        
+    return true;
+}
+
+async function authorizeUser(userId, authToken) {
+    const currTime = Date.now();
+    const userRef = db.collection('user').doc(userId);
+
+    const userDoc = await userRef.get();
+
+    // check if user exists
+    if (!userDoc.exists)
+        return false;
+
+    // check if input token matches user's token and it is not past expiration
+    if (userDoc.data().token === authToken && userDoc.data().expiration >= currTime) {
+        return true;
+    }
+
+    return false;
+}
 
 async function getParticipantsOfGroupId(groupId){
     var allMembers = [];
@@ -53,11 +80,11 @@ router.post('/listgroups', async (req, res, next) => {
     var status = 200;
     var allGroups = [];
 
-    if (!locationAPI.checkParameters([userId, userToken])) {
+    if (!checkParameters([userId, userToken])) {
         error = 'Incorrect parameters';
         status = 400;
     }
-    else if(!(await locationAPI.authorizeUser(userId, userToken))){
+    else if(!(await authorizeUser(userId, userToken))){
         error = 'User unauthorized';
         status = 401;
     }
