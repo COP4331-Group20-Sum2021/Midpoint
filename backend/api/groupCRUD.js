@@ -221,13 +221,24 @@ router.put('/editgroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
-    
-    const group = {
-        groupname: groupname,
-        ownerid: userId
-    };
-
-    const response = await db.collection('group').doc(groupId).set(group);
+    // TODO: CHECK IF userID is owner of groupid.
+    if (!checkParameters([userId, userToken, groupname])) {
+        error = 'Incorrect parameters';
+        status = 400;
+        ret = {error: error};
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+        ret = {error: error};
+    }
+    else{
+        const group = {
+            groupname: groupname,
+            ownerid: userId
+        };
+        const response = await db.collection('group').doc(groupId).set(group);
+    }    
 
     var ret = { error: error };
     res.status(status).json(ret);
