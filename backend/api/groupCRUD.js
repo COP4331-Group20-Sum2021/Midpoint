@@ -593,6 +593,37 @@ router.post('/acceptinvitation', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
+router.post('/declineinvitation', async (req, res, next) => {
+    const {inviteId, userId, userToken, email} = req.body;
+    var status = 200;
+    var error = '';
+
+    if (!checkParameters([inviteId, userId, userToken, email])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        // Check if email and inviteId are valid
+        var doesInvitationExist = await checkInvitation(inviteId, email);
+    
+        if(!doesInvitationExist){
+            error = "An invitation for this user doesn't exist.";
+            status = 400;
+        }
+        else{
+            const response = await db.collection('invitations').doc(inviteId).delete();
+        }
+    }
+
+    var ret = { error: error };
+
+    res.status(status).json(ret);
+});
+
 // Remove participant userId from groupId
 // If the user is not on the group, it doesn't matter
 // If the group doesn't exist, that's fine too lol firebase is magical
