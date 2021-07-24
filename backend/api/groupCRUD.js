@@ -280,32 +280,41 @@ router.delete('/deletegroup', async (req, res, next) => {
     var error = "";
     var status = 200;
 
-    try {
-        // get all correct group members
-        var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
-        
-        console.log(querySnapshot.docs.length);
-
-        for (let i in querySnapshot.docs) {
-
-            const currGroupMember = querySnapshot.docs[i].data();
-            const primaryKeyOfGroupMember = `${currGroupMember.userid}` + `${currGroupMember.groupid}`;
-            const response = await db.collection('groupmember').doc(primaryKeyOfGroupMember).delete();
-        }
-
-        const responseTwo = await db.collection('group').doc(groupId).delete();
+    if (!checkParameters([userId, userToken, groupId])) {
+        error = 'Incorrect parameters';
+        status = 400;
+        ret = {error: error};
     }
-    catch(e) {
-        error = e.toString();
-        status = 404;
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+        ret = {error: error};
+    } // TODO: CHECK IF userID is owner of groupid.
+    else{
+        try {
+            // get all correct group members
+            var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
+            
+            console.log(querySnapshot.docs.length);
+    
+            for (let i in querySnapshot.docs) {
+    
+                const currGroupMember = querySnapshot.docs[i].data();
+                const primaryKeyOfGroupMember = `${currGroupMember.userid}` + `${currGroupMember.groupid}`;
+                const response = await db.collection('groupmember').doc(primaryKeyOfGroupMember).delete();
+            }
+    
+            const responseTwo = await db.collection('group').doc(groupId).delete();
+        }
+        catch(e) {
+            error = e.toString();
+            status = 404;
+        }
     }
 
     var ret = { error: error };
     res.status(status).json(ret);
 });
-
-
-// = = = = = = = = = = @Nate = = = = = = = = = = 
 
 
 // Create a new user & relate the auth token
@@ -351,39 +360,45 @@ router.post('/login', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    const userDoc = await userRef.doc(userId).get();
-    const userData = userDoc.data();
-    
-    if(userData === undefined){
-        const userDocEmail = await userRef.doc(email).get();
-        const userDataEmail = userDocEmail.data();
-        if(userDataEmail === undefined){
-            // BAD
-            status = 401;
-            error = "User not registered so login failed";
-        }
-        else{
-            const data = {
-                userid: userId,
-                firstname: userDataEmail.firstname,
-                lastname: userDataEmail.lastname,
-                latitude: lat,
-                longitude: lon,
-                token: auth,
-                expiration: expiration,
-                email: email
-            };
-            const responseTwo = await userRef.doc(userId).set(data);
-            const response = await userRef.doc(email).delete();
-        }
+    if (!checkParameters([userId, userToken, groupId])) {
+        error = 'Incorrect parameters';
+        status = 400;
     }
     else{
-        const result = userRef.doc(userId).update({
-            latitude: lat,
-            longitude: lon,
-            token:auth,
-            expiration: expiration
-        });
+        const userDoc = await userRef.doc(userId).get();
+        const userData = userDoc.data();
+        
+        if(userData === undefined){
+            const userDocEmail = await userRef.doc(email).get();
+            const userDataEmail = userDocEmail.data();
+            if(userDataEmail === undefined){
+                // BAD
+                status = 401;
+                error = "User not registered so login failed";
+            }
+            else{
+                const data = {
+                    userid: userId,
+                    firstname: userDataEmail.firstname,
+                    lastname: userDataEmail.lastname,
+                    latitude: lat,
+                    longitude: lon,
+                    token: auth,
+                    expiration: expiration,
+                    email: email
+                };
+                const responseTwo = await userRef.doc(userId).set(data);
+                const response = await userRef.doc(email).delete();
+            }
+        }
+        else{
+            const result = userRef.doc(userId).update({
+                latitude: lat,
+                longitude: lon,
+                token:auth,
+                expiration: expiration
+            });
+        }
     }
     var ret = { error: error };
     res.status(status).json(ret);
