@@ -154,21 +154,32 @@ router.post('/creategroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
-    const group = await db.collection('group').add({
-        groupname: groupname,
-        ownerid: userId
-    });
-
-    const data = {
-        groupid: group.id,
-        userid: userId
-    };
-
-    const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
+    if (!checkParameters([userId, userToken, groupname])) {
+        error = 'Incorrect parameters';
+        status = 400;
+    }
+    else if(!(await authorizeUser(userId, userToken))){
+        error = 'User unauthorized';
+        status = 401;
+    }
+    else{
+        // Create the group on the db
+        const group = await db.collection('group').add({
+            groupname: groupname,
+            ownerid: userId
+        });
+    
+        // add the user as a the groupmember in the db
+        const data = {
+            groupid: group.id,
+            userid: userId
+        };
+    
+        const addtogroup = await db.collection('groupmember').doc(userId+group.id).set(data);
+    }
 
     var ret = { groupid: group.id, ownerid: userId, error: error };
     res.status(status).json(ret);
-    // Create a new group record and returns if the operation was successful
 });
 
 // Edit group
@@ -209,6 +220,7 @@ router.put('/editgroup', async (req, res, next) => {
     var status = 200;
     var error = "";
 
+    
     const group = {
         groupname: groupname,
         ownerid: userId
