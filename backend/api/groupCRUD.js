@@ -689,7 +689,11 @@ router.delete('/kickfromgroup', async (req, res, next) => {
     else if(!(await authorizeUser(ownerId, userToken))){
         error = 'User unauthorized';
         status = 401;
-    }// Todo: Check if ownerId is owner of groupid 
+    }
+    else if (!(await isUserOwnerOfGroup(userId, groupId))){
+        error = "Only the owner of the group can invite participants";
+        status = 401;
+    }
     else{
         const response = await db.collection('groupmember').doc(userId+groupId).delete();
     }
