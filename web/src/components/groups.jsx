@@ -6,14 +6,31 @@ import React, { useState, useEffect } from 'react';
 function Cards({ isGroup, dp, ep, kp, lp }) {
   let cards = isGroup && isGroup.map((group, i) => {
     var cid = "card" + i
+    var groupInfo = {field1: "value"}
+
+    var delP = (e) => {
+      dp(group);
+    }
+    var editP = (e) => {
+      ep(group);
+    }
+    var kickP = (e) => {
+      kp(group);
+    }
+    var leaP = (e) => {
+      lp(group);
+    }
+
     return (
       <div className="card" id={cid} key={i}>
-      {group.groupname}<br />
-      {group.participants.length} members<br />
-        <button onClick={dp}>Delete</button>
-        <button onClick={ep}>Edit</button>
-        <button onClick={kp}>Kick</button>
-        <button onClick={lp}>Leave</button>
+        <div id="groupId">{group.groupId}</div>
+        <div id="groupName">{group.groupName}</div>
+        {group.groupname}<br />
+        {group.participants.length} members<br />
+        <button onClick={delP}>Delete</button>
+        <button onClick={editP}>Edit</button>
+        <button onClick={kickP}>Kick</button>
+        <button onClick={leaP}>Leave</button>
       </div>
     )
   })
@@ -23,8 +40,6 @@ function Cards({ isGroup, dp, ep, kp, lp }) {
       <div>You currently have no groups. Please click "Create New" or visit the invitations page.</div>
     )
   }
-  
-  // console.log(cards)
 
   return (<div className="wrapper" id="wrapper">{cards}</div>)
 }
@@ -32,9 +47,11 @@ function Cards({ isGroup, dp, ep, kp, lp }) {
 export default function Groups() {
   // const [newGroupName, createNewGroupName] = useState()
   const [stale, setStale] = useState(false) // dont care about value, only care if this changed. This changing re renders the cards
+  const [groupInfo, setGroupInfo] = useState(undefined)
   const [isGroup, setIsGroup] = useState()
   const [isOpen, setIsOpen] = useState(false)
   const [isCrud, setCrud] = useState(0)
+
 
   useEffect( () => {
     async function run() {
@@ -45,8 +62,8 @@ export default function Groups() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userId : "KeQFpHFYZnMdEsqf2PCq",
-            userToken : "doesntmatteryet",
+            userId : "234567890pwadaghwvdawgd",
+            userToken : "AUTHSTRINGFROMFIREBASE",
           })
       })
       const j = await res.json()
@@ -69,8 +86,8 @@ export default function Groups() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : "KeQFpHFYZnMdEsqf2PCq",
-          userToken : "doesntmatteryet",
+          userId : "234567890pwadaghwvdawgd",
+          userToken : "AUTHSTRINGFROMFIREBASE",
           groupname : groupName,
         })
     })
@@ -78,19 +95,79 @@ export default function Groups() {
     .then(data => console.log(data))
     .then(() => setStale(!stale))
   }
-  function deleteCard() {
-    alert("Card has been deleted")
-    var myobj = document.getElementById("card");
-    myobj.remove();
+  function deleteCard(group) {
+    fetch('https://group20-midpoint.herokuapp.com/api/deletegroup', {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          userId : "234567890pwadaghwvdawgd",
+          userToken : "AUTHSTRINGFROMFIREBASE",
+          groupId : group.groupid,
+        })
+    })
+    .then(console.log(group))
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .then(() => setStale(!stale))
   }
-  function editCard() {
-    alert("Card has been edited")
+  function editCard(group, newName) {
+    fetch('https://group20-midpoint.herokuapp.com/api/editgroup', {
+      method: "PUT",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          userId : "234567890pwadaghwvdawgd",
+          userToken : "AUTHSTRINGFROMFIREBASE",
+          groupId: group.groupid,
+          groupname : newName,
+        })
+    })
+    .then(console.log(group))
+    .then(console.log(newName))
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .then(() => setStale(!stale))
   }
-  function kickCard() {
-    alert("You have kicked from the group")
+  function kickCard(group) {
+    fetch('https://group20-midpoint.herokuapp.com/api/kickfromgroup', {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          userId : "234567890pwadaghwvdawgd",
+          userToken : "AUTHSTRINGFROMFIREBASE",
+          groupId: group.groupid,
+          groupname : group.groupname,
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .then(() => setStale(!stale))
   }
-  function leaveCard() {
-    alert("You have left the group")
+
+  function leaveCard(group) {
+    fetch('https://group20-midpoint.herokuapp.com/api/removemyself', {
+      method: "DELETE",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          userId : "234567890pwadaghwvdawgd",
+          userToken : "AUTHSTRINGFROMFIREBASE",
+          groupId: group.groupid,
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .then(() => setStale(!stale))
   }
 
   // Helper Functions
@@ -98,21 +175,27 @@ export default function Groups() {
     setIsOpen(true);
     setCrud(1);
   }
-  function deletePortal() {
+  function deletePortal(group) {
     setIsOpen(true);
     setCrud(2);
+    setGroupInfo(group)
   }
-  function editPortal() {
+  function editPortal(group) {
     setIsOpen(true);
     setCrud(3);
+    setGroupInfo(group)
+
   }
-  function kickPortal() {
+  function kickPortal(group) {
     setIsOpen(true);
     setCrud(4);
+    setGroupInfo(group)
+
   }
-  function leavePortal() {
+  function leavePortal(group) {
     setIsOpen(true);
     setCrud(5);
+    setGroupInfo(group)
   }
 
   return (
@@ -132,6 +215,7 @@ export default function Groups() {
             <Modal
               open={isOpen}
               crud={isCrud}
+              info={groupInfo}
               create={createCard}
               del={deleteCard}
               edit={editCard}
@@ -139,7 +223,6 @@ export default function Groups() {
               leave={leaveCard}
               onClose={() => {
                 setIsOpen(false)
-                // window.location.reload()
               }}>
             </Modal>
           </div>
@@ -153,40 +236,3 @@ export default function Groups() {
     </>
   )
 }
-
-  // function createDiv() {
-  //   // Create text
-  //   let div = document.createElement('div');
-  //   div.innerText = document.getElementById('sample').innerText
-  //   div.setAttribute("id", "card")
-
-  //   // Create buttons
-  //   let btnDelete = document.createElement('button');
-  //   btnDelete.onclick = deletePortal;
-  //   btnDelete.innerHTML = "Delete";
-  //   btnDelete.setAttribute("id", "btnDelete");
-
-  //   let btnEdit = document.createElement('button');
-  //   btnEdit.onclick = editPortal;
-  //   btnEdit.innerHTML = "Edit";
-  //   btnEdit.setAttribute("id", "edit");
-
-  //   let btnKick = document.createElement('button');
-  //   btnKick.onclick = kickPortal;
-  //   btnKick.innerHTML = "Kick";
-  //   btnKick.setAttribute("id", "btnKick");
-
-
-  //   let btnLeave = document.createElement('button');
-  //   btnLeave.onclick = leavePortal;
-  //   btnLeave.innerHTML = "Leave";
-  //   btnLeave.setAttribute("id", "btnLeave");
-
-    
-  //   // Append fields to the card
-  //   div.appendChild(btnDelete);
-  //   div.appendChild(btnEdit);
-  //   div.appendChild(btnKick);
-  //   div.appendChild(btnLeave);
-  //   document.getElementById("wrapper").appendChild(div);
-  // }

@@ -6,7 +6,7 @@ const MODAL_STYLES = {
     position: 'fixed',
     top: '50%',
     left: '50%',
-    transform: 'translate(-50%, -50%',
+    transform: 'translate(-50%, -50%)',
     backgroundColor: '#FFF',
     padding: '50px',
     zIndex: 1000,
@@ -22,11 +22,11 @@ const OVERLAY_STYLES = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, .7',
+    backgroundColor: 'rgba(0, 0, 0, .7)',
     zIndex: 1000,
 }
 
-export default function Modal({ open, children, onClose, crud, create, del, edit, kick, leave }) {
+export default function Modal({ open, children, onClose, crud, create, del, edit, kick, leave, info }) {
     
     if (!open) return null
     else
@@ -58,7 +58,7 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <div>Are you sure you want to delete this group?</div>
             <button onClick={() => {
                 onClose()
-                del()
+                del(info)
             }}>Confirm</button>
             <button onClick={onClose}>Cancel</button>
             
@@ -77,7 +77,7 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <input type="text" id="gname" name="gname" />
             <button onClick={() => {
                 onClose()
-                edit()
+                edit(info, document.getElementById("gname").value)
             }}>Confirm</button>
             <button onClick={onClose}>Cancel</button>
             
@@ -94,7 +94,7 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <div>Choose who you want to kick</div>
             <button onClick={() => {
                 onClose()
-                kick()
+                kick(info)
             }}>Confirm</button>
             <button onClick={onClose}>Cancel</button>
             
@@ -111,7 +111,7 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <div>Are you sure you want to leave the group?</div>
             <button onClick={() => {
                 onClose()
-                leave()
+                leave(info)
             }}>Confirm</button>
             <button onClick={onClose}>Cancel</button>
             
