@@ -46,7 +46,7 @@ async function getParticipantsOfGroupId(groupId){
         const userDoc = await userRef.doc(`${currGroupMember.userid}`).get();
         const userData = userDoc.data();
 
-        allMembers.push({ userid: `${currGroupMember.userid}`, name: userData.name, email: userData.email, lat: userData.latitude, lon: userData.longitude, });
+        allMembers.push({ userid: `${currGroupMember.userid}`, firstname: userData.firstname, lastname: userData.lastname, email: userData.email, lat: userData.latitude, lon: userData.longitude});
     }
 
     return allMembers;
