@@ -59,7 +59,7 @@ async function isUserOwnerOfGroup(userid, groupid){
     const groupDoc = await groupRef.doc(groupid).get();
     const groupData = groupDoc.data();
 
-    if(groupData === undefined || groupData.ownerId != userid){
+    if(groupData === undefined || groupData.ownerid != userid){
         return false;
     }
 
