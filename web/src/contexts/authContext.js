@@ -100,7 +100,7 @@ export function AuthProvider({ children }) {
           navigator.geolocation.getCurrentPosition(pos => {
             successful(pos)
             typeof callback === 'function' && callback(geoloc)
-          })
+          }, null, { enableHighAccuracy: true })
         }
 
         getLocation(function(pos){
