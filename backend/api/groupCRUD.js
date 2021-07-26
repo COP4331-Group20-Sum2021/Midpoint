@@ -56,7 +56,7 @@ async function getParticipantsOfGroupId(groupId){
 async function isUserOwnerOfGroup(userid, groupid){
     const groupRef = db.collection('group');
 
-    const groupDoc = await userRef.doc(groupid).get();
+    const groupDoc = await groupRef.doc(groupid).get();
     const groupData = groupDoc.data();
 
     if(groupData === undefined || groupData.ownerId != userid){
