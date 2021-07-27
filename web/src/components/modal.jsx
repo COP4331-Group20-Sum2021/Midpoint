@@ -26,7 +26,7 @@ const OVERLAY_STYLES = {
     zIndex: 1000,
 }
 
-export default function Modal({ open, children, onClose, crud, create, del, edit, kick, leave, info }) {
+export default function Modal({ open, children, onClose, crud, create, del, edit, kick, leave, info, add }) {
     
     if (!open) return null
     else
@@ -112,6 +112,24 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <button onClick={() => {
                 onClose()
                 leave(info)
+            }}>Confirm</button>
+            <button onClick={onClose}>Cancel</button>
+            
+        </div>
+        </>,
+        document.getElementById('portal')
+    )
+    if (crud === 6)
+    return ReactDom.createPortal(
+        <>
+        <div style={OVERLAY_STYLES} />
+        <div style={MODAL_STYLES}>
+            <div>Add a new member</div>
+            <label for="memEmail">Member Email:</label>
+            <input type="text" id="memEmail" name="memEmail" />
+            <button onClick={() => {
+                onClose()
+                add(info, document.getElementById("memEmail").value)
             }}>Confirm</button>
             <button onClick={onClose}>Cancel</button>
             

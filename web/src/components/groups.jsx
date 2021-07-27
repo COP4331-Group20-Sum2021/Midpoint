@@ -2,9 +2,36 @@ import SideBar from "./sidebar"
 import "../styles/groups.scss";
 import Modal from './modal';
 import React, { useState, useEffect } from 'react';
-
 import { useAuth } from "../contexts/authContext";
-function Cards({ isGroup, dp, ep, kp, lp }) {
+import Map from "./map";
+
+
+export default function GroupRender()
+{
+  const [page, setPage] = useState()
+  useEffect( () => {
+    setPage(<Groups setPage={setPage}/>)
+  },[])
+
+
+  return (
+    <>
+    {page}
+    </>
+  )
+
+
+
+
+
+}
+
+
+
+
+
+
+function Cards({ isGroup, dp, ep, kp, lp, setPage }) {
   let cards = isGroup && isGroup.map((group, i) => {
     var cid = "card" + i
     var groupInfo = {field1: "value"}
@@ -23,15 +50,11 @@ function Cards({ isGroup, dp, ep, kp, lp }) {
     }
 
     return (
-      <div className="card" id={cid} key={i}>
+      <div className="card" onClick={() => setPage(<Map group={isGroup[i]}/>)} id={cid} key={i}>
         <div id="groupId">{group.groupId}</div>
         <div id="groupName">{group.groupName}</div>
         {group.groupname}<br />
         {group.participants.length} members<br />
-        <button onClick={delP}>Delete</button>
-        <button onClick={editP}>Edit</button>
-        <button onClick={kickP}>Kick</button>
-        <button onClick={leaP}>Leave</button>
       </div>
     )
   })
@@ -45,7 +68,7 @@ function Cards({ isGroup, dp, ep, kp, lp }) {
   return (<div className="wrapper" id="wrapper">{cards}</div>)
 }
 
-export default function Groups() {
+function Groups({setPage}) {
   // const [newGroupName, createNewGroupName] = useState()
   const [stale, setStale] = useState(false) // dont care about value, only care if this changed. This changing re renders the cards
   const [groupInfo, setGroupInfo] = useState(undefined)
@@ -231,7 +254,7 @@ export default function Groups() {
           </div>
 
           
-          <Cards isGroup={isGroup} dp={deletePortal} ep={editPortal} kp={kickPortal} lp={leavePortal}/>
+          <Cards isGroup={isGroup} dp={deletePortal} ep={editPortal} kp={kickPortal} lp={leavePortal} setPage={setPage}/>
           
 
         </div>

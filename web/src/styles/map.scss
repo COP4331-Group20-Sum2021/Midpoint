@@ -8,7 +8,7 @@
 
 .map-content
 {
-    padding: 8rem 0 0 2rem;
+    padding: 8rem 3rem 0 2rem;
     min-height: 100vh;
     background-color: #9FB3D1;
     flex: 8;
@@ -16,11 +16,16 @@
     grid-template-columns: 70% 30%;
     column-gap: 1em;
     row-gap: 1em;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color: white;
 
     .group-name
     {
         font-weight: bold;
         font-size: x-large;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        color: white;
+
     }
 
     .buttons
@@ -45,25 +50,53 @@
         font-weight: bold;
         text-align: center;
         background-color: white;
+        color: white;
 
-        .location-table
+
+    }
+
+    .member-container
+    {
+        background-color: white;
+        border-color: black;
+        border-style: solid;
+        width: auto;
+        text-align: center;
+
+        button
+        {
+            text-align: right;
+        }
+
+        .member-list, tr
+        {
+            border-color: #9FB3D1;
+
+            border-style: solid;
+            color: white;
+            font-weight: bold;
+            background-color: white;
+            border-color: 1px solid black;
+            border-width: thin;
+            border-style: solid;
+            display: block;
+            
+            border-collapse: separate;
+           
+    
+    
+    
+        }
+        td
         {
 
+            text-align: center;
+            padding: 10px;
+            width: 500px;
+            
         }
     }
 
-    .member-list, tr, td
-    {
-        color: black;
-        font-weight: bold;
-        background-color: white;
-        border-color: 1px solid black;
-        border-width: thin;
-        border-style: solid;
-        border-collapse: collapse
-
-
-    }
 
 }
 
