@@ -687,7 +687,7 @@ router.delete('/removemyself', async (req, res, next) => {
     }
     else{
         // If the user is the owner, we need to nuke the group and all members on it lol
-        if ((await isUserOwnerOfGroup(ownerId, groupId))){
+        if ((await isUserOwnerOfGroup(userId, groupId))){
             try {
                 // get all correct group members
                 var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
