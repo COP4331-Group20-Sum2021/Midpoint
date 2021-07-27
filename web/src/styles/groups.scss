@@ -23,31 +23,26 @@
   // }
 
   .icons {
-      color: black;
-      display: inline-block;
+    color: black;
+    display: inline-block;
 
-      .buttons {
-          font-size: 40px;
-          
-      }
-      
+    .buttons {
+      font-size: 40px;
+        
+    }
   }
   .wrapper {
     display: grid;
     grid-template-columns: 20% 20% 20% 20%;
-    grid-column-gap: 5em;
-    grid-row-gap: 5em;
+    column-gap: 5em;
+    row-gap: 5em;
   }
-  .wrapper > div {
-    background: #eee;
-    padding: 1em;
 
-  }
   .table {
       width: 400px;
   }
   
-  #card {
+  .card {
     color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
     padding: 16px;
@@ -60,18 +55,36 @@
     width: 300px;
     line-height: 2.8;
     
+    
   }
 }
-
-@media (max-width: 800px) {
+@media (max-width: 1700px) {
+  .groups-content {
+    
+    .wrapper {
+      grid-template-columns: 20% 20% 20%;
+      column-gap: 5em;
+      row-gap: 5em;
+    }
+  }
+}
+@media (max-width: 1500px) {
+  .groups-content {
+    
+    .wrapper {
+      grid-template-columns: 20% 20%;
+      column-gap: 5em;
+      row-gap: 5em;
+    }
+  }
+}
+@media (max-width: 1400px) {
   .groups-content {
     
     .wrapper {
       grid-template-columns: 20%;
-    }
-
-    #card {
-      width: 300px;
+      column-gap: 5em;
+      row-gap: 5em;
     }
   }
 }
