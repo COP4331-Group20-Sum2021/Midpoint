@@ -17,5 +17,21 @@
         margin-left: 5rem;
         width: 250px;
     }
+
+    .map-frame
+    {
+        position: relative;
+        display: grid;
+        height: 600px;
+        width: 900px;
+        font-size: xx-large;
+        margin-left: 5rem;
+    }
+
+    .point-list
+    {
+        display: inline-block;
+
+    }
 }
 

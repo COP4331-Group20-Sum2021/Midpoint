@@ -49,6 +49,7 @@ export default function MyProfile() {
     })
       .then(res => res.json())
       .then(j => setProfile(j))
+      .then(console.log(user))
   }, []);
 
   React.useEffect(() => {
