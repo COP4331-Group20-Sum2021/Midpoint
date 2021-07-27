@@ -3,6 +3,7 @@ import "../styles/groups.scss";
 import Modal from './modal';
 import React, { useState, useEffect } from 'react';
 
+import { useAuth } from "../contexts/authContext";
 function Cards({ isGroup, dp, ep, kp, lp }) {
   let cards = isGroup && isGroup.map((group, i) => {
     var cid = "card" + i
@@ -51,6 +52,8 @@ export default function Groups() {
   const [isGroup, setIsGroup] = useState()
   const [isOpen, setIsOpen] = useState(false)
   const [isCrud, setCrud] = useState(0)
+  const { user } = useAuth()
+
 
 
   useEffect( () => {
@@ -62,8 +65,8 @@ export default function Groups() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userId : "234567890pwadaghwvdawgd",
-            userToken : "AUTHSTRINGFROMFIREBASE",
+            userId : user.uid,
+            userToken : user.Aa,
           })
       })
       const j = await res.json()
@@ -86,8 +89,8 @@ export default function Groups() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : "234567890pwadaghwvdawgd",
-          userToken : "AUTHSTRINGFROMFIREBASE",
+          userId : user.uid,
+          userToken : user.Aa,
           groupname : groupName,
         })
     })
@@ -103,8 +106,8 @@ export default function Groups() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : "234567890pwadaghwvdawgd",
-          userToken : "AUTHSTRINGFROMFIREBASE",
+          userId : user.uid,
+          userToken : user.Aa,
           groupId : group.groupid,
         })
     })
@@ -121,8 +124,8 @@ export default function Groups() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : "234567890pwadaghwvdawgd",
-          userToken : "AUTHSTRINGFROMFIREBASE",
+          userId : user.uid,
+          userToken : user.Aa,
           groupId: group.groupid,
           groupname : newName,
         })
@@ -141,8 +144,8 @@ export default function Groups() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : "234567890pwadaghwvdawgd",
-          userToken : "AUTHSTRINGFROMFIREBASE",
+          userId : user.uid,
+          userToken : user.Aa,
           groupId: group.groupid,
           groupname : group.groupname,
         })
@@ -160,8 +163,8 @@ export default function Groups() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : "234567890pwadaghwvdawgd",
-          userToken : "AUTHSTRINGFROMFIREBASE",
+          userId : user.uid,
+          userToken : user.Aa,
           groupId: group.groupid,
         })
     })
