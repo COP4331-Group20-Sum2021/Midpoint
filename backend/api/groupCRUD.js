@@ -571,11 +571,11 @@ async function checkInvitation(inviteId, email){
  *                  description: Failure
  */
 router.post('/acceptinvitation', async (req, res, next) => {
-    const {inviteId, userId, userToken, email} = req.body;
+    const {inviteId, userId, userToken, email, groupId} = req.body;
     var status = 200;
     var error = '';
 
-    if (!checkParameters([inviteId, userId, userToken, email])) {
+    if (!checkParameters([inviteId, userId, userToken, email, groupId])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -808,7 +808,7 @@ router.post('/listinvites', async (req, res, next) => {
     var status = 200;
     var allInvites = [];
 
-    if (!checkParameters([userId, userToken])) {
+    if (!checkParameters([userId, userToken, email])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -837,7 +837,7 @@ router.post('/listinvites', async (req, res, next) => {
                 var inviterData = await getUserData(currInvitation.inviter);
                 var inviteFrom = inviterData.firstname + " " + inviterData.lastname;
 
-                allInvites.push({ inviteId: currInvitation.inviteId, groupname: gpName, from: inviteFrom});
+                allInvites.push({ inviteId: currInvitation.inviteId, groupname: gpName, from: inviteFrom, groupId: currInvitation.groupid});
             }
             console.log(allInvites);
         }
