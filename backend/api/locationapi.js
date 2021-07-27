@@ -159,7 +159,7 @@ router.post('/retrievegroupdata', async (req, res, next) => {
                 const userDoc = await userRef.doc(currUserData.userid).get();
                 const userData = userDoc.data();
 
-                groupMemberLocations.push({ firstname: userData.firstname, lastname: userData.lastname, latitude: userData.latitude, longitude: userData.longitude});
+                groupMemberLocations.push({ userId: userData.userid, email: userData.email, firstname: userData.firstname, lastname: userData.lastname, latitude: userData.latitude, longitude: userData.longitude});
             }
             
             // get midpoint location between all group members
