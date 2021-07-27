@@ -3,35 +3,68 @@
     display: flex;
 }
 
+
+
+
 .map-content
 {
-    padding: 8rem 0 0 0;
+    padding: 8rem 0 0 2rem;
     min-height: 100vh;
     background-color: #9FB3D1;
     flex: 8;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    column-gap: 1em;
+    row-gap: 1em;
 
-    .map
+    .group-name
     {
-        color: white;
-        display: grid;
-        margin-left: 5rem;
-        width: 250px;
+        font-weight: bold;
+        font-size: x-large;
+    }
+
+    .buttons
+    {
+        
+        justify-content: right;
     }
 
     .map-frame
     {
         position: relative;
-        display: grid;
-        height: 600px;
-        width: 900px;
-        font-size: xx-large;
-        margin-left: 5rem;
+        border-color: green;
+        border-style: solid;
+
+
     }
 
     .point-list
     {
-        display: inline-block;
+        border-color: red;
+        border-style: solid;
+        font-weight: bold;
+        text-align: center;
+        background-color: white;
+
+        .location-table
+        {
+
+        }
+    }
+
+    .member-list, tr, td
+    {
+        color: black;
+        font-weight: bold;
+        background-color: white;
+        border-color: 1px solid black;
+        border-width: thin;
+        border-style: solid;
+        border-collapse: collapse
+
 
     }
+
 }
+
 
