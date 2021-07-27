@@ -673,6 +673,7 @@ router.post('/declineinvitation', async (req, res, next) => {
  */
 router.delete('/removemyself', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
+    const groupmemberRef = db.collection('groupmember');
     var status = 200;
     var error = '';
 
@@ -685,7 +686,31 @@ router.delete('/removemyself', async (req, res, next) => {
         status = 401;
     }
     else{
-        const response = await db.collection('groupmember').doc(userId+groupId).delete();
+        // If the user is the owner, we need to nuke the group and all members on it lol
+        if ((await isUserOwnerOfGroup(userId, groupId))){
+            try {
+                // get all correct group members
+                var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
+                
+                console.log(querySnapshot.docs.length);
+        
+                for (let i in querySnapshot.docs) {
+        
+                    const currGroupMember = querySnapshot.docs[i].data();
+                    const primaryKeyOfGroupMember = `${currGroupMember.userid}` + `${currGroupMember.groupid}`;
+                    const response = await db.collection('groupmember').doc(primaryKeyOfGroupMember).delete();
+                }
+        
+                const responseTwo = await db.collection('group').doc(groupId).delete();
+            }
+            catch(e) {
+                error = e.toString();
+                status = 404;
+            }
+        }
+        else{
+            const response = await db.collection('groupmember').doc(userId+groupId).delete();
+        }
     }
     var ret = { error: error };
     res.status(status).json(ret);
@@ -738,7 +763,7 @@ router.delete('/kickfromgroup', async (req, res, next) => {
         status = 401;
     }
     else if (!(await isUserOwnerOfGroup(ownerId, groupId))){
-        error = "Only the owner of the group can invite participants";
+        error = "Only the owner of the group can kick participants";
         status = 401;
     }
     else{
