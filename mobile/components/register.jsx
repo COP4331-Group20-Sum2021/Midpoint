@@ -10,6 +10,12 @@ const registerSchema = yup.object().shape({
         .string()
         .email("Please enter valid email")
         .required('Email Address is Required'),
+    firstName: yup
+        .string()
+        .required('First Name is Required'),
+    lastName: yup
+        .string()
+        .required('Last Name is Required'),
     password: yup
         .string()
         .min(6, ({ min }) => `Password must be at least ${min} characters`)
@@ -27,11 +33,11 @@ export default function Register({ navigation }) {
 
     return (
         <Formik
-            initialValues={{ email: '', password: '', passwordConfirm: '' }}
+            initialValues={{ email: '', firstName: '', lastName: '', password: '', passwordConfirm: '' }}
             validationSchema={registerSchema}
             onSubmit={async (values, { resetForm }) => {
                 try {
-                  await signup(values.email, values.password)
+                  await signup(values.email, values.firstName, values.lastName, values.password)
                   setClicked(true)
                   setError(null)
                   resetForm()
@@ -52,6 +58,26 @@ export default function Register({ navigation }) {
                             style={style.input}
                         />
                         {(errors.email && touched.email) && <Text style={style.error}>{errors.email}</Text>}
+                    </View>
+                    <View style={style.section}>
+                        <Text style={style.fieldName}>First Name</Text>
+                        <TextInput
+                            onChangeText={handleChange('firstName')}
+                            onBlur={handleBlur('firstName')}
+                            value={values.firstName}
+                            style={style.input}
+                        />
+                        {(errors.firstName && touched.firstName) && <Text style={style.error}>{errors.firstName}</Text>}
+                    </View>
+                    <View style={style.section}>
+                        <Text style={style.fieldName}>Last Name</Text>
+                        <TextInput
+                            onChangeText={handleChange('lastName')}
+                            onBlur={handleBlur('lastName')}
+                            value={values.lastName}
+                            style={style.input}
+                        />
+                        {(errors.lastName && touched.lastName) && <Text style={style.error}>{errors.lastName}</Text>}
                     </View>
                     <View style={style.section}>
                         <Text style={style.fieldName}>Password</Text>
