@@ -22,11 +22,17 @@
 
         #profile-picture 
         {
-            width: 250px;
-            height: 250px;
+            width: 210px;
+            height: 210px;
             border-radius: 50%;
+            background-color: #5F7595;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 7rem;
+            font-weight: 500;
+            user-select: none;
         }
-
 
         .top-section
         {
@@ -34,7 +40,7 @@
             flex-direction: column;
             row-gap: 1rem;
 
-            .title
+            .top-section-title
             {
                 background-color: #5F7595;
                 
@@ -51,6 +57,21 @@
                 column-gap: 2rem;
                 margin: 1rem;
 
+                label 
+                {
+                    font-size: 1rem;
+                }
+
+                h2 
+                {
+                    font-size: 1.2rem;
+                    font-weight: 500;
+                    background-color: white;
+                    color: black;
+                    padding: 5px;
+                    border-radius: 5px;
+                }
+
                 .form-rows
                 {
                     display: flex;
@@ -63,7 +84,7 @@
                         display: flex;
                         flex-direction: row;
                         column-gap: 2rem;
-
+                        
                         div
                         {
                             width: 100%;
@@ -99,7 +120,7 @@
             flex-direction: column;
             width: 100%;
 
-            .title
+            .bottom-section-title
             {
                 background-color: #5F7595;
                 

@@ -29,6 +29,28 @@
                 margin: 1rem;
             }
         }
+
+        .invitations-table
+        {
+            text-align: left; 
+            border-spacing: 0;
+
+            tr:nth-child(1) 
+            {
+                background-color: #5F7595;
+            }
+
+            th 
+            {
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+
+            td 
+            {
+                font-size: 1rem;
+            }
+        }
     }
 }
 
