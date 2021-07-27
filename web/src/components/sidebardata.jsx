@@ -1,7 +1,7 @@
 import React from 'react'
-import * as FaIcons from "react-icons/fa";
 import GroupIcon from '@material-ui/icons/Group';
 import PersonIcon from '@material-ui/icons/Person';
+import NotificationImportantIcon from '@material-ui/icons/NotificationImportant';
 
 export const SidebarData = [
     {
@@ -17,9 +17,9 @@ export const SidebarData = [
         cName: 'sidebar-text'
     },
     {
-        title: 'Map',
-        path: '/map',
-        icon: <FaIcons.FaMapMarked />,
+        title: 'Invitations',
+        path: '/invitations',
+        icon: <NotificationImportantIcon />,
         cName: 'sidebar-text'
     }
 ]
