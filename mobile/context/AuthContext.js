@@ -21,15 +21,18 @@ export function AuthProvider({ children }) {
   }
 
   function updateLoc(lat, lon) {
+    console.log('HERE1')
     const data = {}
     const dbRequest = window.indexedDB.open('firebaseLocalStorageDb')
     dbRequest.onsuccess = ev => {
+      console.log('HERE2')
       const db = ev.target.result
       const tx = db.transaction('firebaseLocalStorage', 'readonly')
       const store = tx.objectStore('firebaseLocalStorage')
       const getReq = store.getAll()
 
       getReq.onsuccess = ev => {
+        console.log('HERE3')
         const target = ev.target.result[0].value
         data['email'] = target.email
         data['userId'] = target.uid
@@ -39,6 +42,7 @@ export function AuthProvider({ children }) {
         data['lon'] = lon
 
         if (data.userId && target.emailVerified) {
+          console.log('HERE4')
           fetch('https://group20-midpoint.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
