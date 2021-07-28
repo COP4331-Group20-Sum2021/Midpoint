@@ -126,18 +126,29 @@ function CustomDrawerContent(props) {
 export default function Navigator() {
   const {user} = useAuth();
 
-  return (       
-    <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
-    <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
-    <Drawer.Screen name="About" component={ AboutStackScreen } />
-    {!user ? (
-        <>
+  if (user && !user.emailVerified) {
+    return (
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
+        <Drawer.Screen name="About" component={ AboutStackScreen } />
+      </Drawer.Navigator>
+    )
+  } else if (user && user.emailVerified) {
+    return (
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
+        <Drawer.Screen name="About" component={ AboutStackScreen } />
+        {/* dashboard stuff */}
+      </Drawer.Navigator>
+    )
+  } else {
+    return (
+      <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
+        <Drawer.Screen name="About" component={ AboutStackScreen } />
         <Drawer.Screen name="Login" component={ LoginStackScreen } />
         <Drawer.Screen name="Register" component={ RegisterStackScreen } />
-        </>
-    ) : (
-        <></>
-    )}
-    </Drawer.Navigator>
-  );
+      </Drawer.Navigator>
+    )
+  }
 }
