@@ -1,8 +1,10 @@
 const express = require('express');
+const axios = require('axios');
+
 // const locationAPI = require('locationapi'); --> module.exports only with router
 
 const { admin, db } = require('../auth/firebase');
-
+const key = process.env.GOOGLE_API_KEY;
 const router = express.Router();
 
 
@@ -850,6 +852,30 @@ router.post('/listinvites', async (req, res, next) => {
     var ret = { invitedata: allInvites, error: error };
     res.status(status).json(ret);
     // returns all groups that userid is a part of.
+});
+
+// latitude, longitude of the MIDPOINT, filters
+router.post('/getestablishments', async (req, res, next) => {
+    const {latitude, longitude, filters} = req.body;
+
+    var radius = 3000; // **in meters**
+    var status = 200;
+    var error = '';
+    var nearbyEstablishments = [];
+    console.log(key);
+
+    var snapshot = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}`
+    );
+    
+    console.log(snapshot);
+    // push all search results into return array
+    for (let i in snapshot.data.results) {
+        nearbyEstablishments.push(snapshot.data.results[i]);
+    }
+
+    var ret = { establishments: nearbyEstablishments};
+    res.status(status).json(ret);
 });
 
 module.exports = router;
