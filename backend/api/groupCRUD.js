@@ -865,25 +865,33 @@ router.post('/getestablishments', async (req, res, next) => {
     console.log(key);
 
     var snapshot = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}&type=establishment`
     );
     
     // console.log(snapshot);
     // push all search results into return array
     for (let i in snapshot.data.results) {
         var name = snapshot.data.results[i].name;
-        var rating = snapshot.data.results[i].rating;
+        var rating = "-";
+
+        if(snapshot.data.results[i].rating)
+            rating = "" + snapshot.data.results[i].rating;
+
         var address = snapshot.data.results[i].vicinity;
         var elat = snapshot.data.results[i].geometry.location.lat;
         var elon = snapshot.data.results[i].geometry.location.lng;
-        var open = snapshot.data.results[i].opening_hours.open_now;
-        var type = "Unknown";
 
+        var open = "Unknown";
+
+        if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
+            open = snapshot.data.results[i].opening_hours.open_now;
+
+        var type = "Unknown";
         if(snapshot.data.results[i].types.length > 0)
             type = snapshot.data.results[i].types[0];
         
         var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
-        nearbyEstablishments.push(establishmentObject);
+        nearbyEstablishments.push([establishmentObject]);
     }
 
     var ret = { establishments: nearbyEstablishments};
