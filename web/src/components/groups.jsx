@@ -48,7 +48,7 @@ function Cards({ isGroup, dp, ep, kp, lp, setPage }) {
     var leaP = (e) => {
       lp(group);
     }
-
+    console.log(isGroup[i])
     return (
       <div className="card" onClick={() => setPage(<Map group={isGroup[i]}/>)} id={cid} key={i}>
         <div id="groupId">{group.groupId}</div>

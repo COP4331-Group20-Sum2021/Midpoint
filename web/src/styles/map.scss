@@ -8,7 +8,7 @@
 
 .map-content
 {
-    padding: 8rem 3rem 0 2rem;
+    padding: 8rem 2rem 8rem 2rem;
     min-height: 100vh;
     background-color: #9FB3D1;
     flex: 8;
@@ -58,7 +58,8 @@
     .member-container
     {
         background-color: white;
-        border-color: black;
+        border-color: #5F7595;
+
         border-style: solid;
         width: auto;
         text-align: center;
@@ -70,7 +71,7 @@
 
         .member-list, tr
         {
-            border-color: #9FB3D1;
+            border-color: #5F7595;
 
             border-style: solid;
             color: white;
@@ -100,4 +101,6 @@
 
 }
 
-
+.memberMarker {
+    color: red;
+}
