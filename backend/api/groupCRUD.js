@@ -868,10 +868,22 @@ router.post('/getestablishments', async (req, res, next) => {
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}`
     );
     
-    console.log(snapshot);
+    // console.log(snapshot);
     // push all search results into return array
     for (let i in snapshot.data.results) {
-        nearbyEstablishments.push(snapshot.data.results[i]);
+        var name = snapshot.data.results[i].name;
+        var rating = snapshot.data.results[i].rating;
+        var address = snapshot.data.results[i].vicinity;
+        var elat = snapshot.data.results[i].geometry.location.lat;
+        var elon = snapshot.data.results[i].geometry.location.lng;
+        var open = snapshot.data.results[i].opening_hours.open_now;
+        var type = "Unknown";
+
+        if(snapshot.data.results[i].types.length > 0)
+            type = snapshot.data.results[i].types[0];
+        
+        var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
+        nearbyEstablishments.push(establishmentObject);
     }
 
     var ret = { establishments: nearbyEstablishments};
