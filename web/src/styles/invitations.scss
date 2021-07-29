@@ -1,0 +1,163 @@
+.container 
+{
+  display: flex;
+}
+
+.invitations-content 
+{
+    padding: 8rem 0 0 0;
+    min-height: 100vh;
+    background-color: #9FB3D1;
+    flex: 8;
+
+    .invitations 
+    {
+        color: white;
+        display: grid;
+        margin: 0 auto 5rem auto;
+        grid-auto-flow: row;
+        gap: 1.5rem;
+        width: min(90%, 75rem);        
+
+        .title 
+        {
+            background-color: #5f7595;
+            border-radius: 5px;
+            box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
+
+            h1 
+            {
+                margin: 1rem;
+            }
+        }
+
+        #no-invitations 
+        {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .table-style
+        {
+            border: 2px solid #5f7595;
+            border-radius: 5px;
+            display: grid;
+            box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
+        }
+
+        .invitations-table 
+        {
+            text-align: left;   
+            border-collapse: collapse;
+
+            thead 
+            {
+                background-color: #5f7595;
+            }
+
+            tr
+            {
+                border: 5px solid #5f7595;
+            }
+
+            tr:nth-child(even)
+            {
+                background-color: #869BBA;
+            }
+
+            th 
+            {
+                font-size: 1.3rem;
+                font-weight: 600;
+                padding: 16px;
+            }
+
+            td 
+            {
+                font-size: 1.2rem;
+                font-weight: 400;
+                padding: 16px;
+            }
+
+            button 
+            {
+                display: flex;
+                align-items: center;
+                justify-self: center;
+                flex-direction: row;
+                column-gap: 0.5rem;
+                font-size: 1rem;
+                font-weight: 400;
+                border-radius: 50px;
+                margin: 0;
+                color: white;
+                padding: 5px;
+                font-family: Poppins;
+                cursor: pointer;
+            }
+
+            #check-icon
+            {
+                display: hidden;
+                color: #61955f;
+                background-color: white;
+                border: 2px solid white;
+                border-radius: 50%;
+                transition: all 250ms ease-in-out;
+            }
+
+            #close-icon
+            {
+                color: #955f5f;
+                background-color: white;
+                border: 2px solid white;
+                border-radius: 50%;
+                transition: all 250ms ease-in-out;
+            }
+            
+            #accept-button
+            {
+                border: 5px solid #61955f;
+                background-color: #61955f;
+                transition: all 250ms ease-in-out;
+
+                &:hover
+                {
+                    background-color: white;
+                    border: 5px solid white;
+                    color: #61955f;
+
+                    #check-icon
+                    {
+                        background-color: #61955f;
+                        color: white;
+                        border: 2px solid #61955f;
+                    }
+                }
+            }
+
+            #decline-button
+            {
+                border: 5px solid #955f5f;
+                background-color: #955f5f;
+                transition: all 250ms ease-in-out;
+
+                &:hover
+                {
+                    background-color: white;
+                    border: 5px solid white;
+                    color: #955f5f;
+
+                    #close-icon
+                    {
+                        background-color: #955f5f;
+                        color: white;
+                        border: 2px solid #955f5f;
+                    }
+                }
+            }
+        }
+    }
+}

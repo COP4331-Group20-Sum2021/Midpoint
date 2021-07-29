@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
     )
   }
 
+
   function updateLoc(lat, lon, user) {
     if (user && user.emailVerified) {
       fetch('https://group20-midpoint.herokuapp.com/api/login', {
@@ -36,8 +37,6 @@ export function AuthProvider({ children }) {
           lon
         })
       })
-    }
-  }
 
   function signup(email, firstname, lastname, password) {
     return auth.createUserWithEmailAndPassword(email, password)

@@ -79,12 +79,12 @@ export default function MyProfile() {
           <div className="profile">
 
               <div className="top-section">
-                <div className="title">
+                <div className="top-section-title">
                   <h1>MY PROFILE</h1>
                 </div>
                 
                 <div className="profile-information">
-                  <img id="profile-picture" alt="Profile"></img>
+                  <div id="profile-picture">{profile && profile.firstname.charAt(0) + profile.lastname.charAt(0)}</div>
                   {/* <img src={ProfilePicture} id="profile-picture" alt="Profile"></img> */}
                   
                   <form className="form-rows">
@@ -109,7 +109,7 @@ export default function MyProfile() {
               </div>  
 
             <div className="bottom-section">
-              <div className="title">
+              <div className="bottom-section-title">
                 <h2>Your Location:</h2>
               </div>
               <GoogleMap 

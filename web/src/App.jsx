@@ -12,7 +12,7 @@ import Verify from './components/verify'
 import './styles/App.scss'
 import MyProfile from './components/myprofile'
 import Groups from './components/groups'
-import Maps from './components/map'
+import Invitations from './components/invitations'
 
 export default function App() {
   return (
@@ -26,7 +26,7 @@ export default function App() {
         <Route path='/about' component={About} />
         <Protected path='/myprofile' component={MyProfile} />
         <Protected path='/groups' component={Groups} />
-        <Protected path='/map' component={Maps} />
+        <Protected path='/invitations' component={Invitations} />
         <Protected path='/verify' component={Verify} />
       </Router>
     </AuthProvider>

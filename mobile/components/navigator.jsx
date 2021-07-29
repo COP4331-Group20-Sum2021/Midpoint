@@ -14,10 +14,16 @@ import Home from './home'
 import About from './about'
 import Login from './login'
 import Register from './register'
+import Profile from './profile'
+import Groups from './groups'
+import Invitations from './invitations'
 
 const Drawer = createDrawerNavigator();
 const HomeStack = createStackNavigator();
 const AboutStack = createStackNavigator();
+const ProfileStack = createStackNavigator();
+const GroupsStack = createStackNavigator();
+const InvitationsStack = createStackNavigator();
 const LoginStack = createStackNavigator();
 const RegisterStack = createStackNavigator();
 
@@ -53,6 +59,57 @@ const AboutStackScreen = ({ navigation }) => (
     headerRight: () => ( <></> )
     }} />
   </AboutStack.Navigator>
+);
+
+const ProfileStackScreen = ({ navigation }) => (
+  <ProfileStack.Navigator screenOptions={{
+    headerStyle: {
+      backgroundColor: 'rgba(159, 179, 209, 1)',
+    },
+  }}>
+
+  <ProfileStack.Screen name="Profile" component={ Profile } options={{
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
+    }} />
+  </ProfileStack.Navigator>
+);
+
+const GroupsStackScreen = ({ navigation }) => (
+  <GroupsStack.Navigator screenOptions={{
+    headerStyle: {
+      backgroundColor: 'rgba(159, 179, 209, 1)',
+    },
+  }}>
+
+  <GroupsStack.Screen name="Groups" component={ Groups } options={{
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
+    }} />
+  </GroupsStack.Navigator>
+);
+
+const InvitationsStackScreen = ({ navigation }) => (
+  <InvitationsStack.Navigator screenOptions={{
+    headerStyle: {
+      backgroundColor: 'rgba(159, 179, 209, 1)',
+    },
+  }}>
+
+  <InvitationsStack.Screen name="Invitations" component={ Invitations } options={{
+    headerTitle: props => <LogoTitle {...props} />,
+    headerLeft: () => (
+      <Icon.Button name="ios-menu" size={25} backgroundColor='rgba(159, 179, 209, 1)' onPress={() => {navigation.openDrawer()}} />
+    ),
+    headerRight: () => ( <></> )
+    }} />
+  </InvitationsStack.Navigator>
 );
 
 const LoginStackScreen = ({ navigation }) => (
@@ -138,7 +195,9 @@ export default function Navigator() {
       <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
         <Drawer.Screen name="Home" component={ HomeStackScreen } /> 
         <Drawer.Screen name="About" component={ AboutStackScreen } />
-        {/* dashboard stuff */}
+        <Drawer.Screen name="Profile" component={ ProfileStackScreen } />
+        <Drawer.Screen name="Groups" component={ GroupsStackScreen } />
+        <Drawer.Screen name="Invitations" component={ InvitationsStackScreen } />
       </Drawer.Navigator>
     )
   } else {

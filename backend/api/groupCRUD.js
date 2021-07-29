@@ -781,9 +781,11 @@ async function getUserData(userId){
 
     const userDoc = await userRef.doc(userId).get();
     const userData = userDoc.data();
-    
-    var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
-    return ret;
+    if(userData){
+           var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
+           return ret;
+    }
+    return {error: 'No user found with that userid'};
 }
 router.post('/getuserdata', async (req, res, next) => {
     const {userId} = req.body;
@@ -891,7 +893,7 @@ router.post('/getestablishments', async (req, res, next) => {
             type = snapshot.data.results[i].types[0];
         
         var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
-        nearbyEstablishments.push([establishmentObject]);
+        nearbyEstablishments.push(establishmentObject);
     }
 
     var ret = { establishments: nearbyEstablishments};
