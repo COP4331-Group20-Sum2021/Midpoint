@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { Text, View, Button, TextInput, StyleSheet } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 const loginSchema = yup.object().shape({
     email: yup
@@ -75,22 +76,31 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 10,
+        justifyContent: 'center',
+        paddingTop: 10,
+        backgroundColor: '#2A3C6B'
     },
     section: {
         width: '90%',
-        marginTop: 20,
+        padding: 20,
+        backgroundColor: '#9FB3D1',
+        shadowColor: "black",
+        shadowOpacity: .1,
+        shadowRadius: 5,
     },
     input: {
+        backgroundColor: 'white',
         shadowColor: 'black',
         shadowOpacity: .1,
         shadowRadius: 5,
         borderRadius: 5,
         fontSize: 20,
-        padding: 5,
+        padding: 10,
     },
     fieldName: {
         fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white',
     },
     error: {
         color: 'red',
