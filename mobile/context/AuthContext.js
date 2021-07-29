@@ -20,34 +20,22 @@ export function AuthProvider({ children }) {
     )
   }
 
-  function updateLoc(lat, lon) {
-    const data = {}
-    const dbRequest = window.indexedDB.open('firebaseLocalStorageDb')
-    dbRequest.onsuccess = ev => {
-      const db = ev.target.result
-      const tx = db.transaction('firebaseLocalStorage', 'readonly')
-      const store = tx.objectStore('firebaseLocalStorage')
-      const getReq = store.getAll()
-
-      getReq.onsuccess = ev => {
-        const target = ev.target.result[0].value
-        data['email'] = target.email
-        data['userId'] = target.uid
-        data['auth'] = target.stsTokenManager.accessToken
-        data['expiration'] = target.stsTokenManager.expirationTime
-        data['lat'] = lat
-        data['lon'] = lon
-
-        if (data.userId && target.emailVerified) {
-          fetch('https://group20-midpoint.herokuapp.com/api/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-          })
-        }
-      }
+  function updateLoc(lat, lon, user) {
+    if (user && user.emailVerified) {
+      fetch('https://group20-midpoint.herokuapp.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          email: user.email,
+          auth: user.Aa,
+          expiration: user.h.c,
+          lat,
+          lon
+        })
+      })
     }
   }
 
@@ -104,7 +92,7 @@ export function AuthProvider({ children }) {
         }
 
         getLocation(function(pos){
-          updateLoc(pos.latitude, pos.longitude)
+          updateLoc(pos.latitude, pos.longitude, user)
         })
       }
     })
