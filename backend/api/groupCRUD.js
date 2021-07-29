@@ -893,7 +893,7 @@ router.post('/getestablishments', async (req, res, next) => {
             type = snapshot.data.results[i].types[0];
         
         var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
-        nearbyEstablishments.push([establishmentObject]);
+        nearbyEstablishments.push(establishmentObject);
     }
 
     var ret = { establishments: nearbyEstablishments};
