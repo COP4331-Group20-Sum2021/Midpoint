@@ -86,7 +86,7 @@ export default function Invitations() {
           <SideBar />
           <div className="invitations-content">
               <div className="invitations">
-                <div className="title">
+                <div className="invitations-title">
                     <h1>INVITATIONS</h1>
                 </div>
                 <div className="table-style">
