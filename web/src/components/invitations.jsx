@@ -10,7 +10,8 @@ export default function Invitations() {
   const [invitations, setInvitations] = useState([]);
 
   useEffect(() => {
-    fetch('https://group20-midpoint.herokuapp.com/api/listinvites', {
+    // const intervalId = setInterval(() => {
+      fetch('https://group20-midpoint.herokuapp.com/api/listinvites', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -24,6 +25,10 @@ export default function Invitations() {
     })
     .then(response => response.json())
     .then(data => {setInvitations(data.invitedata)})
+    // }, 5000)
+    
+    // return() => clearInterval(intervalId);
+
   }, []);
 
   function acceptInvitation(index, id, gid)
@@ -35,11 +40,11 @@ export default function Invitations() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          userId : user.uid,
-          userToken : user.Aa,
-          email: user.email,
-          inviteId: id,
-          groupId: gid,
+        inviteId: id,
+        userId : user.uid,
+        userToken : user.Aa,
+        email: user.email,
+        groupId: gid,
         })
     })
 
@@ -84,12 +89,13 @@ export default function Invitations() {
                 <div className="title">
                     <h1>INVITATIONS</h1>
                 </div>
+                <div className="table-style">
                 <table className="invitations-table">
                   {invitations.length === 0 ? <thead><tr><th id="no-invitations" colSpan="2">No Invitations</th></tr></thead> : 
                     <thead>
                       <tr>
-                        <th>Group Name</th>
-                        <th>From</th>
+                        <th>GROUP NAME</th>
+                        <th>FROM</th>
                         <th></th>
                         <th></th>
                       </tr>
@@ -98,7 +104,7 @@ export default function Invitations() {
                   <tbody>
                       {invitations && invitations.map((invitation, i) =>{
                         return(
-                          <tr>
+                          <tr key={i}>
                             <td>{invitation.groupname}</td>
                             <td>{invitation.from}</td>
                             <td align="center"><button id="accept-button" onClick={() => acceptInvitation(i, invitation.inviteId, invitation.groupId)}><CheckIcon id="check-icon"/>Accept</button></td>
@@ -108,6 +114,7 @@ export default function Invitations() {
                       })}
                   </tbody>
                 </table>
+                </div>
               </div>
           </div>
         </div>
