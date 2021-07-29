@@ -19,14 +19,23 @@
         gap: 1rem;
         width: min(90%, 75rem);
         border: 5px solid #5F7595;
+        border-radius: 5px;
+        box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
 
         #profile-picture 
         {
-            width: 250px;
-            height: 250px;
+            width: 210px;
+            height: 210px;
             border-radius: 50%;
+            background-color: #5F7595;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 7rem;
+            font-weight: 500;
+            user-select: none;
+            box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
         }
-
 
         .top-section
         {
@@ -34,7 +43,7 @@
             flex-direction: column;
             row-gap: 1rem;
 
-            .title
+            .top-section-title
             {
                 background-color: #5F7595;
                 
@@ -51,6 +60,20 @@
                 column-gap: 2rem;
                 margin: 1rem;
 
+                label 
+                {
+                    font-size: 1rem;
+                    //border-bottom: 1px solid white;
+                }
+
+                h2 
+                {
+                    //border-top: 1px solid white;
+                    border-bottom: 1px solid white;
+                    font-size: 1.3rem;
+                    font-weight: 500;
+                }
+
                 .form-rows
                 {
                     display: flex;
@@ -63,7 +86,7 @@
                         display: flex;
                         flex-direction: row;
                         column-gap: 2rem;
-
+                        
                         div
                         {
                             width: 100%;
@@ -99,7 +122,7 @@
             flex-direction: column;
             width: 100%;
 
-            .title
+            .bottom-section-title
             {
                 background-color: #5F7595;
                 
