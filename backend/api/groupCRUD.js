@@ -785,7 +785,7 @@ async function getUserData(userId){
            var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
            return ret;
     }
-    return {'error':'No user found with that userid'};
+    return {error: 'No user found with that userid'};
 }
 router.post('/getuserdata', async (req, res, next) => {
     const {userId} = req.body;
