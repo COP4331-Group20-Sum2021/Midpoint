@@ -30,7 +30,7 @@ export default function Login({ navigation }) {
                 } else {
                     setError(null)
                     resetForm()
-                    navigation.navigate('Home')
+                    navigation.navigate('Profile')
                 }
             }}
         >

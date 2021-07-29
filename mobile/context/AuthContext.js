@@ -20,40 +20,23 @@ export function AuthProvider({ children }) {
     )
   }
 
-  function updateLoc(lat, lon) {
-    console.log('HERE1')
-    const data = {}
-    const dbRequest = window.indexedDB.open('firebaseLocalStorageDb')
-    dbRequest.onsuccess = ev => {
-      console.log('HERE2')
-      const db = ev.target.result
-      const tx = db.transaction('firebaseLocalStorage', 'readonly')
-      const store = tx.objectStore('firebaseLocalStorage')
-      const getReq = store.getAll()
 
-      getReq.onsuccess = ev => {
-        console.log('HERE3')
-        const target = ev.target.result[0].value
-        data['email'] = target.email
-        data['userId'] = target.uid
-        data['auth'] = target.stsTokenManager.accessToken
-        data['expiration'] = target.stsTokenManager.expirationTime
-        data['lat'] = lat
-        data['lon'] = lon
-
-        if (data.userId && target.emailVerified) {
-          console.log('HERE4')
-          fetch('https://group20-midpoint.herokuapp.com/api/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-          })
-        }
-      }
-    }
-  }
+  function updateLoc(lat, lon, user) {
+    if (user && user.emailVerified) {
+      fetch('https://group20-midpoint.herokuapp.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          email: user.email,
+          auth: user.Aa,
+          expiration: user.h.c,
+          lat,
+          lon
+        })
+      })
 
   function signup(email, firstname, lastname, password) {
     return auth.createUserWithEmailAndPassword(email, password)
@@ -108,7 +91,7 @@ export function AuthProvider({ children }) {
         }
 
         getLocation(function(pos){
-          updateLoc(pos.latitude, pos.longitude)
+          updateLoc(pos.latitude, pos.longitude, user)
         })
       }
     })
