@@ -16,6 +16,19 @@ function checkParameters(params) {
     return true;
 }
 
+// Convert degree of latitude and longitude to km in order to check if a point is inside the circle
+function isEstablishmentInsideCircleRadius(center, newPoint){
+    // kilometers per degree
+    var convertedY = 1000/9;
+    var convertedX = Math.cos(Math.PI * center.lat / 180.0) * convertedY;
+
+    var differenceInX = Math.abs(center.lon - newPoint.lon) * convertedX;
+    var differenceInY = Math.abs(center.lat - newPoint.lat) * convertedY;
+
+    // Pythagorean theorem with converted degrees
+    return Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY);
+}
+
 /* ================= */
 /*   API ENDPOINTS   */
 /* ================= */
