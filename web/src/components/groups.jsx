@@ -4,6 +4,7 @@ import Modal from "./modal";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/authContext";
 import Map from "./map";
+import AddIcon from '@material-ui/icons/Add';
 
 export default function GroupRender() {
   const [page, setPage] = useState();
@@ -25,12 +26,8 @@ function Cards({ isGroup, setPage, invalidate }) {
       console.log(setPage);
       return (
         <div className="card" onClick={() => setPage(<Map group={isGroup[i]} setPage={setPage} invalidate={invalidate} />)} id={cid} key={i}>
-          <div id="groupId">{group.groupId}</div>
-          <div id="groupName">{group.groupName}</div>
-          {group.groupname}
-          <br />
-          {group.participants.length} members
-          <br />
+          <h2>{group.groupname}</h2>
+          {group.participants.length === 1 ? <h3>{group.participants.length} Member</h3> : <h3>{group.participants.length} Members</h3>}
         </div>
       );
     });
@@ -208,26 +205,28 @@ function Groups({ setPage }) {
         <SideBar />
         <div className="groups-content">
           <div className="groups">
-            <h1>GROUPS</h1>
-          </div>
-          <div className="icons">
-            <button onClick={createPortal}>Create New</button>
-            <Modal
-              open={isOpen}
-              crud={isCrud}
-              info={groupInfo}
-              create={createCard}
-              del={deleteCard}
-              edit={editCard}
-              kick={kickCard}
-              leave={leaveCard}
-              onClose={() => {
-                setIsOpen(false);
-              }}
-            ></Modal>
+            <div className="groups-title">
+              <h1>MY GROUPS</h1>
+              <button id="create-new-button" onClick={createPortal}><AddIcon id="add-icon"/>Create New</button>
+              <Modal
+                open={isOpen}
+                crud={isCrud}
+                info={groupInfo}
+                create={createCard}
+                del={deleteCard}
+                edit={editCard}
+                kick={kickCard}
+                leave={leaveCard}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              ></Modal>
+            </div>
+
+            <Cards isGroup={isGroup} setPage={setPage} invalidate={invalidate} />
           </div>
 
-          <Cards isGroup={isGroup} setPage={setPage} invalidate={invalidate} />
+          
         </div>
       </div>
     </>

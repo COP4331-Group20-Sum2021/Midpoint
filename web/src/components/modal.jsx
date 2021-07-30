@@ -2,6 +2,7 @@ import * as React from "react";
 import ReactDom from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import Groups from "./groups";
+import "../styles/modal.scss";
 
 const MODAL_STYLES = {
   position: "fixed",
@@ -35,19 +36,24 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
     return ReactDom.createPortal(
       <>
         <div style={OVERLAY_STYLES} />
-        <div style={MODAL_STYLES}>
-          <div>Create a new group</div>
-          <label for="gname">Group Name:</label>
-          <input type="text" id="gname" name="gname" />
-          <button
-            onClick={() => {
-              onClose();
-              create(document.getElementById("gname").value);
-            }}
-          >
-            Confirm
-          </button>
-          <button onClick={onClose}>Cancel</button>
+        <div className="create-modal">
+          <h1>Create a New Group</h1>
+          <div className="group-name">
+            <label for="gname">Group Name</label>
+            <input type="text" id="gname" name="gname" />
+          </div>
+          
+          <div className="modal-buttons">
+            <button id="confirm-button-modal"
+              onClick={() => {
+                onClose();
+                create(document.getElementById("gname").value);
+              }}
+            >
+              Confirm
+            </button>
+            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+          </div>
         </div>
       </>,
       document.getElementById("portal")
@@ -119,21 +125,24 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
     return ReactDom.createPortal(
       <>
         <div style={OVERLAY_STYLES} />
-        <div style={MODAL_STYLES}>
-          <div>Are you sure you want to leave the group?</div>
-          <Link to="/myprofile">
-            <button
-              onClick={() => {
-                onClose();
-                leave(info);
-                invalidate();
-                setPage(<Groups setPage={setPage} />);
-              }}
-            >
-              Confirm
-            </button>
-          </Link>
-          <button onClick={onClose}>Cancel</button>
+        <div className="create-modal">
+          <h1>Are you sure you want to leave the group?</h1>
+          <div className="modal-buttons">
+            <Link to="/myprofile">
+              <button id="confirm-button-modal"
+                onClick={() => {
+                  onClose();
+                  leave(info);
+                  invalidate();
+                  setPage(<Groups setPage={setPage} />);
+                }}
+              >
+                Confirm
+              </button>
+            </Link>
+          
+            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+          </div>
         </div>
       </>,
       document.getElementById("portal")
@@ -142,19 +151,24 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
     return ReactDom.createPortal(
       <>
         <div style={OVERLAY_STYLES} />
-        <div style={MODAL_STYLES}>
-          <div>Add a new member</div>
-          <label for="memEmail">Member Email:</label>
-          <input type="text" id="memEmail" name="memEmail" />
-          <button
-            onClick={() => {
-              onClose();
-              add(info, document.getElementById("memEmail").value);
-            }}
-          >
-            Confirm
-          </button>
-          <button onClick={onClose}>Cancel</button>
+        <div className="create-modal">
+          <h1>Add a new member</h1>
+          <div className="group-name">
+            <label for="memEmail">Member Email</label>
+            <input type="text" id="memEmail" name="memEmail" />
+          </div>
+
+          <div className="modal-buttons">
+            <button id="confirm-button-modal"
+              onClick={() => {
+                onClose();
+                add(info, document.getElementById("memEmail").value);
+              }}
+            >
+              Confirm
+            </button>
+            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+          </div>
         </div>
       </>,
       document.getElementById("portal")

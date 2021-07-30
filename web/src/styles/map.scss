@@ -1,16 +1,13 @@
-.container
+.container 
 {
     display: flex;
 }
 
-
-
-
-.map-content
+.map-content 
 {
     padding: 8rem 2rem 8rem 2rem;
     min-height: 100vh;
-    background-color: #9FB3D1;
+    background-color: #9fb3d1;
     flex: 8;
     display: grid;
     grid-template-columns: 70% 30%;
@@ -19,31 +16,27 @@
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
     color: white;
 
-    .group-name
+    .group-name 
     {
         font-weight: bold;
         font-size: x-large;
         text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
         color: white;
-
     }
 
-    .buttons
+    .buttons 
     {
-        
         justify-content: right;
     }
 
-    .map-frame
+    .map-frame 
     {
         position: relative;
         border-color: green;
         border-style: solid;
-
-
     }
 
-    .point-list
+    .point-list 
     {
         border-color: red;
         border-style: solid;
@@ -51,27 +44,25 @@
         text-align: center;
         background-color: white;
         color: white;
-
-
     }
 
-    .member-container
+    .member-container 
     {
         background-color: white;
-        border-color: #5F7595;
+        border-color: #5f7595;
 
         border-style: solid;
         width: auto;
         text-align: center;
 
-        button
+        button 
         {
             text-align: right;
         }
 
-        .member-list, tr
+        .member-list, tr 
         {
-            border-color: #5F7595;
+            border-color: #5f7595;
 
             border-style: solid;
             color: white;
@@ -81,26 +72,19 @@
             border-width: thin;
             border-style: solid;
             display: block;
-            
-            border-collapse: separate;
-           
-    
-    
-    
-        }
-        td
-        {
 
+            border-collapse: separate;
+        }
+        td 
+        {
             text-align: center;
             padding: 10px;
             width: 500px;
-            
         }
     }
-
-
 }
 
-.memberMarker {
+.memberMarker 
+{
     color: red;
 }
