@@ -1,5 +1,4 @@
 const express = require('express');
-const axios = require('axios');
 const { admin, db } = require('../auth/firebase');
 const key = process.env.GOOGLE_API_KEY;
 const router = express.Router();
