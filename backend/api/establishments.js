@@ -29,6 +29,112 @@ function isEstablishmentInsideCircleRadius(center, newPoint){
     return Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY);
 }
 
+// base url:
+// https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=<NEXTPAGE>&key=<APIKEY>
+async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
+    var nextPageToken = ""
+    var snapshot = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${pagetoken}&key=${key}`
+    );
+
+    // If we have multiple pages, I need to store the token for the next page
+    if (snapshot.data.next_page_token){
+        nextPageToken = snapshot.data.next_page_token;
+    }
+
+    // push all search results into return array
+    for (let i in snapshot.data.results) {
+        var name = snapshot.data.results[i].name;
+        var rating = "-";
+
+        if(snapshot.data.results[i].rating)
+            rating = "" + snapshot.data.results[i].rating;
+
+        var address = snapshot.data.results[i].vicinity;
+        var elat = snapshot.data.results[i].geometry.location.lat;
+        var elon = snapshot.data.results[i].geometry.location.lng;
+
+        var open = "Unknown";
+
+        if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
+            open = snapshot.data.results[i].opening_hours.open_now;
+
+        var type = "Unknown";
+        if(snapshot.data.results[i].types.length > 0)
+            type = snapshot.data.results[i].types[0];
+        
+        var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
+        nearbyEstablishments.push(establishmentObject);
+    }
+
+    if (nextPageToken === ""){
+        return nearbyEstablishments;
+    }
+    else{
+        var finalEstablishmentList = await nextEstablishmentPages(nextPageToken, nearbyEstablishments);
+        return finalEstablishmentList;
+    }
+
+}
+
+
+async function getEstablishments(latitude, longitude, filter, radius){
+    var nextPageToken = "";
+
+    if(!filter || filter === ""){
+        filter = ""
+    }
+    else{
+        filter = "&type="+filter;
+    }
+    console.log("Filter str: "+filter);
+
+
+    var snapshot = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}`
+    );
+    
+    // If we have multiple pages, I need to store the token for the next page
+    if (snapshot.data.next_page_token){
+        nextPageToken = snapshot.data.next_page_token;
+    }
+
+    // push all search results into return array
+    for (let i in snapshot.data.results) {
+        var name = snapshot.data.results[i].name;
+        var rating = "-";
+
+        if(snapshot.data.results[i].rating)
+            rating = "" + snapshot.data.results[i].rating;
+
+        var address = snapshot.data.results[i].vicinity;
+        var elat = snapshot.data.results[i].geometry.location.lat;
+        var elon = snapshot.data.results[i].geometry.location.lng;
+
+        var open = "Unknown";
+
+        if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
+            open = snapshot.data.results[i].opening_hours.open_now;
+
+        var type = "Unknown";
+        if(snapshot.data.results[i].types.length > 0)
+            type = snapshot.data.results[i].types[0];
+        
+        var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
+        nearbyEstablishments.push(establishmentObject);
+    }
+
+    if (nextPageToken === ""){
+        return nearbyEstablishments;
+    }
+    else{
+        var finalEstablishmentList = await nextEstablishmentPages(nextPageToken, nearbyEstablishments);
+        return finalEstablishmentList;
+    }
+}
+
+
+
 /* ================= */
 /*   API ENDPOINTS   */
 /* ================= */
@@ -48,38 +154,9 @@ router.post('/getestablishments', async (req, res, next) => {
         status = 400;
     }
     else {
-        var snapshot = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}&type=establishment`
-        );
-        
-        // console.log(snapshot);
-        // push all search results into return array
-        for (let i in snapshot.data.results) {
-            var name = snapshot.data.results[i].name;
-            var rating = "-";
-    
-            if(snapshot.data.results[i].rating)
-                rating = "" + snapshot.data.results[i].rating;
-    
-            var address = snapshot.data.results[i].vicinity;
-            var elat = snapshot.data.results[i].geometry.location.lat;
-            var elon = snapshot.data.results[i].geometry.location.lng;
-    
-            var open = "Unknown";
-    
-            if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
-                open = snapshot.data.results[i].opening_hours.open_now;
-    
-            var type = "Unknown";
-            if(snapshot.data.results[i].types.length > 0)
-                type = snapshot.data.results[i].types[0];
-            
-            var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
-            nearbyEstablishments.push(establishmentObject);
-        }
+        var allEstablishments = await getEstablishments();
     }
-
-
+    
     var ret = { establishments: nearbyEstablishments, error: error};
     res.status(status).json(ret);
 });
