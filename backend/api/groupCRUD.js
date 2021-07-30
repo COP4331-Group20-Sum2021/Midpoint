@@ -120,10 +120,8 @@ router.post('/listgroups', async (req, res, next) => {
         const groupRef = db.collection('group');
 
         try {
-            // get all correct group members
+            // get all membership entries of user
             var querySnapshot = await groupmemberRef.where('userid', '==', `${userId}`).get();
-            
-            console.log(querySnapshot.docs.length);
     
             for (let i in querySnapshot.docs) {
 
@@ -516,6 +514,10 @@ router.delete('/kickfromgroup', async (req, res, next) => {
     }
     else if (!(await isUserOwnerOfGroup(ownerId, groupId))){
         error = "Only the owner of the group can kick participants";
+        status = 401;
+    }
+    else if (ownerId === userId){
+        error = "Owner can't kick himself.";
         status = 401;
     }
     else{
