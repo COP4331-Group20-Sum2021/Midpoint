@@ -313,6 +313,8 @@ router.put('/editgroup', async (req, res, next) => {
 router.delete('/deletegroup', async (req, res, next) => {
     const {userId, userToken, groupId} = req.body;
     const groupmemberRef = db.collection('groupmember');
+    const invitationsRef = db.collection('invitations');
+
     var error = "";
     var status = 200;
 
@@ -333,15 +335,28 @@ router.delete('/deletegroup', async (req, res, next) => {
             // get all correct group members
             var querySnapshot = await groupmemberRef.where('groupid', '==', `${groupId}`).get();
             
-            console.log(querySnapshot.docs.length);
-    
+            //console.log(querySnapshot.docs.length);
+
+            // Delete all groupmembers:
             for (let i in querySnapshot.docs) {
     
                 const currGroupMember = querySnapshot.docs[i].data();
                 const primaryKeyOfGroupMember = `${currGroupMember.userid}` + `${currGroupMember.groupid}`;
                 const response = await db.collection('groupmember').doc(primaryKeyOfGroupMember).delete();
             }
+
+            // Get all active invitations for that group:
+            var querySnapshotInv = await invitationsRef.where('groupid', '==', `${groupId}`).get();
+
+            // Delete all invitations for that user
+            for (let i in querySnapshotInv.docs) {
     
+                const currInvitation = querySnapshotInv.docs[i].data();
+                const currInvitationID = currInvitation.inviteId;
+                const response = await db.collection('invitations').doc(currInvitationID).delete();
+            }
+    
+            // Delete group reference
             const responseTwo = await db.collection('group').doc(groupId).delete();
         }
         catch(e) {
