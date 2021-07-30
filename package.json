@@ -8,5 +8,8 @@
   "cacheDirectories": [
     "web/node_modules",
     "backend/node_modules"
-  ]
+  ],
+  "dependencies": {
+    "axios-retry": "^3.1.9"
+  }
 }

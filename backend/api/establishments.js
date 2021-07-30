@@ -4,6 +4,38 @@ const { admin, db } = require('../auth/firebase');
 const key = process.env.GOOGLE_API_KEY;
 const router = express.Router();
 
+const MAX_RETRY = 10;
+let currentRetry = 0;
+
+function successHandler() {
+  console.log('Data is Ready');
+}
+
+function errorHandler(url) {
+  if (currentRetry < MAX_RETRY) {
+    currentRetry++;
+    console.log('Retrying...');
+    sendWithRetry(url);
+  } else {
+    console.log('Retried several times but still failed');
+  }
+}
+
+function sendWithRetry(url) {
+  axios.get(url)
+    .then(successHandler).catch(errorHandler);
+}
+
+axios.interceptors.response.use(function (response) {
+  if (response.data.status == "INVALID_REQUEST") {
+    throw new axios.Cancel('Operation canceled by the user.');
+  } else {
+    return response;
+  }
+}, function (error) {
+  return Promise.reject(error);
+});
+
 /* ================= */
 /* UTILITY FUNCTIONS */
 /* ================= */
@@ -27,48 +59,53 @@ function isEstablishmentInsideCircleRadius(center, newPoint){
 
     // Pythagorean theorem with converted degrees
     // 3 is in km
+    console.log(Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY) <= 3);
     return Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY) <= 3;
 }
 
 // base url:
 // https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=<NEXTPAGE>&key=<APIKEY>
 async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
+    var oogaboogacaching = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+    var url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${key}&pagetoken=${pagetoken}&tricktostopcachingbynathan=${oogaboogacaching}`;
     console.log("Calling next query with pagetoken= "+pagetoken);
     var nextPageToken = ""
-    var snapshot = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${pagetoken}&key=${key}`
-    );
+    const response = await axios.get(url).then(successHandler()).catch(errorHandler(url));
+    
+    console.log(response.data);
 
     // If we have multiple pages, I need to store the token for the next page
-    if (snapshot.data.next_page_token){
-        nextPageToken = snapshot.data.next_page_token;
+    if (response.data.next_page_token){
+        nextPageToken = response.data.next_page_token;
     }
-
+    
+    console.log(response.data.results.length);
     // push all search results into return array
-    for (let i in snapshot.data.results) {
-        var elat = snapshot.data.results[i].geometry.location.lat;
-        var elon = snapshot.data.results[i].geometry.location.lng;
+    for (let i in response.data.results) {
+        var elat = response.data.results[i].geometry.location.lat;
+        var elon = response.data.results[i].geometry.location.lng;
+        var name = response.data.results[i].name;
 
         // If the coordinate is not inside the circle we just skip it
         if(!isEstablishmentInsideCircleRadius( {lat:latitude, lon:longitude}, {lat:elat, lon:elon}) ){
+            console.log(name);
             continue;
         }
 
-        var name = snapshot.data.results[i].name;
         var rating = "-";
 
-        if(snapshot.data.results[i].rating)
-            rating = "" + snapshot.data.results[i].rating;
+        if(response.data.results[i].rating)
+            rating = "" + response.data.results[i].rating;
 
-        var address = snapshot.data.results[i].vicinity;
+        var address = response.data.results[i].vicinity;
         var open = "Unknown";
 
-        if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
-            open = snapshot.data.results[i].opening_hours.open_now;
+        if(response.data.results[i].opening_hours && response.data.results[i].opening_hours.open_now)
+            open = response.data.results[i].opening_hours.open_now;
 
         var type = "Unknown";
-        if(snapshot.data.results[i].types.length > 0)
-            type = snapshot.data.results[i].types[0];
+        if(response.data.results[i].types.length > 0)
+            type = response.data.results[i].types[0];
         
         var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
         nearbyEstablishments.push(establishmentObject);
@@ -113,13 +150,14 @@ async function getEstablishments(latitude, longitude, filter, radius){
     for (let i in snapshot.data.results) {
         var elat = snapshot.data.results[i].geometry.location.lat;
         var elon = snapshot.data.results[i].geometry.location.lng;
+        var name = snapshot.data.results[i].name;
 
         // If the coordinate is not inside the circle we just skip it
         if(!isEstablishmentInsideCircleRadius( {lat:latitude, lon:longitude}, {lat:elat, lon:elon}) ){
+            console.log(name);
             continue;
         }
 
-        var name = snapshot.data.results[i].name;
         var rating = "-";
 
         if(snapshot.data.results[i].rating)
@@ -150,12 +188,12 @@ async function getEstablishments(latitude, longitude, filter, radius){
 }
 
 async function onlyGetInterestingEstablishments(latitude, longitude, radius){
-    var typesOfInterest = ['restaurants', 'store', 'shopping_mall', 'movie_theater', 'cafe']
+    var typesOfInterest = ['restaurant', 'store', 'shopping_mall', 'movie_theater', 'cafe']
     var nearbyEstablishments = [];
 
     for ( let i = 0; i < typesOfInterest.length; i++){
         var filter = "&type="+typesOfInterest[i];
-
+        console.log(filter);
         var snapshot = await axios.get(
             `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}`
         );
