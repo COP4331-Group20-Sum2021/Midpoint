@@ -130,6 +130,14 @@ router.post('/listgroups', async (req, res, next) => {
                 const currGroupMember = querySnapshot.docs[i].data();
 
                 const groupDoc = await groupRef.doc(`${currGroupMember.groupid}`).get();
+
+                // Edge Case. User is a participant of a group that was disbanded
+                if (!groupDoc){
+                    error = "Error fetching groupid: " + currGroupMember.groupid;
+                    status = 500; // Internal Server Error.
+                    break;
+                }
+
                 const groupData = groupDoc.data();
 
                 var groupMembers = await getParticipantsOfGroupId(`${currGroupMember.groupid}`);
