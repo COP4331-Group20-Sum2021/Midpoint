@@ -26,7 +26,8 @@ function isEstablishmentInsideCircleRadius(center, newPoint){
     var differenceInY = Math.abs(center.lat - newPoint.lat) * convertedY;
 
     // Pythagorean theorem with converted degrees
-    return Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY);
+    // 3 is in km
+    return Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY) <= 3;
 }
 
 // base url:
