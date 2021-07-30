@@ -264,11 +264,13 @@ router.post('/listinvites', async (req, res, next) => {
             for (let i in querySnapshot.docs) {
                 const currInvitation = querySnapshot.docs[i].data();
 
+                // Get group data (in order to get groupname)
                 const groupDoc = await groupRef.doc(currInvitation.groupid).get();
                 console.log(currInvitation.groupid);
                 const groupData = groupDoc.data();
                 var gpName = groupData.groupname;
 
+                // Get user data
                 var inviterData = await getUserData(currInvitation.inviter);
                 var inviteFrom = inviterData.firstname + " " + inviterData.lastname;
 
