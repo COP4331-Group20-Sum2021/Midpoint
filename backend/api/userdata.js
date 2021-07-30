@@ -27,24 +27,6 @@ function checkParameters(params) {
     return true;
 }
 
-async function authorizeUser(userId, authToken) {
-    const currTime = Date.now();
-    const userRef = db.collection('user').doc(userId);
-
-    const userDoc = await userRef.get();
-
-    // check if user exists
-    if (!userDoc.exists)
-        return false;
-
-    // check if input token matches user's token and it is not past expiration
-    if (userDoc.data().token === authToken && userDoc.data().expiration >= currTime) {
-        return true;
-    }
-
-    return false;
-}
-
 /* ================= */
 /*     API ROUTES    */
 /* ================= */
@@ -175,6 +157,7 @@ router.post('/getuserdata', async (req, res, next) => {
         ret = { error: error };
     }
     else{
+        // Will return error if the user is not in the DB.
         ret = await getUserData(userId);
     }
 
