@@ -137,6 +137,44 @@ async function getEstablishments(latitude, longitude, filter, radius){
     }
 }
 
+async function onlyGetInterestingEstablishments(latitude, longitude, radius){
+    var typesOfInterest = ['restaurants', 'store', 'shopping_mall', 'movie_theater', 'cafe']
+    var nearbyEstablishments = [];
+
+    for ( let i = 0; i < typesOfInterest.length; i++){
+        var filter = "&type="+typesOfInterest[i];
+
+        var snapshot = await axios.get(
+            `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}`
+        );
+        
+        for (let i in snapshot.data.results) {
+            var name = snapshot.data.results[i].name;
+            var rating = "-";
+    
+            if(snapshot.data.results[i].rating)
+                rating = "" + snapshot.data.results[i].rating;
+    
+            var address = snapshot.data.results[i].vicinity;
+            var elat = snapshot.data.results[i].geometry.location.lat;
+            var elon = snapshot.data.results[i].geometry.location.lng;
+    
+            var open = "Unknown";
+    
+            if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
+                open = snapshot.data.results[i].opening_hours.open_now;
+    
+            var type = "Unknown";
+            if(snapshot.data.results[i].types.length > 0)
+                type = snapshot.data.results[i].types[0];
+            
+            var establishmentObject = {name:name, rating:rating, address:address, latitude:elat, longitude:elon, openNow:open, type:type};
+            nearbyEstablishments.push(establishmentObject);
+        }
+    }
+    return nearbyEstablishments;
+}
+
 
 
 /* ================= */
@@ -155,6 +193,9 @@ router.post('/getestablishments', async (req, res, next) => {
     if (!checkParameters([latitude, longitude])) {
         error = 'Incorrect parameters';
         status = 400;
+    }
+    if (filters === ""){
+        allEstablishments = await onlyGetInterestingEstablishments(latitude, longitude, radius);
     }
     else {
         allEstablishments = await getEstablishments(latitude, longitude, filters, radius);
