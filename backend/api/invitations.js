@@ -46,6 +46,21 @@ async function authorizeUser(userId, authToken) {
     return false;
 }
 
+// return true if it's a duplicate invite
+async function checkDuplicateInvitation(email, groupId){
+    const invitationsRef = db.collection('invitations');
+
+    const invitationsDoc = await invitationsRef.doc(email + groupId).get();
+    const invitationsData = invitationsDoc.data();
+
+    // If it's undefined, it's not a duplicate
+    if(invitationsData === undefined){
+        return false;
+    }
+    // duplicate
+    return true;
+}
+
 /* ================= */
 /*   API ENDPOINTS   */
 /* ================= */
@@ -99,6 +114,10 @@ async function authorizeUser(userId, authToken) {
     }
     else if (!(await isUserOwnerOfGroup(userId, groupId))){
         error = "Only the owner of the group can invite participants";
+        status = 401;
+    } // Check if the person has been already invited.
+    else if ((await checkDuplicateInvitation(email, groupId))){
+        error = "This person was already invited";
         status = 401;
     }
     else{
@@ -164,6 +183,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
         // Check if email and inviteId are valid
         var doesInvitationExist = await checkInvitation(inviteId, email);
     
+        // Edge Case #: Group was deleted but invitation is still on the user's invite list because page wasn't updated.
         if(!doesInvitationExist){
             error = "An invitation for this user doesn't exist.";
             status = 400;
