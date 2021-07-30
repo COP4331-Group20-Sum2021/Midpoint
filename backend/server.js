@@ -46,8 +46,19 @@ if (process.env.NODE_ENV === 'production') {
 // api routes
 let locatonAPI = require('./api/locationapi');
 app.use('/api', locatonAPI);
+
 let groupCRUD = require('./api/groupCRUD');
 const swaggerJSDoc = require('swagger-jsdoc');
 app.use('/api', groupCRUD);
+
+let invitationsAPI = require('./api/invitations');
+app.use('/api',invitationsAPI);
+
+let userAPI = require('./api/userdata');
+app.use('/api', userAPI);
+
+let establishmentsAPI = require('./api/establishments');
+app.use('/api', establishmentsAPI);
+
 
 app.listen(PORT, () => {console.log('Server listening on port ' + PORT);});
