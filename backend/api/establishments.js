@@ -79,6 +79,7 @@ async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
 
 
 async function getEstablishments(latitude, longitude, filter, radius){
+    var nearbyEstablishments = [];
     var nextPageToken = "";
 
     if(!filter || filter === ""){
@@ -142,11 +143,10 @@ async function getEstablishments(latitude, longitude, filter, radius){
 // latitude, longitude of the MIDPOINT, filters
 router.post('/getestablishments', async (req, res, next) => {
     const {latitude, longitude, filters} = req.body;
-
+    var allEstablishments = []
     var radius = 3000; // **in meters**
     var status = 200;
     var error = '';
-    var nearbyEstablishments = [];
     console.log(key);
 
     if (!checkParameters([latitude, longitude])) {
@@ -154,10 +154,10 @@ router.post('/getestablishments', async (req, res, next) => {
         status = 400;
     }
     else {
-        var allEstablishments = await getEstablishments();
+        allEstablishments = await getEstablishments(latitude, longitude, filters, radius);
     }
-    
-    var ret = { establishments: nearbyEstablishments, error: error};
+
+    var ret = { establishments: allEstablishments, error: error};
     res.status(status).json(ret);
 });
 
