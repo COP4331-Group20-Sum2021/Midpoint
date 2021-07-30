@@ -136,6 +136,7 @@ router.post('/listgroups', async (req, res, next) => {
         }
         catch(e) {
             error = e.toString();
+            console.error(error);
             status = 404;
         }
     }
@@ -340,6 +341,7 @@ router.delete('/deletegroup', async (req, res, next) => {
         }
         catch(e) {
             error = e.toString();
+            console.error(error);
             status = 404;
         }
     }
@@ -707,6 +709,7 @@ router.delete('/removemyself', async (req, res, next) => {
             }
             catch(e) {
                 error = e.toString();
+                console.error(error);
                 status = 404;
             }
         }
@@ -847,6 +850,7 @@ router.post('/listinvites', async (req, res, next) => {
         }
         catch(e) {
             error = e.toString();
+            console.error(error);
             status = 404;
         }
     }
