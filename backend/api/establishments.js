@@ -32,6 +32,7 @@ function isEstablishmentInsideCircleRadius(center, newPoint){
 // base url:
 // https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=<NEXTPAGE>&key=<APIKEY>
 async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
+    console.log("Calling next query with pagetoken= "+pagetoken);
     var nextPageToken = ""
     var snapshot = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${pagetoken}&key=${key}`
@@ -95,9 +96,11 @@ async function getEstablishments(latitude, longitude, filter, radius){
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}`
     );
     
+    console.log("First request token: "+snapshot.data.next_page_token);
     // If we have multiple pages, I need to store the token for the next page
     if (snapshot.data.next_page_token){
         nextPageToken = snapshot.data.next_page_token;
+        console.log(nextPageToken);
     }
 
     // push all search results into return array
