@@ -44,7 +44,7 @@ async function nextEstablishmentPages(pagetoken, nearbyEstablishments, latitude,
     console.log("Calling next query with pagetoken= "+pagetoken);
 
     var nextPageToken = ""
-    const response = await axios.get(url);
+    const response = await axios.get(url).then(await wait(3000));
     
     console.log(response.data);
 
@@ -110,7 +110,7 @@ async function getEstablishments(latitude, longitude, filter, radius){
 
     var snapshot = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}`
-    ).then(await wait(5000));
+    ).then(await wait(3000));
     
     console.log("First request token: "+snapshot.data.next_page_token);
     // If we have multiple pages, I need to store the token for the next page
