@@ -43,7 +43,7 @@ async function nextEstablishmentPages(pagetoken, nearbyEstablishments, latitude,
     //         https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}
     console.log("Calling next query with pagetoken= "+pagetoken);
 
-    var nextPageToken = ""
+    var nextPageToken = "";
     const response = await axios.get(url).then(await wait(3000));
     
     console.log(response.data);
@@ -100,10 +100,10 @@ async function getEstablishments(latitude, longitude, filter, radius){
     var nextPageToken = "";
 
     if(!filter || filter === ""){
-        filter = ""
+        filter = "";
     }
     else{
-        filter = "&type="+filter;
+        filter = "&keyword="+filter;
     }
     console.log("Filter str: "+filter);
 
