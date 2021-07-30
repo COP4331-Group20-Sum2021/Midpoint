@@ -45,6 +45,14 @@ async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
 
     // push all search results into return array
     for (let i in snapshot.data.results) {
+        var elat = snapshot.data.results[i].geometry.location.lat;
+        var elon = snapshot.data.results[i].geometry.location.lng;
+
+        // If the coordinate is not inside the circle we just skip it
+        if(!isEstablishmentInsideCircleRadius( {lat:latitude, lon:longitude}, {lat:elat, lon:elon}) ){
+            continue;
+        }
+
         var name = snapshot.data.results[i].name;
         var rating = "-";
 
@@ -52,9 +60,6 @@ async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
             rating = "" + snapshot.data.results[i].rating;
 
         var address = snapshot.data.results[i].vicinity;
-        var elat = snapshot.data.results[i].geometry.location.lat;
-        var elon = snapshot.data.results[i].geometry.location.lng;
-
         var open = "Unknown";
 
         if(snapshot.data.results[i].opening_hours && snapshot.data.results[i].opening_hours.open_now)
@@ -105,6 +110,14 @@ async function getEstablishments(latitude, longitude, filter, radius){
 
     // push all search results into return array
     for (let i in snapshot.data.results) {
+        var elat = snapshot.data.results[i].geometry.location.lat;
+        var elon = snapshot.data.results[i].geometry.location.lng;
+
+        // If the coordinate is not inside the circle we just skip it
+        if(!isEstablishmentInsideCircleRadius( {lat:latitude, lon:longitude}, {lat:elat, lon:elon}) ){
+            continue;
+        }
+
         var name = snapshot.data.results[i].name;
         var rating = "-";
 
@@ -112,8 +125,6 @@ async function getEstablishments(latitude, longitude, filter, radius){
             rating = "" + snapshot.data.results[i].rating;
 
         var address = snapshot.data.results[i].vicinity;
-        var elat = snapshot.data.results[i].geometry.location.lat;
-        var elon = snapshot.data.results[i].geometry.location.lng;
 
         var open = "Unknown";
 
@@ -149,6 +160,14 @@ async function onlyGetInterestingEstablishments(latitude, longitude, radius){
         );
         
         for (let i in snapshot.data.results) {
+            var elat = snapshot.data.results[i].geometry.location.lat;
+            var elon = snapshot.data.results[i].geometry.location.lng;
+
+            // If the coordinate is not inside the circle we just skip it
+            if(!isEstablishmentInsideCircleRadius( {lat:latitude, lon:longitude}, {lat:elat, lon:elon}) ){
+                continue;
+            }
+
             var name = snapshot.data.results[i].name;
             var rating = "-";
     
@@ -156,8 +175,7 @@ async function onlyGetInterestingEstablishments(latitude, longitude, radius){
                 rating = "" + snapshot.data.results[i].rating;
     
             var address = snapshot.data.results[i].vicinity;
-            var elat = snapshot.data.results[i].geometry.location.lat;
-            var elon = snapshot.data.results[i].geometry.location.lng;
+
     
             var open = "Unknown";
     
