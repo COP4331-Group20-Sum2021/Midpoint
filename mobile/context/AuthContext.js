@@ -37,6 +37,8 @@ export function AuthProvider({ children }) {
           lon
         })
       })
+    }
+  }
 
   function signup(email, firstname, lastname, password) {
     return auth.createUserWithEmailAndPassword(email, password)
