@@ -4,37 +4,6 @@ const { admin, db } = require('../auth/firebase');
 const key = process.env.GOOGLE_API_KEY;
 const router = express.Router();
 
-const MAX_RETRY = 10;
-let currentRetry = 0;
-
-function successHandler() {
-  console.log('Data is Ready');
-}
-
-function errorHandler(url) {
-  if (currentRetry < MAX_RETRY) {
-    currentRetry++;
-    console.log('Retrying...');
-    sendWithRetry(url);
-  } else {
-    console.log('Retried several times but still failed');
-  }
-}
-
-function sendWithRetry(url) {
-  axios.get(url)
-    .then(successHandler).catch(errorHandler);
-}
-
-axios.interceptors.response.use(function (response) {
-  if (response.data.status == "INVALID_REQUEST") {
-    throw new axios.Cancel('Operation canceled by the user.');
-  } else {
-    return response;
-  }
-}, function (error) {
-  return Promise.reject(error);
-});
 
 /* ================= */
 /* UTILITY FUNCTIONS */
@@ -46,6 +15,10 @@ function checkParameters(params) {
             return false;
         
     return true;
+}
+// Mindblowing Promise function
+function wait(ms) {
+    return new Promise( (resolve) => {setTimeout(resolve, ms)});
 }
 
 // Convert degree of latitude and longitude to km in order to check if a point is inside the circle
@@ -59,18 +32,19 @@ function isEstablishmentInsideCircleRadius(center, newPoint){
 
     // Pythagorean theorem with converted degrees
     // 3 is in km
-    console.log(Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY) <= 3);
     return Math.sqrt(differenceInX * differenceInX + differenceInY * differenceInY) <= 3;
 }
 
 // base url:
 // https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=<NEXTPAGE>&key=<APIKEY>
-async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
-    var oogaboogacaching = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    var url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${key}&pagetoken=${pagetoken}&tricktostopcachingbynathan=${oogaboogacaching}`;
+async function nextEstablishmentPages(pagetoken, nearbyEstablishments, latitude, longitude){
+
+    var url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&key=${key}&pagetoken=${pagetoken}&radius=3000`;
+    //         https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}
     console.log("Calling next query with pagetoken= "+pagetoken);
+
     var nextPageToken = ""
-    const response = await axios.get(url).then(successHandler()).catch(errorHandler(url));
+    const response = await axios.get(url);
     
     console.log(response.data);
 
@@ -115,10 +89,9 @@ async function nextEstablishmentPages(pagetoken, nearbyEstablishments){
         return nearbyEstablishments;
     }
     else{
-        var finalEstablishmentList = await nextEstablishmentPages(nextPageToken, nearbyEstablishments);
+        var finalEstablishmentList = await nextEstablishmentPages(nextPageToken, nearbyEstablishments, latitude, longitude);
         return finalEstablishmentList;
     }
-
 }
 
 
@@ -137,7 +110,7 @@ async function getEstablishments(latitude, longitude, filter, radius){
 
     var snapshot = await axios.get(
         `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${radius}&key=${key}${filter}`
-    );
+    ).then(await wait(5000));
     
     console.log("First request token: "+snapshot.data.next_page_token);
     // If we have multiple pages, I need to store the token for the next page
@@ -151,10 +124,9 @@ async function getEstablishments(latitude, longitude, filter, radius){
         var elat = snapshot.data.results[i].geometry.location.lat;
         var elon = snapshot.data.results[i].geometry.location.lng;
         var name = snapshot.data.results[i].name;
-
+        console.log(name);
         // If the coordinate is not inside the circle we just skip it
         if(!isEstablishmentInsideCircleRadius( {lat:latitude, lon:longitude}, {lat:elat, lon:elon}) ){
-            console.log(name);
             continue;
         }
 
@@ -182,7 +154,7 @@ async function getEstablishments(latitude, longitude, filter, radius){
         return nearbyEstablishments;
     }
     else{
-        var finalEstablishmentList = await nextEstablishmentPages(nextPageToken, nearbyEstablishments);
+        var finalEstablishmentList = await nextEstablishmentPages(nextPageToken, nearbyEstablishments, latitude, longitude);
         return finalEstablishmentList;
     }
 }
