@@ -61,6 +61,20 @@ async function checkDuplicateInvitation(email, groupId){
     return true;
 }
 
+// Check if userid is the owner of the group
+async function isUserOwnerOfGroup(userid, groupid){
+    const groupRef = db.collection('group');
+
+    const groupDoc = await groupRef.doc(groupid).get();
+    const groupData = groupDoc.data();
+
+    if(groupData === undefined || groupData.ownerid != userid){
+        return false;
+    }
+
+    return true;
+}
+
 /* ================= */
 /*   API ENDPOINTS   */
 /* ================= */
