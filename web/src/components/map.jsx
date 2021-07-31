@@ -6,6 +6,7 @@ import "../styles/map.scss";
 import Modal from "./modal";
 import StarRateIcon from '@material-ui/icons/StarRate';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import Loading from "./loading";
 
 const colorMap = {
   restaurant: "red",
@@ -74,9 +75,9 @@ const options = {
 
 function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
   const [establishments, setEstablishments] = useState();
+  const [loading, setLoading] = useState(true);
 
   // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
-  
   useEffect(() => {
     console.log(midpoint);
     fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
@@ -95,67 +96,71 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
       .then((data) => {
         setEstablishments(data);
         setFoundMidpoints(data);
+        setLoading(false)
       });
   }, [filter]);
 
   return (
     <>
-      <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={13} options={options}>
-        {members.map((member) => {
-          console.log(member);
-          console.log(establishments);
-          return (
-            <Marker
-              position={{ lat: member.latitude, lng: member.longitude }}
-              label={{
-                title: `${member.firstname} ${member.lastname}`,
-                className: "memberMarker",
-              }}
-              icon={`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}
-            >
-              <div>Hello There!</div>
-            </Marker>
-          );
-        })}
-        {establishments &&
-          establishments.establishments.map((establishment) => {
-            if (colorMap[establishment.type]) {
-              // With color
-              return (
-                <Marker
-                  position={{
-                    lat: establishment.latitude,
-                    lng: establishment.longitude,
-                  }}
-                  icon={`http://maps.google.com/mapfiles/ms/icons/${colorMap[establishment.type]}-dot.png`}
-                />
-              );
-            } else {
-              // Black
-              return (
-                <Marker
-                  position={{
-                    lat: establishment.latitude,
-                    lng: establishment.longitude,
-                  }}
-                  icon={`http://maps.google.com/mapfiles/ms/icons/yellow-dot.png`}
-                />
-              );
-            }
+      {loading && <Loading />}
+      {!loading &&
+        <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={13} options={options}>
+          {members.map((member) => {
+            console.log(member);
+            console.log(establishments);
+            return (
+              <Marker
+                position={{ lat: member.latitude, lng: member.longitude }}
+                label={{
+                  title: `${member.firstname} ${member.lastname}`,
+                  className: "memberMarker",
+                }}
+                icon={`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}
+              >
+                <div>Hello There!</div>
+              </Marker>
+            );
           })}
+          {establishments &&
+            establishments.establishments.map((establishment) => {
+              if (colorMap[establishment.type]) {
+                // With color
+                return (
+                  <Marker
+                    position={{
+                      lat: establishment.latitude,
+                      lng: establishment.longitude,
+                    }}
+                    icon={`http://maps.google.com/mapfiles/ms/icons/${colorMap[establishment.type]}-dot.png`}
+                  />
+                );
+              } else {
+                // Black
+                return (
+                  <Marker
+                    position={{
+                      lat: establishment.latitude,
+                      lng: establishment.longitude,
+                    }}
+                    icon={`http://maps.google.com/mapfiles/ms/icons/yellow-dot.png`}
+                  />
+                );
+              }
+            })}
 
-        <Circle
-          center={midpoint}
-          radius={3000}
-          options={{
-            fillColor: "#C1DAFF",
-            fillOpacity: 0.25,
-            strokeOpacity: 1,
-            strokeColor: "#7E94B4",
-            strokeWeight: 1,
-          }}
-        />
-      </GoogleMap>
+          <Circle
+            center={midpoint}
+            radius={3000}
+            options={{
+              fillColor: "#C1DAFF",
+              fillOpacity: 0.25,
+              strokeOpacity: 1,
+              strokeColor: "#7E94B4",
+              strokeWeight: 1,
+            }}
+          />
+        </GoogleMap>
+      }
     </>
   );
 }
@@ -465,7 +470,7 @@ export default function Map({ group, setPage, invalidate }) {
                       <option value="shopping">Shopping</option>
                     </select>
                   </div> : 
-                  <div className="found-midpoints"><h3>LOADING MIDPOINTS...</h3></div>
+                  <div className="found-midpoints"><h3>Calculating Midpoints...</h3></div>
                 }
                 </div>
 
