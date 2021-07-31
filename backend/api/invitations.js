@@ -7,6 +7,18 @@ const router = express.Router();
 /* UTILITY FUNCTIONS */
 /* ================= */
 
+async function getUserData(userId){
+    const userRef = db.collection('user');
+
+    const userDoc = await userRef.doc(userId).get();
+    const userData = userDoc.data();
+    if(userData){
+           var ret = {userId:userData.userid, firstname:userData.firstname, lastname:userData.lastname, latitude:userData.latitude, longitude:userData.longitude, email:userData.email};
+           return ret;
+    }
+    return {error: 'No user found with that userid'};
+}
+
 // check if there's a valid invitation with email & groupid.
 async function checkInvitation(inviteId, email){
 
