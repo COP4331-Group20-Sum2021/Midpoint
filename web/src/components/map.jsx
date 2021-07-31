@@ -74,30 +74,30 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
   const [establishments, setEstablishments] = useState();
 
   // {establishments:[]}
-  useEffect(() => {
-    console.log(midpoint);
-    fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        latitude: midpoint.lat,
-        longitude: midpoint.lng,
-        filters: filter,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setEstablishments(data);
-        setFoundMidpoints(data);
-      });
-  }, [filter]);
+  // useEffect(() => {
+  //   console.log(midpoint);
+  //   fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       latitude: midpoint.lat,
+  //       longitude: midpoint.lng,
+  //       filters: filter,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setEstablishments(data);
+  //       setFoundMidpoints(data);
+  //     });
+  // }, [filter]);
 
   return (
     <>
-      <GoogleMap mapContainerStyle={mapContainerStyle} center={midpoint} zoom={13} options={options}>
+      <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={13} options={options}>
         {members.map((member) => {
           console.log(member);
           console.log(establishments);
@@ -243,10 +243,9 @@ export default function Map({ group, setPage, invalidate }) {
         groupId: group.groupid,
       }),
     })
-      .then(console.log(group))
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .then(() => setStale(!stale));
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .then(() => setStale(!stale));
   }
 
   function editCard(group, newName) {
@@ -383,13 +382,16 @@ export default function Map({ group, setPage, invalidate }) {
     setGroupInfo(group);
   }
   function leavePortal(group) {
+    console.log("THIS IS GROUPS DATA")
+    console.log(group);
+    console.log(group.groupid)
     setIsOpen(true);
     setCrud(5);
+    console.log(group)
     setGroupInfo(group);
   }
 
   function addPortal(group) {
-    console.log(group);
     setIsOpen(true);
     setCrud(6);
     setGroupInfo(group);
@@ -417,86 +419,95 @@ export default function Map({ group, setPage, invalidate }) {
         ></Modal>
 
         <div className="map-content">
-          {/* Group Name */}
-          <div className="group-name">{group.groupname}</div>
+          <div className="maps">
 
-          {/* Buttons */}
-          <div className="buttons">
-            <select name="cars" id="cars" onChange={handleFilter}>
-              <option value="all">All</option>
-              <option value="restaurants">Restaurants</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="recreation">Recreation</option>
-              <option value="shopping">Shopping</option>
-            </select>
-            <button onClick={leavePortal}>Leave Group</button>
-            <button>Delete Group</button>
-          </div>
+            <div className="maps-title">
+              {/* Group Name */} 
+              <h1>{group.groupname}</h1>
+              {/* Buttons */}
+              <div className="buttons">
+                <select name="cars" id="cars" onChange={handleFilter}>
+                  <option value="all">All</option>
+                  <option value="restaurants">Restaurants</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="recreation">Recreation</option>
+                  <option value="shopping">Shopping</option>
+                </select>
+                <button onClick={() => leavePortal(group)}>Leave Group</button>
+                <button onClick={() => deletePortal(group)}>Delete Group</button>
+              </div>
+            </div>
 
-          {/* Map Frame */}
-          <div className="map-frame">
-            {groupData && (
-              <WholeMap
-                members={groupData.grouplocations}
-                midpoint={{
-                  lat: groupData.midpoint.latitude,
-                  lng: groupData.midpoint.longitude,
-                }}
-                setFoundMidpoints={setFoundMidpoints}
-                filter={filter}
-              />
-            )}
-          </div>
+            
+            <div className="map-and-locations">
+              {/* Map Frame */}
+              {/* <div className="map-frame"> */}
+                {groupData && (
+                  <WholeMap
+                    members={groupData.grouplocations}
+                    midpoint={{
+                      lat: groupData.midpoint.latitude,
+                      lng: groupData.midpoint.longitude,
+                    }}
+                    setFoundMidpoints={setFoundMidpoints}
+                    filter={filter}
+                  />
+                )}
+              {/* </div> */}
 
-          {/* Establishments */}
-          <div className="point-list">
-            {foundMidpoints && (
-              <>
-                MIDPOINT FOUND {foundMidpoints.establishments.length} LOCATIONS:
-                <table className="location-table">
-                  {foundMidpoints.establishments.map((m) => {
-                    // console.log(foundMidpoints)
+              {/* Establishments */}
+              <div className="point-list">
+                {foundMidpoints && (
+                  <>
+                    MIDPOINT FOUND {foundMidpoints.establishments.length} LOCATIONS:
+                    <table className="location-table">
+                      {foundMidpoints.establishments.map((m) => {
+                        // console.log(foundMidpoints)
+                        return (
+                          <tr key={m.name}>
+                            <td>{m.name}</td>
+                            <td>{m.address}</td>
+                            <td>{m.rating}</td>
+                            <td>{m.price}</td>
+                          </tr>
+                        );
+                      })}
+                    </table>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Member List */}
+            <div className="member-container">
+              <div className="member-title">
+                <h3>Member List:</h3>
+                <button id="add-member-button" onClick={() => addPortal(group)}>ADD MEMBER</button>
+              </div>
+
+              <table className="member-list">
+                {groupData &&
+                  groupData.grouplocations.map((member) => {
                     return (
-                      <tr key={m.name}>
-                        <td>{m.name}</td>
-                        <td>{m.address}</td>
-                        <td>{m.rating}</td>
-                        <td>{m.price}</td>
+                      <tr key={member.email}>
+                        <td>{member.firstname}</td>
+                        <td>{member.lastname}</td>
+                        <td>{member.email}</td>
+                        {user.uid == member.userId ? (
+                          <td>
+                            <button onClick={() => leaveCard()}>LEAVE</button>
+                          </td>
+                        ) : (
+                          <td>
+                            <button onClick={() => kickMember(member.userId)}>KICK</button>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
-                </table>
-              </>
-            )}
+              </table>
           </div>
-
-          {/* Member List */}
-          <div className="member-container">
-            <h3>Member List:</h3>
-            <button onClick={() => addPortal(group)}>ADD MEMBER</button>
-
-            <table className="member-list">
-              {groupData &&
-                groupData.grouplocations.map((member) => {
-                  return (
-                    <tr key={member.email}>
-                      <td>{member.firstname}</td>
-                      <td>{member.lastname}</td>
-                      <td>{member.email}</td>
-                      {user.uid == member.userId ? (
-                        <td>
-                          <button onClick={() => leaveCard()}>LEAVE</button>
-                        </td>
-                      ) : (
-                        <td>
-                          <button onClick={() => kickMember(member.userId)}>KICK</button>
-                        </td>
-                      )}
-                    </tr>
-                  );
-                })}
-            </table>
-          </div>
+        </div>
         </div>
       </div>
     </>

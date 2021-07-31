@@ -69,6 +69,8 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             onClick={() => {
               onClose();
               del(info);
+              invalidate();
+              setPage(<Groups setPage={setPage} />);
             }}
           >
             Confirm
@@ -131,6 +133,8 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <Link to="/myprofile">
               <button id="confirm-button-modal"
                 onClick={() => {
+                  console.log("testing info")
+                  console.log(info.groupid)
                   onClose();
                   leave(info);
                   invalidate();
