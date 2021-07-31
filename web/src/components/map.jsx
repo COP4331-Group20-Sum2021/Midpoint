@@ -85,7 +85,7 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
       body: JSON.stringify({
         latitude: midpoint.lat,
         longitude: midpoint.lng,
-        filters: [filter],
+        filters: filter,
       }),
     })
       .then((response) => response.json())
