@@ -454,10 +454,82 @@ export default function Map({ group, setPage, invalidate }) {
 
               {/* Establishments */}
               <div className="point-list">
+              <table className="location-table">
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
+                <tr>
+                    <td>Establishment Name</td>
+                    <td>Establishment address</td>
+                    <td>Establishment Rating</td>
+                    <td>$</td>
+                </tr>
                 {foundMidpoints && (
                   <>
                     MIDPOINT FOUND {foundMidpoints.establishments.length} LOCATIONS:
-                    <table className="location-table">
                       {foundMidpoints.establishments.map((m) => {
                         // console.log(foundMidpoints)
                         return (
@@ -469,9 +541,10 @@ export default function Map({ group, setPage, invalidate }) {
                           </tr>
                         );
                       })}
-                    </table>
+                        );
                   </>
                 )}
+              </table>
               </div>
             </div>
 
@@ -489,10 +562,9 @@ export default function Map({ group, setPage, invalidate }) {
                   groupData.grouplocations.map((member) => {
                     return (
                       <tr key={member.email}>
-                        <td>{member.firstname}</td>
-                        <td>{member.lastname}</td>
+                        <td>{member.firstname} {member.lastname}</td>
                         <td>{member.email}</td>
-                        {user.uid == member.userId ? (
+                        {user.uid === member.userId ? (
                           <td>
                             <button onClick={() => leaveCard()}>LEAVE</button>
                           </td>
