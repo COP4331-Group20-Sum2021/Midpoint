@@ -4,6 +4,8 @@ import { GoogleMap, Marker, useLoadScript, Circle } from "@react-google-maps/api
 import SideBar from "./sidebar";
 import "../styles/map.scss";
 import Modal from "./modal";
+import StarRateIcon from '@material-ui/icons/StarRate';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const colorMap = {
   restaurant: "red",
@@ -73,26 +75,28 @@ const options = {
 function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
   const [establishments, setEstablishments] = useState();
 
-  // useEffect(() => {
-  //   console.log(midpoint);
-  //   fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       latitude: midpoint.lat,
-  //       longitude: midpoint.lng,
-  //       filters: filter,
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setEstablishments(data);
-  //       setFoundMidpoints(data);
-  //     });
-  // }, [filter]);
+  // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
+  
+  useEffect(() => {
+    console.log(midpoint);
+    fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        latitude: midpoint.lat,
+        longitude: midpoint.lng,
+        filters: filter,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setEstablishments(data);
+        setFoundMidpoints(data);
+      });
+  }, [filter]);
 
   return (
     <>
@@ -424,13 +428,7 @@ export default function Map({ group, setPage, invalidate }) {
               <h1>{group.groupname}</h1>
               {/* Buttons */}
               <div className="buttons">
-                <select name="cars" id="cars" onChange={handleFilter}>
-                  <option value="">All</option>
-                  <option value="restaurants">Restaurants</option>
-                  <option value="entertainment">Entertainment</option>
-                  <option value="recreation">Recreation</option>
-                  <option value="shopping">Shopping</option>
-                </select>
+                
                 <button onClick={() => leavePortal(group)}>Leave Group</button>
                 <button onClick={() => deletePortal(group)}>Delete Group</button>
               </div>
@@ -454,97 +452,43 @@ export default function Map({ group, setPage, invalidate }) {
 
               {/* Establishments */}
               <div className="point-list">
-              <table className="location-table">
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                <tr>
-                    <td>Establishment Name</td>
-                    <td>Establishment address</td>
-                    <td>Establishment Rating</td>
-                    <td>$</td>
-                </tr>
-                {foundMidpoints && (
-                  <>
-                    MIDPOINT FOUND {foundMidpoints.establishments.length} LOCATIONS:
-                      {foundMidpoints.establishments.map((m) => {
-                        // console.log(foundMidpoints)
-                        return (
-                          <tr key={m.name}>
-                            <td>{m.name}</td>
-                            <td>{m.address}</td>
-                            <td>{m.rating}</td>
-                            <td>{m.price}</td>
-                          </tr>
-                        );
-                      })}
-                        );
-                  </>
-                )}
-              </table>
+                <div className="point-list-title">
+                
+                {foundMidpoints ? 
+                  <div className="found-midpoints">
+                    <h3>MIDPOINT FOUND {foundMidpoints.establishments.length} LOCATIONS</h3> 
+                    <select name="cars" id="cars" onChange={handleFilter}>
+                      <option value="">All</option>
+                      <option value="restaurants">Restaurants</option>
+                      <option value="entertainment">Entertainment</option>
+                      <option value="recreation">Recreation</option>
+                      <option value="shopping">Shopping</option>
+                    </select>
+                  </div> : 
+                  <div className="found-midpoints"><h3>LOADING MIDPOINTS...</h3></div>
+                }
+                </div>
+
+                <div className="scroll">
+                  <table className="location-table">
+                  {foundMidpoints && (
+                    <>
+                        {foundMidpoints.establishments.map((m) => {
+                          // console.log(foundMidpoints)
+                          return (
+                            <tr key={m.name}>
+                              <td>{m.name}</td>
+                              <td>{m.address}</td>
+                              <td><div className="ratings"><StarRateIcon/>{m.rating}</div></td>
+                              {/* <td>{m.price}</td> */}
+                            </tr>
+                          );
+                        })}
+                          );
+                    </>
+                  )}
+                </table>
+              </div>
               </div>
             </div>
 
@@ -565,11 +509,11 @@ export default function Map({ group, setPage, invalidate }) {
                         <td>{member.firstname} {member.lastname}</td>
                         <td>{member.email}</td>
                         {user.uid === member.userId ? (
-                          <td>
+                          <td id="member-list-buttons">
                             <button onClick={() => leaveCard()}>LEAVE</button>
                           </td>
                         ) : (
-                          <td>
+                          <td id="member-list-buttons">
                             <button onClick={() => kickMember(member.userId)}>KICK</button>
                           </td>
                         )}

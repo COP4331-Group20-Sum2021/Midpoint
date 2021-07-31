@@ -66,21 +66,23 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
     return ReactDom.createPortal(
       <>
         <div style={OVERLAY_STYLES} />
-        <div style={MODAL_STYLES}>
-          <div>Are you sure you want to delete this group?</div>
-          <Link to="/myprofile">
-            <button
-              onClick={() => {
-                onClose();
-                del(info);
-                invalidate();
-                setPage(<Groups setPage={setPage} />);
-              }}
-            >
-              Confirm
-            </button>
-          </Link>
-          <button onClick={onClose}>Cancel</button>
+        <div className="create-modal">
+          <h1>Are you sure you want to delete this group?</h1>
+          <div className="modal-buttons">
+            <Link to="/myprofile">
+              <button id="confirm-button-modal"
+                onClick={() => {
+                  onClose();
+                  del(info);
+                  invalidate();
+                  setPage(<Groups setPage={setPage} />);
+                }}
+              >
+                Confirm
+              </button>
+            </Link>
+            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+          </div>
         </div>
       </>,
       document.getElementById("portal")
