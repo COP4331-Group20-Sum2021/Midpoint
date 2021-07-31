@@ -42,9 +42,10 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             <label for="gname">Group Name</label>
             <input type="text" id="gname" name="gname" />
           </div>
-          
+
           <div className="modal-buttons">
-            <button id="confirm-button-modal"
+            <button
+              id="confirm-button-modal"
               onClick={() => {
                 onClose();
                 create(document.getElementById("gname").value);
@@ -52,7 +53,9 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             >
               Confirm
             </button>
-            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+            <button id="cancel-button-modal" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </div>
       </>,
@@ -65,16 +68,18 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
         <div style={OVERLAY_STYLES} />
         <div style={MODAL_STYLES}>
           <div>Are you sure you want to delete this group?</div>
-          <button
-            onClick={() => {
-              onClose();
-              del(info);
-              invalidate();
-              setPage(<Groups setPage={setPage} />);
-            }}
-          >
-            Confirm
-          </button>
+          <Link to="/myprofile">
+            <button
+              onClick={() => {
+                onClose();
+                del(info);
+                invalidate();
+                setPage(<Groups setPage={setPage} />);
+              }}
+            >
+              Confirm
+            </button>
+          </Link>
           <button onClick={onClose}>Cancel</button>
         </div>
       </>,
@@ -131,10 +136,11 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
           <h1>Are you sure you want to leave the group?</h1>
           <div className="modal-buttons">
             <Link to="/myprofile">
-              <button id="confirm-button-modal"
+              <button
+                id="confirm-button-modal"
                 onClick={() => {
-                  console.log("testing info")
-                  console.log(info.groupid)
+                  console.log("testing info");
+                  console.log(info.groupid);
                   onClose();
                   leave(info);
                   invalidate();
@@ -144,8 +150,10 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
                 Confirm
               </button>
             </Link>
-          
-            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+
+            <button id="cancel-button-modal" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </div>
       </>,
@@ -163,7 +171,8 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
           </div>
 
           <div className="modal-buttons">
-            <button id="confirm-button-modal"
+            <button
+              id="confirm-button-modal"
               onClick={() => {
                 onClose();
                 add(info, document.getElementById("memEmail").value);
@@ -171,7 +180,9 @@ export default function Modal({ open, children, onClose, crud, create, del, edit
             >
               Confirm
             </button>
-            <button id="cancel-button-modal" onClick={onClose}>Cancel</button>
+            <button id="cancel-button-modal" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </div>
       </>,

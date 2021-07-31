@@ -73,7 +73,6 @@ const options = {
 function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
   const [establishments, setEstablishments] = useState();
 
-  // {establishments:[]}
   // useEffect(() => {
   //   console.log(midpoint);
   //   fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
@@ -243,9 +242,9 @@ export default function Map({ group, setPage, invalidate }) {
         groupId: group.groupid,
       }),
     })
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .then(() => setStale(!stale));
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .then(() => setStale(!stale));
   }
 
   function editCard(group, newName) {
@@ -382,12 +381,12 @@ export default function Map({ group, setPage, invalidate }) {
     setGroupInfo(group);
   }
   function leavePortal(group) {
-    console.log("THIS IS GROUPS DATA")
+    console.log("THIS IS GROUPS DATA");
     console.log(group);
-    console.log(group.groupid)
+    console.log(group.groupid);
     setIsOpen(true);
     setCrud(5);
-    console.log(group)
+    console.log(group);
     setGroupInfo(group);
   }
 
@@ -420,14 +419,13 @@ export default function Map({ group, setPage, invalidate }) {
 
         <div className="map-content">
           <div className="maps">
-
             <div className="maps-title">
-              {/* Group Name */} 
+              {/* Group Name */}
               <h1>{group.groupname}</h1>
               {/* Buttons */}
               <div className="buttons">
                 <select name="cars" id="cars" onChange={handleFilter}>
-                  <option value="all">All</option>
+                  <option value="">All</option>
                   <option value="restaurants">Restaurants</option>
                   <option value="entertainment">Entertainment</option>
                   <option value="recreation">Recreation</option>
@@ -438,21 +436,20 @@ export default function Map({ group, setPage, invalidate }) {
               </div>
             </div>
 
-            
             <div className="map-and-locations">
               {/* Map Frame */}
               {/* <div className="map-frame"> */}
-                {groupData && (
-                  <WholeMap
-                    members={groupData.grouplocations}
-                    midpoint={{
-                      lat: groupData.midpoint.latitude,
-                      lng: groupData.midpoint.longitude,
-                    }}
-                    setFoundMidpoints={setFoundMidpoints}
-                    filter={filter}
-                  />
-                )}
+              {groupData && (
+                <WholeMap
+                  members={groupData.grouplocations}
+                  midpoint={{
+                    lat: groupData.midpoint.latitude,
+                    lng: groupData.midpoint.longitude,
+                  }}
+                  setFoundMidpoints={setFoundMidpoints}
+                  filter={filter}
+                />
+              )}
               {/* </div> */}
 
               {/* Establishments */}
@@ -481,8 +478,10 @@ export default function Map({ group, setPage, invalidate }) {
             {/* Member List */}
             <div className="member-container">
               <div className="member-title">
-                <h3>Member List:</h3>
-                <button id="add-member-button" onClick={() => addPortal(group)}>ADD MEMBER</button>
+                <h3>Member List</h3>
+                <button id="add-member-button" onClick={() => addPortal(group)}>
+                  ADD MEMBER
+                </button>
               </div>
 
               <table className="member-list">
@@ -506,8 +505,8 @@ export default function Map({ group, setPage, invalidate }) {
                     );
                   })}
               </table>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </>
