@@ -10,15 +10,10 @@ import devinBesaw from '../assets/images/devinbesaw.jpg';
 export default function About() {
   return (
     <div className="content">
-
       <div className="container">
-
         <div className="information">
-
-          <div className="information-images"><img src={nathanWilk}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={nathanWilk}  alt="Photo of Nathan Kurelo Wilk"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Nathan Kurelo Wilk</h1>
             <h2>Project Manager/API/Database</h2>
@@ -31,10 +26,8 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={josephTerribile}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={josephTerribile}  alt="Photo of Joseph Terribile"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Joseph Terribile</h1>
             <h2>Wildcard</h2>
@@ -47,10 +40,8 @@ export default function About() {
             </p>
           </div>
           
-          <div className="information-images"><img src={wesleyEllery}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={wesleyEllery}  alt="Photo of Wesley Ellery"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Wesley Ellery</h1>
             <h2>API</h2>
@@ -63,10 +54,8 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={jamieHenry}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={jamieHenry}  alt="Photo of Jamie Henry"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Jamie Henry</h1>
             <h2>API</h2>
@@ -79,10 +68,8 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={vijayStroup}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={vijayStroup}  alt="Photo of Vijay Stroup"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Vijay Stroup</h1>
             <h2>Front End/Mobile/API</h2>
@@ -95,10 +82,8 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={kyleOlson}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={kyleOlson}  alt="Photo of Kyle Olson"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Kyle Olson</h1>
             <h2>Front End/Mobile</h2>
@@ -111,10 +96,8 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={devinBesaw}  alt="Create Groups"></img></div>
-
+          <div className="information-images"><img src={devinBesaw}  alt="Photo of Devin Besaw"></img></div>
           <div className="seperator"></div>
-
           <div className="information-text">
             <h1>Devin Besaw</h1>
             <h2>Front End/Mobile</h2>
