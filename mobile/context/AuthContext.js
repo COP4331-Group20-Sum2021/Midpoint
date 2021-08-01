@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { auth } from '../firebase'
+import * as Location from 'expo-location'
 
 const AuthContext = createContext()
 
@@ -10,6 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState()
   const [loading, setLoading] = useState(true)
+  const [location, setLocation] = useState()
 
   function toTitleCase(str) {
     return str.replace(
@@ -20,6 +22,17 @@ export function AuthProvider({ children }) {
     )
   }
 
+  async function getLoc() {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location.coords);
+    return location
+  }
 
   function updateLoc(lat, lon, user) {
     if (user && user.emailVerified) {
@@ -73,28 +86,11 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const unsub = auth.onAuthStateChanged(user => {
+    const unsub = auth.onAuthStateChanged(async user => {
       setUser(user)
       if (user) {
-        // https://stackoverflow.com/questions/11747440/wait-for-callback-in-javascript
-        let geoloc
-        const successful = function (position) {
-          geoloc = {
-            longitude: position.coords.longitude,
-            latitude: position.coords.latitude
-          }
-        }
-
-        const getLocation = function(callback) {
-          navigator.geolocation.getCurrentPosition(pos => {
-            successful(pos)
-            typeof callback === 'function' && callback(geoloc)
-          }, null, { enableHighAccuracy: true })
-        }
-
-        getLocation(function(pos){
-          updateLoc(pos.latitude, pos.longitude, user)
-        })
+        const loc = await getLoc()
+        updateLoc(loc.coords.latitude, loc.coords.longitude, user)
       }
     })
     setLoading(false)
@@ -104,6 +100,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
+    location,
     signup,
     login,
     logout,
