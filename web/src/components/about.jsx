@@ -12,7 +12,7 @@ export default function About() {
     <div className="content-about">
       <div className="container">
         <div className="information">
-          <div className="information-images"><img src={nathanWilk}  alt="Photo of Nathan Kurelo Wilk"></img></div>
+          <div className="information-images"><img src={nathanWilk}  alt="Nathan Kurelo Wilk"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Nathan Kurelo Wilk</h1>
@@ -26,7 +26,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={josephTerribile}  alt="Photo of Joseph Terribile"></img></div>
+          <div className="information-images"><img src={josephTerribile}  alt="Joseph Terribile"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Joseph Terribile</h1>
@@ -48,15 +48,15 @@ export default function About() {
               For this project, to help make it easier to know what was happening with Heroku without checking the logs, I created a
               NodeJS app (that I hosted on another Heroku instance), that would convert Heroku webhooks into Discord web hooks. This 
               allowed us to view any messages related to builds and releases from within our Discord channel, where we did the 
-              majority of our communication. You can find that project <a href="https://github.com/TheIceCreamBear/HerokuToDiscord" target="_blank">here</a>.
+              majority of our communication. You can find that project <a href="https://github.com/TheIceCreamBear/HerokuToDiscord" target="_blank" rel="noreferrer">here</a>.
             </p>
             <p>
               Outside of this project, I am an avid game lover and beginner game developer. I have created a custom 3D rendering engine
-              in Java and OpenGL using LWJGL. You can find some of my projects <a href="https://github.com/TheIceCreamBear" target="_blank">on my GitHub</a>.
+              in Java and OpenGL using LWJGL. You can find some of my projects <a href="https://github.com/TheIceCreamBear" target="_blank" rel="noreferrer">on my GitHub</a>.
             </p>
           </div>
           
-          <div className="information-images"><img src={wesleyEllery}  alt="Photo of Wesley Ellery"></img></div>
+          <div className="information-images"><img src={wesleyEllery}  alt="Wesley Ellery"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Wesley Ellery</h1>
@@ -70,7 +70,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={jamieHenry}  alt="Photo of Jamie Henry"></img></div>
+          <div className="information-images"><img src={jamieHenry}  alt="Jamie Henry"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Jamie Henry</h1>
@@ -84,7 +84,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={vijayStroup}  alt="Photo of Vijay Stroup"></img></div>
+          <div className="information-images"><img src={vijayStroup}  alt="Vijay Stroup"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Vijay Stroup</h1>
@@ -98,7 +98,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={kyleOlson}  alt="Photo of Kyle Olson"></img></div>
+          <div className="information-images"><img src={kyleOlson}  alt="Kyle Olson"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Kyle Olson</h1>
@@ -112,7 +112,7 @@ export default function About() {
             </p>
           </div>
 
-          <div className="information-images"><img src={devinBesaw}  alt="Photo of Devin Besaw"></img></div>
+          <div className="information-images"><img src={devinBesaw}  alt="Devin Besaw"></img></div>
           <div className="seperator"></div>
           <div className="information-text">
             <h1>Devin Besaw</h1>
