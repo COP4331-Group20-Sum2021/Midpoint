@@ -489,7 +489,6 @@ export default function Map({ group, setPage, invalidate }) {
                             </tr>
                           );
                         })}
-                          );
                     </>
                   )}
                 </table>
