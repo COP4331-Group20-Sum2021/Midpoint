@@ -1,9 +1,11 @@
 import React from 'react';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Text, View, Button, TextInput, StyleSheet } from 'react-native';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import { useAuth } from '../context/AuthContext';
 import { useState } from 'react';
+import { withSafeAreaInsets } from 'react-native-safe-area-context';
 
 const loginSchema = yup.object().shape({
     email: yup
@@ -58,7 +60,11 @@ export default function Login({ navigation }) {
                     {(errors.password && touched.password) && <Text style={style.error}>{errors.password}</Text>}
                 </View>
                 <View style={style.section}>
-                    <Button style={style.submit} onPress={handleSubmit} title="Login" />
+                    <Button 
+                        buttonStyle={style.loginButton}
+                        title='Login'
+                        onPress={handleSubmit}
+                    />
                 </View>
                 {error &&
                     <View style={style.section}>
@@ -72,25 +78,40 @@ export default function Login({ navigation }) {
 }
 
 const style = StyleSheet.create({
+    loginButton: {
+        backgroundColor: '#9FB3D1',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: 'black'
+    },
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 10,
+        justifyContent: 'center',
+        paddingTop: 10,
+        backgroundColor: '#2A3C6B'
     },
     section: {
         width: '90%',
-        marginTop: 20,
+        padding: 20,
+        backgroundColor: '#9FB3D1',
+        shadowColor: "black",
+        shadowOpacity: .1,
+        shadowRadius: 5,
     },
     input: {
+        backgroundColor: 'white',
         shadowColor: 'black',
         shadowOpacity: .1,
         shadowRadius: 5,
         borderRadius: 5,
         fontSize: 20,
-        padding: 5,
+        padding: 10,
     },
     fieldName: {
         fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white',
     },
     error: {
         color: 'red',

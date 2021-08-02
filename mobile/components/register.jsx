@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, Button, TextInput, StyleSheet } from 'react-native';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useAuth } from '../context/AuthContext';
@@ -102,7 +103,11 @@ export default function Register({ navigation }) {
                         {(errors.passwordConfirm && touched.passwordConfirm) && <Text style={style.error}>{errors.passwordConfirm}</Text>}
                     </View>
                     <View style={style.section}>
-                        <Button style={style.submit} onPress={handleSubmit} title="Signup" />
+                    <Button 
+                        buttonStyle={style.signupButton}
+                        title='Signup'
+                        onPress={handleSubmit}
+                    />
                     </View>
                     {error &&
                         <View style={style.section}>
@@ -124,25 +129,40 @@ export default function Register({ navigation }) {
 }
 
 const style = StyleSheet.create({
+    signupButton: {
+        backgroundColor: '#9FB3D1',
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: 'black'
+    },
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 10,
+        justifyContent: 'center',
+        paddingTop: 10,
+        backgroundColor: '#2A3C6B'
     },
     section: {
         width: '90%',
-        marginTop: 20,
+        padding: 20,
+        backgroundColor: '#9FB3D1',
+        shadowColor: "black",
+        shadowOpacity: .1,
+        shadowRadius: 5,
     },
     input: {
+        backgroundColor: 'white',
         shadowColor: 'black',
         shadowOpacity: .1,
         shadowRadius: 5,
         borderRadius: 5,
         fontSize: 20,
-        padding: 5,
+        padding: 10,
     },
     fieldName: {
         fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white',
     },
     error: {
         color: 'red',
