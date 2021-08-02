@@ -104,7 +104,7 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
     <>
       {loading && <Loading />}
       {!loading &&
-        <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={13} options={options}>
+        <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={12} options={options}>
           {members.map((member) => {
             console.log(member);
             console.log(establishments);

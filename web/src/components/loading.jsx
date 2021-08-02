@@ -1,7 +1,12 @@
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 export default function Loading() {
   return (
-    <h1 style={{ textAlign: 'center', margin: 'auto 0', fontSize: '4rem'}}>
-      Calculating Midpoints...
-    </h1>
+    <div className="loading-div">
+      <CircularProgress color="white"/>
+      <h3 id="loading-text">Calculating Midpoints...</h3>
+      
+    </div>
+    
   )
 }
