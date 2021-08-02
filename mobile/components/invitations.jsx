@@ -13,28 +13,21 @@ const { height } = Dimensions.get("window");
 
 // MODAL STUFF => (Only works for mobile)
 
-const OverlayExample = () => {
-  const [visible, setVisible] = useState(false);
-
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-
-  return (
-    <View>
-      <Button title="Open Overlay" onPress={toggleOverlay} />
-
-      <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-        <Text>Hello from Overlay!</Text>
-      </Overlay>
-    </View>
-  );
-};
 
 export default function Invitations() {
   const { user } = useAuth();
   const [invitations, setInvitations] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [visible, setVisible] = useState(false);
+  const [inviteData, setInviteData] = useState(undefined);
+
+
+  // Make Modal visible or invisible
+  const toggleOverlay = (index, id) => {
+    console.log("Toggle ooga booga ",index,id);
+    setInviteData({index:index, id:id});
+    setVisible(!visible);
+  };
 
   function populateInvites() {
     fetch("https://group20-midpoint.herokuapp.com/api/listinvites", {
@@ -55,47 +48,50 @@ export default function Invitations() {
 
   // Uncomment for functionality
   function acceptInvitation(index, id, gid) {
+    //toggleOverlay();
     console.log(index, id, gid);
-    // fetch("https://group20-midpoint.herokuapp.com/api/acceptinvitation", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     inviteId: id,
-    //     userId: user.uid,
-    //     userToken: user.Aa,
-    //     email: user.email,
-    //     groupId: gid,
-    //   }),
-    // }).then((response) => {
-    //   if (response.ok) {
-    //     setInvitations(invitations.filter((invitation, i) => i !== index));
-    //   }
-    // });
+    fetch("https://group20-midpoint.herokuapp.com/api/acceptinvitation", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        inviteId: id,
+        userId: user.uid,
+        userToken: user.Aa,
+        email: user.email,
+        groupId: gid,
+      }),
+    }).then((response) => {
+      if (response.ok) {
+        setInvitations(invitations.filter((invitation, i) => i !== index));
+      }
+    });
   }
 
   // Uncomment for functionality
   function declineInvitation(index, id) {
+    //toggleOverlay(index, id);
     console.log(index, id);
-    // fetch("https://group20-midpoint.herokuapp.com/api/declineinvitation", {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     userId: user.uid,
-    //     userToken: user.Aa,
-    //     email: user.email,
-    //     inviteId: id,
-    //   }),
-    // }).then((response) => {
-    //   if (response.ok) {
-    //     setInvitations(invitations.filter((invitation, i) => i !== index));
-    //   }
-    // });
+    setVisible(!visible);
+    fetch("https://group20-midpoint.herokuapp.com/api/declineinvitation", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        email: user.email,
+        inviteId: id,
+      }),
+    }).then((response) => {
+      if (response.ok) {
+        setInvitations(invitations.filter((invitation, i) => i !== index));
+      }
+    });
   }
 
   const wait = (timeout) => {
@@ -124,7 +120,22 @@ export default function Invitations() {
               ) : (
                 <Text style={styles.title}> Open Invitations: </Text>
               )}
-              <OverlayExample />
+
+              <View>
+                {/* <Button title="Open Overlay" onPress={toggleOverlay} /> */}
+
+                <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.declineOverlay}>
+                  <Text style={styles.overlayTitle}>Are you sure you want to decline the invite?</Text>
+                  <Button
+                          icon={<Icon name="check" type="evilicon" color="#ffffff" />}
+                          buttonStyle={styles.declineButton}
+                          title=" Yes."
+                          onPress={() => declineInvitation(inviteData.index, inviteData.id)}
+                        />
+                </Overlay>
+
+              </View>
+
               {invitations &&
                 invitations.map((invitation, i) => {
                   return (
@@ -146,7 +157,7 @@ export default function Invitations() {
                           icon={<Icon name="close" type="evilicon" color="#ffffff" />}
                           buttonStyle={styles.declineButton}
                           title=" Decline Invite"
-                          onPress={() => declineInvitation(i, invitation.inviteId)}
+                          onPress={() => toggleOverlay(i, invitation.inviteId)}
                         />
                       </Card>
 
@@ -196,4 +207,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+  declineOverlay : {
+    height: 180,
+  },
+  overlayTitle : {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "black",
+    marginTop: 10,
+    marginBottom : 40,
+  }
 });
