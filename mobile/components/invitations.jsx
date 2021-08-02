@@ -1,5 +1,5 @@
 import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
-import { Text, View, StyleSheet, ScrollView, Dimensions } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Dimensions, RefreshControl } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import React, { useEffect, useState } from "react";
 
@@ -34,9 +34,9 @@ const OverlayExample = () => {
 export default function Invitations() {
   const { user } = useAuth();
   const [invitations, setInvitations] = useState([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
-  useEffect(() => {
-    // const intervalId = setInterval(() => {
+  function populateInvites() {
     fetch("https://group20-midpoint.herokuapp.com/api/listinvites", {
       method: "POST",
       headers: {
@@ -50,10 +50,8 @@ export default function Invitations() {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        setInvitations(data.invitedata);
-      });
-  }, []);
+      .then((data) => setInvitations(data.invitedata));
+  }
 
   // Uncomment for functionality
   function acceptInvitation(index, id, gid) {
@@ -100,11 +98,19 @@ export default function Invitations() {
     // });
   }
 
-  console.log("Invitations: " + invitations);
-  console.log(invitations);
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    populateInvites()
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <>
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View style={styles.content}>
           <View style={styles.container}>
             {/* Entire Page View */}
