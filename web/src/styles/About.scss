@@ -1,58 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
-.content-about {
-    width: 100%;
+.content-about 
+{
     
-    .container {
+    .about-container 
+    {
         background-color: #9FB3D1;
-        box-shadow: 0px -4px 10px 2px rgba(0, 0, 0, 0.25);
-        padding-top: 5em;
-        padding-bottom: 5rem;
+        padding: 10rem 0 5rem 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        //justify-content: center;
+        //align-items: center;
+        row-gap: 6rem;
+        color: white;  
 
-        .information {
-            font-family: 'Poppins', sans-serif;
-            margin: 0 auto 5rem auto;
-            padding-top: 5rem;
+        .about-the-website
+        {
             width: min(90%, 75rem);
-            display: grid;
-            grid-template-columns: 50% 1px 50%;
-            gap: 2em;
-            row-gap: 10em;
-            color: white;  
-    
-            .information-text {
-                margin:auto;
-            }
+            margin: 0 auto 0 auto;
 
-            img {
-                border-radius: 50%;
-            }
-
-            .information-images {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .seperator {
-                background-color: white;
-                
-            }
-            
-            h1 {
-                font-weight: 600;
+            h1
+            {
                 margin: 0;
             }
 
-            a {
+            p 
+            {
+                margin: 0;
+                line-height: 1.5;
+            }
+        }
+
+        .about-us
+        {
+            width: min(90%, 75rem);
+            margin: 0 auto 0 auto;
+            display: grid;
+            grid-template-columns: 0.5fr 1px 1fr;
+            gap: 2rem;
+            row-gap: 6rem;
+    
+            .about-text 
+            {
+                display: flex;
+                justify-content: center;
+                text-align: left;
+                flex-direction: column;
+                row-gap: 0.5rem;
+            }
+
+            img 
+            {
+                border-radius: 50%;
+                width: 250px;
+                height: 250px;
+            }
+
+            .about-images 
+            {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+            }
+
+            .seperator 
+            {
+                background-color: white;
+            }
+            
+            h1 
+            {
+                font-weight: 700;
+                margin: 0;
+            }
+
+            h2 
+            {
+                font-weight: 500;
+                margin: 0;
+            }
+
+            a 
+            {
                 text-decoration: underline;
             }
 
-            /* this makes the text unreadable
-            p {
-                font-weight: 200;
+            p 
+            {
+                margin: 0;
+                font-weight: 400;
+                line-height: 1.5;
             }
-            */
         }
     }
 }
