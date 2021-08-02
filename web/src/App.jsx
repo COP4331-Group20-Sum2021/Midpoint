@@ -11,8 +11,8 @@ import Protected from './components/protected/Protected'
 import Verify from './components/verify'
 import './styles/App.scss'
 import MyProfile from './components/myprofile'
-import Groups from './components/groups'
 import Invitations from './components/invitations'
+import GroupRender from './components/groups'
 
 export default function App() {
   return (
@@ -25,7 +25,7 @@ export default function App() {
         <ProtectedAccount path='/forgotpassword' component={ForgotPassword} />
         <Route path='/about' component={About} />
         <Protected path='/myprofile' component={MyProfile} />
-        <Protected path='/groups' component={Groups} />
+        <Protected path='/groups' component={GroupRender} />
         <Protected path='/invitations' component={Invitations} />
         <Protected path='/verify' component={Verify} />
       </Router>
