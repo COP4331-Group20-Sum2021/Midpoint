@@ -23,7 +23,7 @@ function Cards({ isGroup, setPage, invalidate, navigation }) {
           <Card.Title>{group.groupname}</Card.Title>
           <Card.Divider />
           <Text>{group.participants.length === 1 ? <Text>{group.participants.length} Member</Text> : <Text>{group.participants.length} Members</Text>}</Text>
-          <Button buttonStyle={styles.acceptButton} onPress={() => navigation.push("Map", { group: group, testing: "gang" })} title="Generate Midpoint" />
+          <Button buttonStyle={styles.acceptButton} onPress={() => navigation.push("Map", { group: group, testing: "gang" })} title="Visit Midpoint Map" />
         </Card>
       );
     });
@@ -78,7 +78,7 @@ export default function Groups({ navigation }) {
   };
 
   function populateGroups() {
-    fetch("https://group20-midpoint.herokuapp.com/api/listinvites", {
+    fetch("https://group20-midpoint.herokuapp.com/api/listgroups", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -87,11 +87,10 @@ export default function Groups({ navigation }) {
       body: JSON.stringify({
         userId: user.uid,
         userToken: user.Aa,
-        email: user.email,
       }),
     })
       .then((response) => response.json())
-      .then((data) => setInvitations(data.invitedata));
+      .then((data) => setIsGroup(data.groupdata));
   }
 
   useEffect(() => {
