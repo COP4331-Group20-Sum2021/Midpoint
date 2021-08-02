@@ -211,6 +211,39 @@ async function onlyGetInterestingEstablishments(latitude, longitude, radius){
 /* ================= */
 
 // latitude, longitude of the MIDPOINT, filters
+/**
+ *  @swagger
+ * /api/getestablishments:
+ *      post:
+ *          description: Get midpoint establishments
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - latitude
+ *              - longitude
+ *              - filters
+ *              properties:
+ *                  latitude:
+ *                      type: number
+ *                  longitude:
+ *                      type: number
+ *                  filters:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
+ *              404:
+ *                  description: Failure
+ */
 router.post('/getestablishments', async (req, res, next) => {
     const {latitude, longitude, filters} = req.body;
     var allEstablishments = []

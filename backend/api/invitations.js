@@ -106,12 +106,12 @@ async function isUserOwnerOfGroup(userid, groupid){
  *            schema: 
  *              type: object
  *              required:
- *              - ownerId
+ *              - userId
  *              - userToken
  *              - email
  *              - groupId
  *              properties:
- *                  ownerId:
+ *                  userId:
  *                      type: string
  *                  userToken:
  *                      type: string
@@ -122,6 +122,10 @@ async function isUserOwnerOfGroup(userid, groupid){
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -176,19 +180,29 @@ async function isUserOwnerOfGroup(userid, groupid){
  *            schema: 
  *              type: object
  *              required:
- *              - email
+ *              - inviteId
+ *              - userId
  *              - userToken
+ *              - email
  *              - groupId
  *              properties:
- *                  email:
+ *                  inviteId:
+ *                      type: string
+ *                  userId:
  *                      type: string
  *                  userToken:
+ *                      type: string
+ *                  email:
  *                      type: string
  *                  groupId:
  *                      type: string
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -231,6 +245,42 @@ router.post('/acceptinvitation', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
+/**
+ *  @swagger
+ * /api/declineinvitation:
+ *      post:
+ *          description: Decline an open invitation
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - inviteId
+ *              - userId
+ *              - userToken
+ *              - email
+ *              properties:
+ *                  inviteId:
+ *                      type: string
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: number
+ *                  email:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
+ *              404:
+ *                  description: Failure
+ */
 router.post('/declineinvitation', async (req, res, next) => {
     const {inviteId, userId, userToken, email} = req.body;
     var status = 200;
@@ -262,6 +312,40 @@ router.post('/declineinvitation', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
+
+/**
+ *  @swagger
+ * /api/listinvites:
+ *      post:
+ *          description: Get user's open invites
+ *          tags:
+ *          - group
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              - userToken
+ *              - email
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *                  userToken:
+ *                      type: number
+ *                  email:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
+ *              404:
+ *                  description: Failure
+ */
 router.post('/listinvites', async (req, res, next) => {
     const {userId, userToken, email} = req.body;
 

@@ -35,9 +35,9 @@ function checkParameters(params) {
 // receives userId from firebase, email, user's lat, user's lon & auth token
 /**
  *  @swagger
- * /api/createuser:
+ * /api/login:
  *      post:
- *          description: Create a new user
+ *          description: Login a user
  *          tags:
  *          - user
  *          parameters:
@@ -51,20 +51,27 @@ function checkParameters(params) {
  *              - lat
  *              - lon
  *              - auth
+ *              - expiration
  *              properties:
  *                  userId:
  *                      type: string
  *                  email:
  *                      type: string
  *                  lat:
- *                      type: double
- *                  long:
- *                      type: double
+ *                      type: number
+ *                  lon:
+ *                      type: number
  *                  auth:
  *                      type: string
+ *                  expiration:
+ *                      type: number
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -118,6 +125,39 @@ function checkParameters(params) {
     res.status(status).json(ret);
 });
 
+/**
+ *  @swagger
+ * /api/register:
+ *      post:
+ *          description: Register a new user
+ *          tags:
+ *          - user
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - email
+ *              - firstname
+ *              - lastname
+ *              properties:
+ *                  email:
+ *                      type: string
+ *                  firstname:
+ *                      type: string
+ *                  lastname:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
+ *              404:
+ *                  description: Failure
+ */
 router.post('/register', async (req, res, next) => {
     const {email, firstname, lastname} = req.body;
     var status = 200;
@@ -145,6 +185,33 @@ router.post('/register', async (req, res, next) => {
     res.status(status).json(ret);
 });
 
+/**
+ *  @swagger
+ * /api/getuserdata:
+ *      post:
+ *          description: Get data of user
+ *          tags:
+ *          - user
+ *          parameters:
+ *          - in: body
+ *            name: request
+ *            schema: 
+ *              type: object
+ *              required:
+ *              - userId
+ *              properties:
+ *                  userId:
+ *                      type: string
+ *          responses:
+ *              200:
+ *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
+ *              404:
+ *                  description: Failure
+ */
 router.post('/getuserdata', async (req, res, next) => {
     const {userId} = req.body;
     var status = 200;
