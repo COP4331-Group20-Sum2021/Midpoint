@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ScrollView, Dimensions, RefreshControl } from "react-native";
 import { useAuth } from "../context/AuthContext";
-
 import { createStackNavigator } from "@react-navigation/stack";
+
+const { width } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
+
+
 function Cards({ isGroup, setPage, invalidate, navigation }) {
   console.log(isGroup);
   let cards =
@@ -55,11 +59,40 @@ export default function Groups({ navigation }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCrud, setCrud] = useState(0);
   const { user, location } = useAuth();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    populateGroups()
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   const invalidate = () => {
     setTimeout(() => {
       setStale(!stale);
     }, 250);
   };
+
+  function populateGroups() {
+    fetch("https://group20-midpoint.herokuapp.com/api/listinvites", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        email: user.email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => setInvitations(data.invitedata));
+  }
 
   useEffect(() => {
     async function run() {
@@ -83,14 +116,19 @@ export default function Groups({ navigation }) {
     }
     run();
   }, [stale]);
+
   console.log(navigation);
   return (
-    <View className="container">
-      <View className="groups">
-        <Text>GROUPS</Text>
-        <Cards navigation={navigation} isGroup={isGroup} invalidate={invalidate} />
-      </View>
-    </View>
+    <>
+      <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+        <View className="container" style={styles.information}>
+          <View className="groups">
+            <Text style={styles.title}>GROUPS</Text>
+            <Cards navigation={navigation} isGroup={isGroup} invalidate={invalidate} />
+          </View>
+        </View>
+      </ScrollView>
+    </>
   );
 }
 
@@ -113,6 +151,16 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
     borderColor: "#ffffff",
+  },
+  information: {
+    backgroundColor: "#9FB3D1",
+    height: height,
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "white",
   },
 });
 
