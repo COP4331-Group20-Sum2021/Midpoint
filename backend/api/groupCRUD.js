@@ -77,9 +77,9 @@ async function isUserOwnerOfGroup(userid, groupid){
  *  @swagger
  * /api/listgroups:
  *      post:
- *          description: Get list of groups
+ *          description: Get user's groups
  *          tags:
- *          - group
+ *          - user
  *          parameters:
  *          - in: body
  *            name: request
@@ -96,6 +96,10 @@ async function isUserOwnerOfGroup(userid, groupid){
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -184,6 +188,10 @@ router.post('/listgroups', async (req, res, next) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -252,6 +260,10 @@ router.post('/creategroup', async (req, res, next) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -312,6 +324,10 @@ router.put('/editgroup', async (req, res, next) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -404,6 +420,10 @@ router.delete('/deletegroup', async (req, res, next) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
@@ -495,6 +515,10 @@ router.delete('/removemyself', async (req, res, next) => {
  *          responses:
  *              200:
  *                  description: Success
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized client
  *              404:
  *                  description: Failure
  */
