@@ -3,9 +3,35 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
 import { useAuth } from "../context/AuthContext";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE, Circle} from "react-native-maps";
 
-function IamTheMap({ midpoint, members, establishments }) {
+function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
+  const [establishments, setEstablishments] = useState();
+
+  // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
+  
+  useEffect(() => {
+    console.log(midpoint);
+    fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        latitude: midpoint.latitude,
+        longitude: midpoint.longitude,
+        filters: filter,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setEstablishments(data);
+        setFoundMidpoints(data);
+      });
+  }, [filter]);
+
+
   return (
     <View style={styles.container}>
       <MapView
@@ -18,8 +44,35 @@ function IamTheMap({ midpoint, members, establishments }) {
           longitudeDelta: 0.0421,
         }}
       >
-        <Marker coordinate={{ latitude: midpoint.latitude, longitude: midpoint.longitude }}></Marker>
-        <Marker coordinate={{ latitude: midpoint.latitude + 2, longitude: midpoint.longitude - 5 }}></Marker>
+        {members.map((member) => {
+          return (
+            <Marker
+              coordinate={{ latitude: member.latitude, longitude: member.longitude }}
+            >
+            </Marker>
+          );
+        })}
+
+        {establishments &&
+            establishments.establishments.map((establishment) => {
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: establishment.latitude,
+                    longitude: establishment.longitude,
+                  }}
+                />
+              );
+          })}
+
+        <Circle
+          center={{latitude: midpoint.latitude, longitude: midpoint.longitude}}
+          radius={3000}
+          strokeWidth={1}
+          strokeColor={"#7E94B4"}
+          fillColor={"#C1DAFF"}
+          fillOpactiy={0.25}
+        />
       </MapView>
     </View>
   );
@@ -30,10 +83,19 @@ function IamTheMap({ midpoint, members, establishments }) {
 export default function Map({ route, navigation }) {
   const [visibleDelete, setVisibleDelete] = useState(false);
   const [visibleLeave, setVisibleLeave] = useState(false);
+  
+  const [establishments, setEstablishments] = useState();
+  const [foundMidpoints, setFoundMidpoints] = useState();
 
-  const [midpoint, setMidpoint] = useState({ latitude: 28, longitude: -81 });
+  const [groupData, setGroupData] = useState(null);
+
+  const [filter, setFilter] = useState();
   const [members, setMembers] = useState([]);
-  const [establishments, setEstablishments] = useState(undefined);
+
+  const { user } = useAuth();
+  // const [establishments, setEstablishments] = useState(undefined);
+
+  console.log("Route Group data: ",route.params.group);
 
   const toggleOverlayDelete = () => {
     setVisibleDelete(!visibleDelete);
@@ -57,11 +119,37 @@ export default function Map({ route, navigation }) {
     navigation.pop();
   }
 
+  useEffect(() => {
+    fetch("https://group20-midpoint.herokuapp.com/api/retrievegroupdata", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        groupId: route.params.group.groupid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setGroupData(data);
+      });
+    // GroupData -> {error: ... , grouplocations:}
+  }, []);
+
+
   return (
     <>
       <ScrollView>
         <View>
-          <IamTheMap midpoint={midpoint} members={members} establishments={establishments} />
+
+        {groupData && (
+          <IamTheMap midpoint={groupData.midpoint} members={groupData.grouplocations} filter={""} setFoundMidpoints={setFoundMidpoints}/>
+        )}
+
         </View>
         <Overlay isVisible={visibleDelete} onBackdropPress={toggleOverlayDelete} overlayStyle={styles.declineOverlay}>
           <Text style={styles.overlayTitle}>Are you sure you want to delete the group?</Text>
