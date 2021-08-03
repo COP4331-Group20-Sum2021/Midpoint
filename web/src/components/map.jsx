@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/authContext";
-import { GoogleMap, Marker, useLoadScript, Circle } from "@react-google-maps/api";
+import { GoogleMap, Marker, useLoadScript, Circle, InfoWindow } from "@react-google-maps/api";
 import SideBar from "./sidebar";
 import "../styles/map.scss";
 import Modal from "./modal";
@@ -76,6 +76,7 @@ const options = {
 function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
   const [establishments, setEstablishments] = useState();
   const [loading, setLoading] = useState(true);
+  const [clickMember, setClickMember] = useState(false)
 
   // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
   useEffect(() => {
@@ -105,39 +106,46 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
       {loading && <Loading />}
       {!loading &&
         <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={12} options={options}>
-          {members.map((member) => {
-            console.log(member);
-            console.log(establishments);
+          {members.map((member, i) => {
             return (
               <Marker
                 position={{ lat: member.latitude, lng: member.longitude }}
-                label={{
-                  title: `${member.firstname} ${member.lastname}`,
-                  className: "memberMarker",
-                }}
                 icon={`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}
+                onClick={() => setClickMember(i)}
               >
-                <div>Hello There!</div>
+              {clickMember === i &&
+                <InfoWindow
+                  position={{ lat: member.latitude, lng: member.longitude }}
+                  onCloseClick={() => setClickMember(false)}
+                >
+                  <div className='infoBox'>
+                    <p>{member.firstname} {member.lastname}</p>
+                  </div>
+                </InfoWindow>
+              }
               </Marker>
             );
           })}
           {establishments &&
-            establishments.establishments.map((establishment) => {
+            establishments.establishments.map((establishment, i) => {
               if (colorMap[establishment.type]) {
                 // With color
                 return (
                   <Marker
+                    key={i}
                     position={{
                       lat: establishment.latitude,
                       lng: establishment.longitude,
                     }}
                     icon={`http://maps.google.com/mapfiles/ms/icons/${colorMap[establishment.type]}-dot.png`}
+                    // onClick={}
                   />
                 );
               } else {
                 // Black
                 return (
                   <Marker
+                    key={i}
                     position={{
                       lat: establishment.latitude,
                       lng: establishment.longitude,
