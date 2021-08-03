@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   information: {
     backgroundColor: "#9FB3D1",
-    height: height,
+    height: height*3,
   },
   title: {
     textAlign: "center",

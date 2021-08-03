@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import MapView from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions, ScrollView} from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput} from "react-native";
 import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
 import { useAuth } from "../context/AuthContext";
 import MapView, { Marker, PROVIDER_GOOGLE, Circle} from "react-native-maps";
@@ -68,7 +68,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
           radius={3000}
           strokeWidth={1}
           strokeColor={"#7E94B4"}
-          fillColor={"rgba(0,0,200,0.4)"}
+          fillColor={"rgba(0,0,120,0.4)"}
         />
       </MapView>
     </View>
@@ -90,9 +90,23 @@ export default function Map({ route, navigation }) {
   const [members, setMembers] = useState([]);
 
   const { user } = useAuth();
-  // const [establishments, setEstablishments] = useState(undefined);
 
-  function addMember(group, newEmail) {
+  const [addUserVisible, setaddUserGroupVisible] = useState(false);
+  const [kickUserVisible, setkickUserVisible] = useState(false);
+
+  const [newUserEmail, onChangeText] = React.useState(undefined);
+
+  const toggleOverlayAdd = () => {
+    console.log("Toggle ooga booga ");
+    setaddUserGroupVisible(!addUserVisible);
+  };
+
+  const toggleOverlayKick = () => {
+    console.log("Toggle ooga booga ");
+    setkickUserVisible(!kickUserVisible);
+  };
+
+  function addMember(newEmail) {
     fetch("https://group20-midpoint.herokuapp.com/api/inviteparticipant", {
       method: "POST",
       headers: {
@@ -103,12 +117,15 @@ export default function Map({ route, navigation }) {
         userId: user.uid,
         userToken: user.Aa,
         email: newEmail,
-        groupId: group.groupid,
+        groupId: route.params.group.groupid,
       }),
     })
-      .then(console.log(group.groupid))
+      .then(console.log(route.params.group.groupid))
       .then((response) => response.json())
       .then((data) => console.log(data));
+
+      // Close the overlay for add!
+      toggleOverlayAdd();
   }
 
   function kickMember(memberid) {
@@ -139,13 +156,37 @@ export default function Map({ route, navigation }) {
       body: JSON.stringify({
         userId: user.uid,
         userToken: user.Aa,
-        groupId: group.groupid,
+        groupId: route.params.group.groupid,
       }),
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
   }
 
+  function deleteCard() {
+    fetch("https://group20-midpoint.herokuapp.com/api/deletegroup", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        groupId: route.params.group.groupid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .then((data) => checkOwnershipError(data))
+      .then(() => setStale(!stale));
+  }
+
+  function checkOwnershipError(jsonResponse){
+    if(jsonResponse.error === ""){
+      navigation.pop();
+    }
+  }
   const toggleOverlayDelete = () => {
     setVisibleDelete(!visibleDelete);
   };
@@ -156,10 +197,14 @@ export default function Map({ route, navigation }) {
 
   function deleteGroup(groupid) {
     console.log("deleting group ", groupid);
+    toggleOverlayDelete();
+    deleteCard();
   }
 
   function leaveGroup(groupid) {
     console.log("leaving group ", groupid);
+    leaveCard();
+    toggleOverlayLeave();
   }
 
   function leavePop() {
@@ -215,6 +260,18 @@ export default function Map({ route, navigation }) {
           <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.declineButton} title=" Yes." onPress={() => leavePop()} />
         </Overlay>
 
+        <Overlay isVisible={visibleLeave} onBackdropPress={toggleOverlayKick} overlayStyle={styles.declineOverlay}>
+          <Text style={styles.overlayTitle}>Are you sure you want to kick this member?</Text>
+          <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.declineButton} title=" Yes." onPress={() => leavePop()} />
+        </Overlay>
+
+        <Overlay isVisible={addUserVisible} onBackdropPress={toggleOverlayAdd} overlayStyle={styles.addOverlay}>
+          <Text style={styles.overlayTitle}>Add New Member!</Text>
+          <Text>Email: </Text>
+          <TextInput style={styles.input} placeholder="user@email.com" onChangeText={(text) => onChangeText(text)} />
+          <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Yes." onPress={() => addMember(newUserEmail)} />
+        </Overlay>
+
         <View style={styles.informationBlock}>
           <ScrollView>
           <Text style={styles.midpointListTitle}>List of Midpoints</Text>
@@ -247,11 +304,11 @@ export default function Map({ route, navigation }) {
                       <Text>Email: {member.email}</Text>
                       {user.uid === member.userId ? (
                         <View>
-                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Leave" onPress={() => toggleOverlay()} />
+                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Leave" onPress={() => toggleOverlayLeave()} />
                         </View>
                         ) : (
                           <View>
-                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => toggleOverlay()} />
+                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => toggleOverlayKick()} />
                         </View>
                         )}
                     </View>
@@ -261,10 +318,10 @@ export default function Map({ route, navigation }) {
           </ScrollView>
         </View>
         <View>
-          <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlay()} />
-          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Leave Group" onPress={() => toggleOverlay()} />
-          <Button icon={<Icon name="trash" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Delete Group" onPress={() => toggleOverlay()} />
+          <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlayAdd()} />
           <Button icon={<Icon name="arrow-left" type="evilicon" color="#ffffff" />} buttonStyle={styles.backButton} title=" Back to Groups" onPress={() => navigation.pop()} />
+          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Leave Group" onPress={() => toggleOverlayLeave()} />
+          <Button icon={<Icon name="trash" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Delete Group" onPress={() => toggleOverlayDelete()} />
         </View>
       </ScrollView>
     </>
@@ -305,7 +362,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   backButton : {
-    backgroundColor : "orange",
+    backgroundColor : "blue",
     marginBottom: 10,
   },
   declineOverlay: {
@@ -340,4 +397,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#61955f",
     marginBottom: 10,
   },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  addOverlay : {
+    height: 300,
+  }
 });
