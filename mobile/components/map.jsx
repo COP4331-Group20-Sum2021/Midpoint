@@ -193,7 +193,15 @@ export default function Map({ route, navigation }) {
                     <View style={styles.innerBlock}>
                       <Text>Name: {member.firstname} {member.lastname}</Text>
                       <Text>Email: {member.email}</Text>
-                      <Button style={styles.declineButton} title="Leave Group" onPress={toggleOverlayLeave} />
+                      {user.uid === member.userId ? (
+                        <View>
+                          <Button style={styles.declineButton} title="Leave" onPress={toggleOverlayLeave} />
+                        </View>
+                        ) : (
+                          <View>
+                          <Button style={styles.declineButton} title="Kick" onPress={toggleOverlayLeave} />
+                        </View>
+                        )}
                     </View>
                 </View>
               );
@@ -217,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: "#000000",
     textAlign: "center",
-    height: Dimensions.get("window").height / 6,
+    height: Dimensions.get("window").height / 7,
   },
   userInfo: {
     textAlign: "center",
@@ -232,11 +240,11 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 2,
+    height: 2 * Dimensions.get("window").height / 3,
   },
   declineButton: {
-    backgroundColor: "#61955f",
-    borderWidth: 5,
+    backgroundColor: "#955f5f",
+    borderWidth: 1,
     borderRadius: 15,
     marginBottom: 10,
     borderColor: "#ffffff",
