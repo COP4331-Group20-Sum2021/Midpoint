@@ -92,18 +92,14 @@ export default function Map({ route, navigation }) {
   const { user } = useAuth();
 
   const [addUserVisible, setaddUserGroupVisible] = useState(false);
-  const [kickUserVisible, setkickUserVisible] = useState(false);
-
   const [newUserEmail, onChangeText] = React.useState(undefined);
+  //const [currentMemberId, setKickUser] = useState();
+
+  
 
   const toggleOverlayAdd = () => {
     console.log("Toggle ooga booga ");
     setaddUserGroupVisible(!addUserVisible);
-  };
-
-  const toggleOverlayKick = () => {
-    console.log("Toggle ooga booga ");
-    setkickUserVisible(!kickUserVisible);
   };
 
   function addMember(newEmail) {
@@ -139,7 +135,7 @@ export default function Map({ route, navigation }) {
         ownerId: user.uid,
         userToken: user.Aa,
         userId: memberid,
-        groupId: group.groupid,
+        groupId: route.params.group.groupid,
       }),
     })
       .then((response) => response.json())
@@ -260,11 +256,6 @@ export default function Map({ route, navigation }) {
           <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.declineButton} title=" Yes." onPress={() => leavePop()} />
         </Overlay>
 
-        <Overlay isVisible={visibleLeave} onBackdropPress={toggleOverlayKick} overlayStyle={styles.declineOverlay}>
-          <Text style={styles.overlayTitle}>Are you sure you want to kick this member?</Text>
-          <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.declineButton} title=" Yes." onPress={() => leavePop()} />
-        </Overlay>
-
         <Overlay isVisible={addUserVisible} onBackdropPress={toggleOverlayAdd} overlayStyle={styles.addOverlay}>
           <Text style={styles.overlayTitle}>Add New Member!</Text>
           <Text>Email: </Text>
@@ -308,7 +299,7 @@ export default function Map({ route, navigation }) {
                         </View>
                         ) : (
                           <View>
-                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => toggleOverlayKick()} />
+                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => kickMember(member.userId)} />
                         </View>
                         )}
                     </View>
