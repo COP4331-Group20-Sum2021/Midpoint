@@ -319,3 +319,12 @@
         align-items: center;
     }
 }
+
+.tablehover {
+    cursor: pointer;
+    transition: .3s;
+
+    &:hover {
+        color: black;
+    }
+}

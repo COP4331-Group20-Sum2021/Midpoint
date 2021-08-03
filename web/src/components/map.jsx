@@ -518,10 +518,9 @@ export default function Map({ group, setPage, invalidate }) {
                   <table className="location-table">
                   {foundMidpoints && (
                     <>
-                        {foundMidpoints.establishments.map((m) => {
-                          // console.log(foundMidpoints)
+                        {foundMidpoints.establishments.map((m, i) => {
                           return (
-                            <tr key={m.name}>
+                            <tr key={m.name} className='tablehover' onClick={() => setClickEstablishment(i)}>
                               <td>{m.name}</td>
                               <td>{m.address}</td>
                               <td><div className="ratings"><StarRateIcon/>{m.rating}</div></td>
