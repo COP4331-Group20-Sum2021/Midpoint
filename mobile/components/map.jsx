@@ -68,7 +68,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
           radius={3000}
           strokeWidth={1}
           strokeColor={"#7E94B4"}
-          fillColor={"rgba(0,0,255,0.3)"}
+          fillColor={"rgba(0,0,200,0.4)"}
         />
       </MapView>
     </View>
@@ -182,15 +182,25 @@ export default function Map({ route, navigation }) {
           </ScrollView>
         </View>
 
-        
-        <View>
-          <Text>This is the midpoint list</Text>
+        <View style={styles.informationBlock}>
+          <ScrollView>
+          <Text style={styles.midpointListTitle}>List of Members</Text>
+
+          {groupData &&
+            groupData.grouplocations.map((member) => {
+              return (
+                <View style={styles.placeBlock}>
+                    <View style={styles.innerBlock}>
+                      <Text>Name: {member.firstname} {member.lastname}</Text>
+                      <Text>Email: {member.email}</Text>
+                      <Button style={styles.declineButton} title="Leave Group" onPress={toggleOverlayLeave} />
+                    </View>
+                </View>
+              );
+          })}
+          </ScrollView>
         </View>
         <View>
-          <Text>This is the members list</Text>
-        </View>
-        <View>
-          <Text>This is the CRUD Buttons</Text>
           <Button style={styles.declineButton} title="Leave Group" onPress={toggleOverlayLeave} />
           <Button style={styles.declineButton} title="Delete Group" onPress={toggleOverlayDelete} />
           <Button style={styles.declineButton} title="Back to Groups" onPress={() => navigation.pop()} />
