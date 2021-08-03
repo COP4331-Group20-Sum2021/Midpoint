@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/authContext";
-import { GoogleMap, Marker, useLoadScript, Circle } from "@react-google-maps/api";
+import { GoogleMap, Marker, useLoadScript, Circle, InfoWindow } from "@react-google-maps/api";
 import SideBar from "./sidebar";
 import "../styles/map.scss";
 import Modal from "./modal";
@@ -73,13 +73,14 @@ const options = {
   //zoomControl: true,
 };
 
-function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
+function WholeMap({ members, midpoint, setFoundMidpoints, filter, clickEstablishment, setClickEstablishment }) {
   const [establishments, setEstablishments] = useState();
   const [loading, setLoading] = useState(true);
+  const [clickMember, setClickMember] = useState(false)
 
   // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
   useEffect(() => {
-    console.log(midpoint);
+    setLoading(true)
     fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
       method: "POST",
       headers: {
@@ -94,6 +95,7 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setEstablishments(data);
         setFoundMidpoints(data);
         setLoading(false)
@@ -105,45 +107,79 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
       {loading && <Loading />}
       {!loading &&
         <GoogleMap id="whole-map" mapContainerStyle={mapContainerStyle} center={midpoint} zoom={12} options={options}>
-          {members.map((member) => {
-            console.log(member);
-            console.log(establishments);
+          {members.map((member, i) => {
             return (
               <Marker
                 position={{ lat: member.latitude, lng: member.longitude }}
-                label={{
-                  title: `${member.firstname} ${member.lastname}`,
-                  className: "memberMarker",
-                }}
                 icon={`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}
+                onClick={() => setClickMember(i)}
               >
-                <div>Hello There!</div>
+              {clickMember === i &&
+                <InfoWindow
+                  position={{ lat: member.latitude, lng: member.longitude }}
+                  onCloseClick={() => setClickMember(false)}
+                >
+                  <div className='infoBox'>
+                    <p>{member.firstname} {member.lastname}</p>
+                  </div>
+                </InfoWindow>
+              }
               </Marker>
             );
           })}
           {establishments &&
-            establishments.establishments.map((establishment) => {
+            establishments.establishments.map((establishment, i) => {
               if (colorMap[establishment.type]) {
                 // With color
                 return (
                   <Marker
+                    key={i}
                     position={{
                       lat: establishment.latitude,
                       lng: establishment.longitude,
                     }}
                     icon={`http://maps.google.com/mapfiles/ms/icons/${colorMap[establishment.type]}-dot.png`}
-                  />
+                    onClick={() => setClickEstablishment(i)}
+                  >
+                    {clickEstablishment === i &&
+                      <InfoWindow
+                        position={{ lat: establishment.latitude, lng: establishment.longitude }}
+                        onCloseClick={() => setClickEstablishment(false)}
+                      >
+                        <div className='infoBox'>
+                          <p>{establishment.name}</p>
+                          <p>{establishment.address}</p>
+                          <p><StarRateIcon/> {establishment.rating}</p>
+                        </div>
+                      </InfoWindow>
+                    }
+                  </Marker>
                 );
               } else {
                 // Black
                 return (
                   <Marker
+                    key={i}
                     position={{
                       lat: establishment.latitude,
                       lng: establishment.longitude,
                     }}
                     icon={`http://maps.google.com/mapfiles/ms/icons/yellow-dot.png`}
-                  />
+                    onClick={() => setClickEstablishment(i)}
+                  >
+                    {clickEstablishment === i &&
+                      <InfoWindow
+                        position={{ lat: establishment.latitude, lng: establishment.longitude }}
+                        onCloseClick={() => setClickEstablishment(false)}
+                      >
+                        <div className='infoBox'>
+                          <p>{establishment.name}</p>
+                          <p>{establishment.address}</p>
+                          <p><StarRateIcon/> {establishment.rating}</p>
+                        </div>
+                      </InfoWindow>
+                    }
+                  </Marker>
                 );
               }
             })}
@@ -180,6 +216,8 @@ export default function Map({ group, setPage, invalidate }) {
   const [foundMidpoints, setFoundMidpoints] = useState();
   const [filter, setFilter] = useState();
   const [establishments, setEstablishments] = useState();
+  const [clickEstablishment, setClickEstablishment] = useState(false)
+
 
   // this loads the stuff ish with google maps
   const { isLoaded, loadError } = useLoadScript({
@@ -451,6 +489,8 @@ export default function Map({ group, setPage, invalidate }) {
                   }}
                   setFoundMidpoints={setFoundMidpoints}
                   filter={filter}
+                  clickEstablishment={clickEstablishment}
+                  setClickEstablishment={setClickEstablishment}
                 />
               )}
               {/* </div> */}
@@ -478,10 +518,9 @@ export default function Map({ group, setPage, invalidate }) {
                   <table className="location-table">
                   {foundMidpoints && (
                     <>
-                        {foundMidpoints.establishments.map((m) => {
-                          // console.log(foundMidpoints)
+                        {foundMidpoints.establishments.map((m, i) => {
                           return (
-                            <tr key={m.name}>
+                            <tr key={m.name} className='tablehover' onClick={() => setClickEstablishment(i)}>
                               <td>{m.name}</td>
                               <td>{m.address}</td>
                               <td><div className="ratings"><StarRateIcon/>{m.rating}</div></td>
