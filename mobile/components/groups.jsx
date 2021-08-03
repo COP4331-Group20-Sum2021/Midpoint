@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Card, ListItem, Button, Icon } from "react-native-elements";
-import { Text, View, StyleSheet, ScrollView, Dimensions, RefreshControl } from "react-native";
+import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
+import { Text, View, StyleSheet, ScrollView, Dimensions, RefreshControl, TextInput } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const { width } = Dimensions.get("window");
 const { height } = Dimensions.get("window");
-
 
 function Cards({ isGroup, setPage, invalidate, navigation }) {
   console.log(isGroup);
@@ -29,7 +28,11 @@ function Cards({ isGroup, setPage, invalidate, navigation }) {
     });
 
   if (cards === false) {
-    return <Text>You currently have no groups. Please click "Create New" or visit the invitations page.</Text>;
+    return (
+      <>
+        <Text>You currently have no groups. Please click "Create New" or visit the invitations page.</Text>
+      </>
+    );
   }
 
   return (
@@ -61,12 +64,22 @@ export default function Groups({ navigation }) {
   const { user, location } = useAuth();
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const [groupname, onChangeText] = React.useState(undefined);
+
+  const [visible, setVisible] = useState(false);
+
+  // Make Modal visible or invisible
+  const toggleOverlay = () => {
+    console.log("Toggle ooga booga ");
+    setVisible(!visible);
+  };
+
   const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
 
   const onRefresh = React.useCallback(() => {
-    populateGroups()
+    populateGroups();
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -116,13 +129,41 @@ export default function Groups({ navigation }) {
     run();
   }, [stale]);
 
+  function createCard(groupname) {
+    console.log("Create Card ", user.uid, user.Aa, groupname);
+    fetch("https://group20-midpoint.herokuapp.com/api/creategroup", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        groupname: groupname,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .then(() => setStale(!stale));
+    toggleOverlay();
+  }
+
   console.log(navigation);
   return (
     <>
+      <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.declineOverlay}>
+        <Text style={styles.overlayTitle}>Create a group!</Text>
+        <Text>Group Name: </Text>
+        <TextInput style={styles.input} placeholder="new group name" onChangeText={(text) => onChangeText(text)} />
+        <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Yes." onPress={() => createCard(groupname)} />
+      </Overlay>
+
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
         <View className="container" style={styles.information}>
           <View className="groups">
             <Text style={styles.title}>GROUPS</Text>
+            <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add Card." onPress={() => toggleOverlay()} />
             <Cards navigation={navigation} isGroup={isGroup} invalidate={invalidate} />
           </View>
         </View>
@@ -160,6 +201,15 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: "bold",
     color: "white",
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+  declineOverlay: {
+    height: 200,
   },
 });
 
