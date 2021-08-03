@@ -131,10 +131,11 @@ export default function About() {
             <h2>Front End/Mobile</h2>
             <p>
               I worked entirely on the Front End on this project primarily using React for the web and React Native for the mobile.
-              I also made this about page you are reading right now! I also created the framework of the mobile which includes setting up React Native mobile navigation using
-              drawers and stacks. One of the hardest things about my job was smoothly transitioning from React to React Native. Although they are similar, React Native has
-              unique syntax threw me off while building the mobile. This project overall was a fantastic learning experience by using the most popular web developer tools
-              right now and I am excited to apply my newly acquired abilities to the next React project I make.
+              I also made this about page you are reading right now! I also created the framework of the mobile which includes setting 
+              up React Native mobile navigation using drawers and stacks. One of the hardest things about my job was smoothly transitioning 
+              from React to React Native. Although they are similar, React Native has unique syntax threw me off while building the mobile. 
+              This project overall was a fantastic learning experience by using the most popular web developer tools right now and I am excited 
+              to apply my newly acquired abilities to the next React project I make.
             </p>
           </div>
 
@@ -146,8 +147,12 @@ export default function About() {
             <h1>Devin Besaw</h1>
             <h2>Front End/Mobile/Design</h2>
             <p>
-              For our project midpoint, my work revolved entirely around building the Front End of our application. The biggest role I played in developing the Front End was 
-              creating a uniform design for our website. For the design, I started by creating a prototype in Figma and then translated it into HTML and CSS.
+              For our project Midpoint, my work entirely revolved around building the Front End of our web application. The biggest role I played 
+              in developing the Front End was creating the design for our website. For the design, I started by creating a prototype in Figma 
+              and then translating it into HTML and CSS. This process was my favorite thing about developing on the Front End because it allowed me 
+              to bring out my creative side. I also played a roll in getting the functionality of our website working. I worked on the the profile page and 
+              invitations page which showed me a bit of what React is made of. Overall, I felt this project was an excellent learning experience that I thoroughly
+              enjoyed. Going into the future I plan to learn more and consider Front End development as a career choice.
             </p>
           </div>
         </div>
