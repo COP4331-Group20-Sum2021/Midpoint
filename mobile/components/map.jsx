@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
 // import MapView from "react-native-maps";
-import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView} from "react-native";
 import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
 import { useAuth } from "../context/AuthContext";
 import MapView, { Marker, PROVIDER_GOOGLE, Circle} from "react-native-maps";
 
 function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
   const [establishments, setEstablishments] = useState();
-
-  // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
   
   useEffect(() => {
     console.log(midpoint);
@@ -70,8 +68,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
           radius={3000}
           strokeWidth={1}
           strokeColor={"#7E94B4"}
-          fillColor={"#C1DAFF"}
-          fillOpactiy={0.25}
+          fillColor={"rgba(0,0,255,0.3)"}
         />
       </MapView>
     </View>
@@ -137,7 +134,6 @@ export default function Map({ route, navigation }) {
         console.log(data);
         setGroupData(data);
       });
-    // GroupData -> {error: ... , grouplocations:}
   }, []);
 
 
@@ -169,15 +165,24 @@ export default function Map({ route, navigation }) {
 
         <View style={styles.informationBlock}>
           <ScrollView>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
-            <Text style={styles.userInfo}>{route.params.group.groupname}</Text>
+          <Text style={styles.midpointListTitle}>List of Midpoints</Text>
+          {foundMidpoints &&
+            foundMidpoints.establishments.map((establishment) => {
+              console.log(establishment.name);
+              return (
+                <View style={styles.placeBlock}>
+                    <View style={styles.innerBlock}>
+                      <Text>Name: {establishment.name}</Text>
+                      <Text>Address: {establishment.address}</Text>
+                      <Text>Rating: {establishment.rating}</Text>
+                    </View>
+                </View>
+              );
+          })}
           </ScrollView>
         </View>
+
+        
         <View>
           <Text>This is the midpoint list</Text>
         </View>
@@ -190,7 +195,6 @@ export default function Map({ route, navigation }) {
           <Button style={styles.declineButton} title="Delete Group" onPress={toggleOverlayDelete} />
           <Button style={styles.declineButton} title="Back to Groups" onPress={() => navigation.pop()} />
         </View>
-        <View></View>
       </ScrollView>
     </>
   );
@@ -198,11 +202,10 @@ export default function Map({ route, navigation }) {
 
 const styles = StyleSheet.create({
   informationBlock: {
-    backgroundColor: "#9FB3D1",
+    backgroundColor: "#ffffff",
     borderWidth: 1,
-    borderRadius: 15,
-    marginBottom: 10,
-    borderColor: "#ffffff",
+    marginBottom: 20,
+    borderColor: "#000000",
     textAlign: "center",
     height: Dimensions.get("window").height / 6,
   },
@@ -239,4 +242,21 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 40,
   },
+  placeBlock : {
+    height: Dimensions.get("window").height / 8,
+    borderWidth: 2,
+    backgroundColor: "#ffffff",
+    borderTopWidth: 2,
+    borderBottomWidth : 0,
+
+  },
+  midpointListTitle : {
+    color : "#000000",
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  innerBlock : {
+    marginTop : 15,
+  }
 });
