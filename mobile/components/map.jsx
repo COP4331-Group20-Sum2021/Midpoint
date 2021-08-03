@@ -92,7 +92,59 @@ export default function Map({ route, navigation }) {
   const { user } = useAuth();
   // const [establishments, setEstablishments] = useState(undefined);
 
-  console.log("Route Group data: ",route.params.group);
+  function addMember(group, newEmail) {
+    fetch("https://group20-midpoint.herokuapp.com/api/inviteparticipant", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        email: newEmail,
+        groupId: group.groupid,
+      }),
+    })
+      .then(console.log(group.groupid))
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
+
+  function kickMember(memberid) {
+    fetch("https://group20-midpoint.herokuapp.com/api/kickfromgroup", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ownerId: user.uid,
+        userToken: user.Aa,
+        userId: memberid,
+        groupId: group.groupid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
+
+  function leaveCard() {
+    fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: user.uid,
+        userToken: user.Aa,
+        groupId: group.groupid,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
 
   const toggleOverlayDelete = () => {
     setVisibleDelete(!visibleDelete);
@@ -195,11 +247,11 @@ export default function Map({ route, navigation }) {
                       <Text>Email: {member.email}</Text>
                       {user.uid === member.userId ? (
                         <View>
-                          <Button style={styles.declineButton} title="Leave" onPress={toggleOverlayLeave} />
+                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Leave" onPress={() => toggleOverlay()} />
                         </View>
                         ) : (
                           <View>
-                          <Button style={styles.declineButton} title="Kick" onPress={toggleOverlayLeave} />
+                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => toggleOverlay()} />
                         </View>
                         )}
                     </View>
@@ -209,9 +261,10 @@ export default function Map({ route, navigation }) {
           </ScrollView>
         </View>
         <View>
-          <Button style={styles.declineButton} title="Leave Group" onPress={toggleOverlayLeave} />
-          <Button style={styles.declineButton} title="Delete Group" onPress={toggleOverlayDelete} />
-          <Button style={styles.declineButton} title="Back to Groups" onPress={() => navigation.pop()} />
+          <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlay()} />
+          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Leave Group" onPress={() => toggleOverlay()} />
+          <Button icon={<Icon name="trash" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Delete Group" onPress={() => toggleOverlay()} />
+          <Button icon={<Icon name="arrow-left" type="evilicon" color="#ffffff" />} buttonStyle={styles.backButton} title=" Back to Groups" onPress={() => navigation.pop()} />
         </View>
       </ScrollView>
     </>
@@ -242,12 +295,18 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: 2 * Dimensions.get("window").height / 3,
   },
-  declineButton: {
-    backgroundColor: "#955f5f",
-    borderWidth: 1,
-    borderRadius: 15,
+  leaveMemberButton : {
+    backgroundColor: "red",
+    marginBottom: 5,
+    marginTop: 5,
+  },
+  leaveButton: {
+    backgroundColor: "red",
     marginBottom: 10,
-    borderColor: "#ffffff",
+  },
+  backButton : {
+    backgroundColor : "orange",
+    marginBottom: 10,
   },
   declineOverlay: {
     height: 180,
@@ -266,7 +325,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderTopWidth: 2,
     borderBottomWidth : 0,
-
   },
   midpointListTitle : {
     color : "#000000",
@@ -276,5 +334,10 @@ const styles = StyleSheet.create({
   },
   innerBlock : {
     marginTop : 15,
-  }
+    textAlign: "center",
+  },
+  acceptButton: {
+    backgroundColor: "#61955f",
+    marginBottom: 10,
+  },
 });
