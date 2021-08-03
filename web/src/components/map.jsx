@@ -73,14 +73,14 @@ const options = {
   //zoomControl: true,
 };
 
-function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
+function WholeMap({ members, midpoint, setFoundMidpoints, filter, clickEstablishment, setClickEstablishment }) {
   const [establishments, setEstablishments] = useState();
   const [loading, setLoading] = useState(true);
   const [clickMember, setClickMember] = useState(false)
 
   // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
   useEffect(() => {
-    console.log(midpoint);
+    setLoading(true)
     fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
       method: "POST",
       headers: {
@@ -95,6 +95,7 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setEstablishments(data);
         setFoundMidpoints(data);
         setLoading(false)
@@ -138,8 +139,21 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
                       lng: establishment.longitude,
                     }}
                     icon={`http://maps.google.com/mapfiles/ms/icons/${colorMap[establishment.type]}-dot.png`}
-                    // onClick={}
-                  />
+                    onClick={() => setClickEstablishment(i)}
+                  >
+                    {clickEstablishment === i &&
+                      <InfoWindow
+                        position={{ lat: establishment.latitude, lng: establishment.longitude }}
+                        onCloseClick={() => setClickEstablishment(false)}
+                      >
+                        <div className='infoBox'>
+                          <p>{establishment.name}</p>
+                          <p>{establishment.address}</p>
+                          <p><StarRateIcon/> {establishment.rating}</p>
+                        </div>
+                      </InfoWindow>
+                    }
+                  </Marker>
                 );
               } else {
                 // Black
@@ -151,7 +165,21 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter }) {
                       lng: establishment.longitude,
                     }}
                     icon={`http://maps.google.com/mapfiles/ms/icons/yellow-dot.png`}
-                  />
+                    onClick={() => setClickEstablishment(i)}
+                  >
+                    {clickEstablishment === i &&
+                      <InfoWindow
+                        position={{ lat: establishment.latitude, lng: establishment.longitude }}
+                        onCloseClick={() => setClickEstablishment(false)}
+                      >
+                        <div className='infoBox'>
+                          <p>{establishment.name}</p>
+                          <p>{establishment.address}</p>
+                          <p><StarRateIcon/> {establishment.rating}</p>
+                        </div>
+                      </InfoWindow>
+                    }
+                  </Marker>
                 );
               }
             })}
@@ -188,6 +216,8 @@ export default function Map({ group, setPage, invalidate }) {
   const [foundMidpoints, setFoundMidpoints] = useState();
   const [filter, setFilter] = useState();
   const [establishments, setEstablishments] = useState();
+  const [clickEstablishment, setClickEstablishment] = useState(false)
+
 
   // this loads the stuff ish with google maps
   const { isLoaded, loadError } = useLoadScript({
@@ -459,6 +489,8 @@ export default function Map({ group, setPage, invalidate }) {
                   }}
                   setFoundMidpoints={setFoundMidpoints}
                   filter={filter}
+                  clickEstablishment={clickEstablishment}
+                  setClickEstablishment={setClickEstablishment}
                 />
               )}
               {/* </div> */}

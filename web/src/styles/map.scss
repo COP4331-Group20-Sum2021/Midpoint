@@ -315,5 +315,7 @@
 .infoBox {
     p {
         color: #5F7595;
+        display: flex;
+        align-items: center;
     }
 }
