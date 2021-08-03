@@ -58,7 +58,7 @@ export default function MyProfile() {
         'useGravatar': false,
         'initials': profile.firstname.charAt(0) + profile.lastname.charAt(0),
         'size': 500,
-        'initial_font_family': "Poppins",
+        'initial_font_family': "Roboto",
         'initial_weight': 500,
         'initial_size': 0,
         'initial_fg': 'white',
