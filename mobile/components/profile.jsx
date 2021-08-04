@@ -71,7 +71,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   informationBlock: {
-    backgroundColor: "#9FB3D1",
+    backgroundColor: "#212C3D",
     paddingBottom: 10,
     borderColor: "#ffffff",
     textAlign: "center",
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   avatar: {
-    backgroundColor: "#5F7595",
+    backgroundColor: "#364761",
     marginBottom: 20,
     marginTop: 10,
     justifyContent: 'center'
