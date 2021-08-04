@@ -17,7 +17,10 @@ function IamTheMap({ profile }) {
           longitudeDelta: 0.0421,
         }}
       >
-        <Marker coordinate={{ latitude: profile.latitude, longitude: profile.longitude }}></Marker>
+        <Marker 
+          coordinate={{ latitude: profile.latitude, longitude: profile.longitude }}
+          icon={`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}
+        />
       </MapView>
     </View>
   );
@@ -31,12 +34,12 @@ function InfoDisplay({ profile }) {
     <>
       <View style={styles.informationBlock}>
         <View style={styles.userInfo}>
-          <Avatar size="small" rounded title={FI} onPress={() => console.log("Works!")} containerStyle={styles.avatar} />
-          <Text style={styles.userInfo}>First Name: {profile.firstname}</Text>
-          <Text style={styles.userInfo}>Last Name: {profile.lastname}</Text>
-          <Text style={styles.userInfo}>Email: {profile.email}</Text>
-          <Text style={styles.userInfo}>Latitude: {profile.latitude}</Text>
-          <Text style={styles.userInfo}>Longitude: {profile.longitude}</Text>
+          <View style={styles.avatarContainer}>
+            <Avatar size="large" rounded title={FI} containerStyle={styles.avatar} />
+          </View>
+          <Text style={styles.userInfo}>First Name: <Text style={styles.text}>{profile.firstname}</Text></Text>
+          <Text style={styles.userInfo}>Last Name: <Text style={styles.text}>{profile.lastname}</Text></Text>
+          <Text style={styles.userInfo}>Email: <Text style={styles.text}>{profile.email}</Text></Text>
         </View>
       </View>
       <View>
@@ -69,18 +72,19 @@ export default function Profile() {
 const styles = StyleSheet.create({
   informationBlock: {
     backgroundColor: "#9FB3D1",
-    borderWidth: 1,
-    borderRadius: 15,
-    marginBottom: 10,
+    paddingBottom: 10,
     borderColor: "#ffffff",
     textAlign: "center",
-    height: Dimensions.get("window").height / 3,
+    paddingHorizontal: 10,
   },
   userInfo: {
-    textAlign: "center",
+    textAlign: "left",
     color: "white",
     fontWeight: "bold",
     fontSize: 25,
+  },
+  avatarContainer: {
+    alignItems: 'center',
   },
   container: {
     backgroundColor: "#fff",
@@ -88,10 +92,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 2,
+    height: '100%',
+    width: '100%',
   },
   avatar: {
-    backgroundColor: "gray",
+    backgroundColor: "#5F7595",
+    marginBottom: 20,
+    marginTop: 10,
+    justifyContent: 'center'
   },
+  text: {
+    textDecorationLine: "underline",
+  }
 });
