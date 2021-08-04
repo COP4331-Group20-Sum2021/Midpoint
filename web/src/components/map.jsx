@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/authContext";
 import { GoogleMap, Marker, useLoadScript, Circle, InfoWindow } from "@react-google-maps/api";
 import SideBar from "./sidebar";
+import { useHistory } from 'react-router-dom'
 import "../styles/map.scss";
 import Modal from "./modal";
 import StarRateIcon from '@material-ui/icons/StarRate';
@@ -204,6 +205,7 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter, clickEstablish
 export default function Map({ group, setPage, invalidate }) {
   const googleAPIKey = process.env.REACT_APP_GOOGLE_API_KEY;
   const { user } = useAuth();
+  const history = useHistory()
 
   const [libraries] = React.useState(["places"]);
   const [memberCoord, setMemberCoord] = useState(undefined);
@@ -334,7 +336,7 @@ export default function Map({ group, setPage, invalidate }) {
       .then(() => setStale(!stale));
   }
 
-  function leaveCard(group) {
+  function leaveCard() {
     fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
       method: "DELETE",
       headers: {
@@ -347,7 +349,11 @@ export default function Map({ group, setPage, invalidate }) {
         groupId: group.groupid,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok)
+          history.push('/myprofile')
+        return response.json()
+      })
       .then((data) => console.log(data))
       .then(() => setStale(!stale));
   }
@@ -393,22 +399,6 @@ export default function Map({ group, setPage, invalidate }) {
       .then((data) => console.log(groupData));
   }
 
-  function leaveCard() {
-    fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: user.uid,
-        userToken: user.Aa,
-        groupId: group.groupid,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }
   ////////////////////////////////
   //          Portals           //
   ////////////////////////////////
