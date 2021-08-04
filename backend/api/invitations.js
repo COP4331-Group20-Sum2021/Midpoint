@@ -268,7 +268,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
  *                  userId:
  *                      type: string
  *                  userToken:
- *                      type: number
+ *                      type: string
  *                  email:
  *                      type: string
  *          responses:
@@ -319,7 +319,7 @@ router.post('/declineinvitation', async (req, res, next) => {
  *      post:
  *          description: Get user's open invites
  *          tags:
- *          - group
+ *          - user
  *          parameters:
  *          - in: body
  *            name: request
@@ -333,7 +333,7 @@ router.post('/declineinvitation', async (req, res, next) => {
  *                  userId:
  *                      type: string
  *                  userToken:
- *                      type: number
+ *                      type: string
  *                  email:
  *                      type: string
  *          responses:
