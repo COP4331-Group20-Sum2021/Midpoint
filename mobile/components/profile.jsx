@@ -19,7 +19,7 @@ function IamTheMap({ profile }) {
       >
         <Marker 
           coordinate={{ latitude: profile.latitude, longitude: profile.longitude }}
-          icon={`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}
+          pinColor='blue'
         />
       </MapView>
     </View>
