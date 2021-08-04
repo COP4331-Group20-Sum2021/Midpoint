@@ -64,9 +64,14 @@
                 border: 5px solid var(--secondary-color-500);
             }
 
+            tbody 
+            {
+                background-color: var(--primary-color-100);
+            }
+
             tr:nth-child(even)
             {
-                background-color: var(--secondary-color-500);
+                background-color: var(--primary-color-200);
             }
 
             th 

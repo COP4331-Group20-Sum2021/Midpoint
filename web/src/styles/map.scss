@@ -169,6 +169,18 @@
                     height: 529px;
                     border: 5px solid var(--secondary-color-500);
                     border-radius: 0 0 5px 5px;
+                    cursor: pointer;
+
+                    tr 
+                    {
+                        transition: background-color 200ms ease-in-out;
+
+                        &:hover 
+                        {
+                            background-color: var(--secondary-color-300);
+                        }
+                    }
+                    
 
                     .location-table
                     {
@@ -186,7 +198,14 @@
 
                         tr:nth-child(even)
                         {
-                            background-color: #869BBA;
+                            background-color: var(--primary-color-200);
+                            cursor: pointer;
+                            transition: background-color 200ms ease-in-out;
+
+                            &:hover 
+                            {
+                                background-color: var(--secondary-color-300);
+                            }
                         }
 
                         td 
@@ -268,7 +287,7 @@
 
                 tr:nth-child(even)
                 {
-                    background-color: #869BBA;
+                    background-color: var(--primary-color-200);
                 }
 
                 td 
@@ -320,11 +339,11 @@
     }
 }
 
-.tablehover {
-    cursor: pointer;
-    transition: .3s;
+// .tablehover {
+//     cursor: pointer;
+//     transition: .3s;
 
-    &:hover {
-        color: black;
-    }
-}
+//     &:hover {
+//         background-color: red;
+//     }
+// }
