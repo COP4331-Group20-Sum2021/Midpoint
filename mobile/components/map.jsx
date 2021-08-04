@@ -98,6 +98,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
           <Marker
             coordinate={{ latitude: member.latitude, longitude: member.longitude }}
             pinColor='blue'
+            
           >
             <Callout>
               <View>
@@ -118,6 +119,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
                     longitude: establishment.longitude,
                   }}
                   pinColor={colorMap[establishment.type]}
+                  strokeWidth={100}
                 >
                   <Callout>
                     <View>
@@ -315,10 +317,9 @@ export default function Map({ route, navigation }) {
       });
   }, []);
 
-
   return (
     <>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: '#212C3D'}}>
         <View style={styles.mapContainer}>
           {groupData && (
             <IamTheMap midpoint={groupData.midpoint} members={groupData.grouplocations} filter={""} setFoundMidpoints={setFoundMidpoints}/>
@@ -373,7 +374,7 @@ export default function Map({ route, navigation }) {
           justifyContent: 'center'
         }}>
           <Text style={{
-            color: 'black',
+            color: '#283549',
             textAlign: 'center',
             fontSize: 30,
           }}>⬍</Text>
@@ -410,7 +411,7 @@ export default function Map({ route, navigation }) {
           justifyContent: 'center'
         }}>
           <Text style={{
-            color: 'black',
+            color: '#283549',
             textAlign: 'center',
             fontSize: 30,
           }}>⬍</Text>
@@ -465,14 +466,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     padding: 5,
-    backgroundColor: '#5F7595',
+    backgroundColor: '#212C3D',
     color: 'white',
   },
   innerBlock : {
     padding : 5,
     textAlign: "center",
-    backgroundColor: '#9FB3D1',
-    borderColor: '#5F7595',
+    backgroundColor: '#364761',
+    borderColor: '#212C3D',
     borderWidth: 1,
   },
   text: {
