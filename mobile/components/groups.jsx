@@ -13,7 +13,6 @@ function Cards({ isGroup, setPage, invalidate, navigation }) {
     isGroup &&
     isGroup.map((group, i) => {
       var cid = "card" + i;
-      var groupInfo = { field1: "value" };
 
       console.log(isGroup[i]);
       console.log(setPage);
@@ -21,7 +20,7 @@ function Cards({ isGroup, setPage, invalidate, navigation }) {
         <Card id={cid} key={i}>
           <Card.Title>{group.groupname}</Card.Title>
           <Card.Divider />
-          <Text>{group.participants.length === 1 ? <Text>{group.participants.length} Member</Text> : <Text>{group.participants.length} Members</Text>}</Text>
+          <Text style={{fontSize: 20, textAlign: 'center'}}>{group.participants.length === 1 ? <Text>{group.participants.length} Member</Text> : <Text>{group.participants.length} Members</Text>}</Text>
           <Button buttonStyle={styles.acceptButton} onPress={() => navigation.push("Map", { group: group, testing: "gang" })} title="Visit Midpoint Map" />
         </Card>
       );
@@ -45,14 +44,6 @@ function Cards({ isGroup, setPage, invalidate, navigation }) {
 function changePage() {
   return <Map />;
 }
-// export default function GroupRender() {
-//   const [page, setPage] = useState();
-//   useEffect(() => {
-//     setPage(<Groups setPage={setPage} />);
-//   }, []);
-
-//   return <>{page}</>;
-// }
 
 export default function Groups({ navigation }) {
   const [newGroupName, createNewGroupName] = useState();
@@ -130,7 +121,6 @@ export default function Groups({ navigation }) {
   }, [stale]);
 
   function createCard(groupname) {
-    console.log("Create Card ", user.uid, user.Aa, groupname);
     fetch("https://group20-midpoint.herokuapp.com/api/creategroup", {
       method: "POST",
       headers: {
@@ -149,7 +139,6 @@ export default function Groups({ navigation }) {
     toggleOverlay();
   }
 
-  console.log(navigation);
   return (
     <>
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.declineOverlay}>
@@ -163,7 +152,7 @@ export default function Groups({ navigation }) {
         <View className="container" style={styles.information}>
           <View className="groups">
             <Text style={styles.title}>GROUPS</Text>
-            <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add Card." onPress={() => toggleOverlay()} />
+            <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.newGroupButton} title=" New Group" onPress={() => toggleOverlay()} />
             <Cards navigation={navigation} isGroup={isGroup} invalidate={invalidate} />
           </View>
         </View>
@@ -185,12 +174,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderColor: "#ffffff",
   },
+  newGroupButton: {
+    backgroundColor: "#61955f",
+    marginBottom: 10,
+    marginTop: 10,
+    marginHorizontal: 10,
+  },
   acceptButton: {
     backgroundColor: "#61955f",
-    borderWidth: 5,
-    borderRadius: 15,
-    marginBottom: 10,
-    borderColor: "#ffffff",
+    marginTop: 10,
   },
   information: {
     backgroundColor: "#9FB3D1",
@@ -212,178 +204,3 @@ const styles = StyleSheet.create({
     height: 200,
   },
 });
-
-// useEffect(() => {
-//   async function run() {
-//     const res = await fetch("https://group20-midpoint.herokuapp.com/api/listgroups", {
-//       method: "POST",
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         userId: user.uid,
-//         userToken: user.Aa,
-//       }),
-//     });
-//     const j = await res.json();
-
-//     if (res.ok) {
-//       console.log(j);
-//       setIsGroup(j.groupdata);
-//     }
-//   }
-//   run();
-// }, [stale]);
-
-// // CRUD Functionality
-// function createCard(groupName) {
-//   fetch("https://group20-midpoint.herokuapp.com/api/creategroup", {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       userId: user.uid,
-//       userToken: user.Aa,
-//       groupname: groupName,
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => console.log(data))
-//     .then(() => setStale(!stale));
-// }
-// function deleteCard(group) {
-//   fetch("https://group20-midpoint.herokuapp.com/api/deletegroup", {
-//     method: "DELETE",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       userId: user.uid,
-//       userToken: user.Aa,
-//       groupId: group.groupid,
-//     }),
-//   })
-//     .then(console.log(group))
-//     .then((response) => response.json())
-//     .then((data) => console.log(data))
-//     .then(() => setStale(!stale));
-// }
-// function editCard(group, newName) {
-//   fetch("https://group20-midpoint.herokuapp.com/api/editgroup", {
-//     method: "PUT",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       userId: user.uid,
-//       userToken: user.Aa,
-//       groupId: group.groupid,
-//       groupname: newName,
-//     }),
-//   })
-//     .then(console.log(group))
-//     .then(console.log(newName))
-//     .then((response) => response.json())
-//     .then((data) => console.log(data))
-//     .then(() => setStale(!stale));
-// }
-// function kickCard(group) {
-//   fetch("https://group20-midpoint.herokuapp.com/api/kickfromgroup", {
-//     method: "DELETE",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       userId: user.uid,
-//       userToken: user.Aa,
-//       groupId: group.groupid,
-//       groupname: group.groupname,
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => console.log(data))
-//     .then(() => setStale(!stale));
-// }
-
-// function leaveCard(group) {
-//   fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
-//     method: "DELETE",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       userId: user.uid,
-//       userToken: user.Aa,
-//       groupId: group.groupid,
-//     }),
-//   })
-//     .then((response) => response.json())
-//     .then((data) => console.log(data))
-//     .then(() => setStale(!stale));
-// }
-
-// // Helper Functions
-// function createPortal() {
-//   setIsOpen(true);
-//   setCrud(1);
-// }
-// function deletePortal(group) {
-//   setIsOpen(true);
-//   setCrud(2);
-//   setGroupInfo(group);
-// }
-// function editPortal(group) {
-//   setIsOpen(true);
-//   setCrud(3);
-//   setGroupInfo(group);
-// }
-// function kickPortal(group) {
-//   setIsOpen(true);
-//   setCrud(4);
-//   setGroupInfo(group);
-// }
-// function leavePortal(group) {
-//   setIsOpen(true);
-//   setCrud(5);
-//   setGroupInfo(group);
-// }
-
-// return (
-//   <>
-//     <div className="container">
-//       <SideBar />
-//       <div className="groups-content">
-//         <div className="groups">
-//           <div className="groups-title">
-//             <h1>MY GROUPS</h1>
-//             <button id="create-new-button" onClick={createPortal}><AddIcon id="add-icon"/>Create New</button>
-//             <Modal
-//               open={isOpen}
-//               crud={isCrud}
-//               info={groupInfo}
-//               create={createCard}
-//               del={deleteCard}
-//               edit={editCard}
-//               kick={kickCard}
-//               leave={leaveCard}
-//               onClose={() => {
-//                 setIsOpen(false);
-//               }}
-//             ></Modal>
-//           </div>
-
-//           <Cards isGroup={isGroup} setPage={setPage} invalidate={invalidate} />
-//         </div>
-
-//       </div>
-//     </div>
-//   </>
-// );
-// }
