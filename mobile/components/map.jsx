@@ -9,7 +9,6 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
   const [establishments, setEstablishments] = useState();
   
   useEffect(() => {
-    console.log(midpoint);
     fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
       method: "POST",
       headers: {
@@ -288,28 +287,25 @@ export default function Map({ route, navigation }) {
 
         <View style={styles.informationBlock}>
           <ScrollView>
-          <Text style={styles.midpointListTitle}>List of Members</Text>
-
-          {groupData &&
-            groupData.grouplocations.map((member) => {
-              return (
-                <View style={styles.placeBlock}>
-                    <View style={styles.innerBlock}>
-                      <Text>Name: {member.firstname} {member.lastname}</Text>
-                      <Text>Email: {member.email}</Text>
-                      {user.uid === member.userId ? (
+            <Text style={styles.midpointListTitle}>List of Members</Text>
+            {groupData &&
+              groupData.grouplocations.map((member, i) => {
+                return (
+                  <View style={styles.innerBlock}>
+                    <Text style={styles.text}>Name: {member.firstname} {member.lastname}</Text>
+                    <Text style={styles.text}>Email: {member.email}</Text>
+                    {user.uid === member.userId ? (
+                      <View>
+                        <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Leave" onPress={() => toggleOverlayLeave()} />
+                      </View>
+                      ) : (
                         <View>
-                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Leave" onPress={() => toggleOverlayLeave()} />
-                        </View>
-                        ) : (
-                          <View>
-                          <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => kickMember(member.userId)} />
-                        </View>
-                        )}
-                    </View>
-                </View>
-              );
-          })}
+                        <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveMemberButton} title=" Kick" onPress={() => kickMember(member.userId)} />
+                      </View>
+                      )}
+                  </View>
+                );
+            })}
           </ScrollView>
         </View>
         {/* <View>
@@ -328,8 +324,6 @@ const styles = StyleSheet.create({
     height: 300,
   },
   informationBlock: {
-    // marginBottom: 30,
-    borderColor: "#000000",
     textAlign: "center",
     height: 250,
   },
