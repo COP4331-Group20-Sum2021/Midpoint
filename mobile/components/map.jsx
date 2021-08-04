@@ -62,7 +62,15 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
                   latitude: establishment.latitude,
                   longitude: establishment.longitude,
                 }}
-              />
+              >
+                <Callout>
+                  <View>
+                    <Text style={{color: '#5F7595'}}>{establishment.name}</Text>
+                    <Text style={{color: '#5F7595'}}>{establishment.address}</Text>
+                    <Text style={{color: '#5F7595'}}>★ {establishment.rating}</Text>
+                  </View>
+                </Callout>
+              </Marker>
             );
         })}
 
