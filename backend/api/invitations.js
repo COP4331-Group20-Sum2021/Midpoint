@@ -26,7 +26,7 @@ async function checkInvitation(inviteId, email){
     const invitationsDoc = await invitationsRef.doc(inviteId).get();
     const invitationsData = invitationsDoc.data();
 
-    if(invitationsData === undefined || invitationsData.email != email){
+    if(invitationsData === undefined || invitationsData.email.toLowerCase() != email.toLowerCase()){
         return false;
     }
     return true;
@@ -62,7 +62,7 @@ async function authorizeUser(userId, authToken) {
 async function checkDuplicateInvitation(email, groupId){
     const invitationsRef = db.collection('invitations');
 
-    const invitationsDoc = await invitationsRef.doc(email + groupId).get();
+    const invitationsDoc = await invitationsRef.doc(email.toLowerCase() + groupId).get();
     const invitationsData = invitationsDoc.data();
 
     // If it's undefined, it's not a duplicate
@@ -133,8 +133,8 @@ async function isUserOwnerOfGroup(userid, groupid){
     const {userId, userToken, email, groupId} = req.body;
     var status = 200;
     var error = '';
-
-    if (!checkParameters([userId, userToken, groupId, email])) {
+    
+    if (!checkParameters([userId, userToken, groupId, email.toLowerCase()])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -146,20 +146,20 @@ async function isUserOwnerOfGroup(userid, groupid){
         error = "Only the owner of the group can invite participants";
         status = 401;
     } // Check if the person has been already invited.
-    else if ((await checkDuplicateInvitation(email, groupId))){
+    else if ((await checkDuplicateInvitation(email.toLowerCase(), groupId))){
         error = "This person was already invited";
         status = 401;
     }
     else{
         const data = {
             groupid: groupId,
-            email: email,
+            email: email.toLowerCase(),
             inviter: userId,
-            inviteId: email+groupId
+            inviteId: email.toLowerCase()+groupId
         };
           
         // Add a new document in collection "invitations" with an invitation
-        const response = await db.collection('invitations').doc(email+groupId).set(data);
+        const response = await db.collection('invitations').doc(email.toLowerCase()+groupId).set(data);
     }
 
     var ret = { error: error };
@@ -211,7 +211,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    if (!checkParameters([inviteId, userId, userToken, email, groupId])) {
+    if (!checkParameters([inviteId, userId, userToken, email.toLowerCase(), groupId])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -221,7 +221,7 @@ router.post('/acceptinvitation', async (req, res, next) => {
     }
     else{
         // Check if email and inviteId are valid
-        var doesInvitationExist = await checkInvitation(inviteId, email);
+        var doesInvitationExist = await checkInvitation(inviteId, email.toLowerCase());
     
         // Edge Case #: Group was deleted but invitation is still on the user's invite list because page wasn't updated.
         if(!doesInvitationExist){
@@ -286,7 +286,7 @@ router.post('/declineinvitation', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    if (!checkParameters([inviteId, userId, userToken, email])) {
+    if (!checkParameters([inviteId, userId, userToken, email.toLowerCase()])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -296,7 +296,7 @@ router.post('/declineinvitation', async (req, res, next) => {
     }
     else{
         // Check if email and inviteId are valid
-        var doesInvitationExist = await checkInvitation(inviteId, email);
+        var doesInvitationExist = await checkInvitation(inviteId, email.toLowerCase());
     
         if(!doesInvitationExist){
             error = "An invitation for this user doesn't exist.";
@@ -353,7 +353,7 @@ router.post('/listinvites', async (req, res, next) => {
     var status = 200;
     var allInvites = [];
 
-    if (!checkParameters([userId, userToken, email])) {
+    if (!checkParameters([userId, userToken, email.toLowerCase()])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -367,7 +367,7 @@ router.post('/listinvites', async (req, res, next) => {
 
         try {
             // get all open invitations for email
-            var querySnapshot = await invitationsRef.where('email', '==', email).get();
+            var querySnapshot = await invitationsRef.where('email', '==', email.toLowerCase()).get();
             
             console.log(querySnapshot.docs.length);
     
