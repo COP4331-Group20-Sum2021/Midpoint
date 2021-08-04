@@ -145,6 +145,7 @@ const style = StyleSheet.create({
     section: {
         width: '90%',
         padding: 20,
+        margin: 5,
         backgroundColor: '#9FB3D1',
         shadowColor: "black",
         shadowOpacity: .1,
