@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Dimensions, ScrollView, TextInput} from "react-native";
 import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
 import { useAuth } from "../context/AuthContext";
-import MapView, { Marker, PROVIDER_GOOGLE, Circle} from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE, Circle, Callout } from "react-native-maps";
 
 function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
   const [establishments, setEstablishments] = useState();
@@ -44,7 +44,13 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
           <Marker
             coordinate={{ latitude: member.latitude, longitude: member.longitude }}
             pinColor='blue'
-          />
+          >
+            <Callout>
+              <View>
+                <Text style={{color: '#5F7595'}}>{member.firstname} {member.lastname}</Text>
+              </View>
+            </Callout>
+          </Marker>
         );
       })}
 
