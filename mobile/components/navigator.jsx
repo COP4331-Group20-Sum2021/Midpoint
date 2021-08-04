@@ -27,7 +27,7 @@ const HomeStackScreen = ({ navigation }) => (
   <HomeStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -40,7 +40,7 @@ const HomeStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -56,7 +56,7 @@ const AboutStackScreen = ({ navigation }) => (
   <AboutStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -69,7 +69,7 @@ const AboutStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -85,7 +85,7 @@ const ProfileStackScreen = ({ navigation }) => (
   <ProfileStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -98,7 +98,7 @@ const ProfileStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -115,7 +115,7 @@ const GroupsStackScreen = ({ navigation }) => (
     initialRouteName="Groups"
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -128,7 +128,7 @@ const GroupsStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -147,7 +147,7 @@ const GroupsStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -165,7 +165,7 @@ const GroupsStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -181,7 +181,7 @@ const InvitationsStackScreen = ({ navigation }) => (
   <InvitationsStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -194,7 +194,7 @@ const InvitationsStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -210,7 +210,7 @@ const LoginStackScreen = ({ navigation }) => (
   <LoginStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -223,7 +223,7 @@ const LoginStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
@@ -239,7 +239,7 @@ const RegisterStackScreen = ({ navigation }) => (
   <RegisterStack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "rgba(159, 179, 209, 1)",
+        backgroundColor: "#212C3D",
       },
     }}
   >
@@ -252,7 +252,7 @@ const RegisterStackScreen = ({ navigation }) => (
           <Icon.Button
             name="ios-menu"
             size={25}
-            backgroundColor="rgba(159, 179, 209, 1)"
+            backgroundColor="#212C3D"
             onPress={() => {
               navigation.openDrawer();
             }}
