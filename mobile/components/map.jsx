@@ -273,7 +273,20 @@ export default function Map({ route, navigation }) {
           </ScrollView>
         </View>
 
-        {/* <View style={styles.informationBlock}>
+        <View style={{
+          height: 45,
+          backgroundColor: 'white',
+          flex: 1,
+          justifyContent: 'center'
+        }}>
+          <Text style={{
+            color: 'black',
+            textAlign: 'center',
+            fontSize: 30,
+          }}>⬍</Text>
+        </View>
+
+        <View style={styles.informationBlock}>
           <ScrollView>
           <Text style={styles.midpointListTitle}>List of Members</Text>
 
@@ -298,7 +311,7 @@ export default function Map({ route, navigation }) {
               );
           })}
           </ScrollView>
-        </View> */}
+        </View>
         {/* <View>
           <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlayAdd()} />
           <Button icon={<Icon name="arrow-left" type="evilicon" color="#ffffff" />} buttonStyle={styles.backButton} title=" Back to Groups" onPress={() => navigation.pop()} />
@@ -315,9 +328,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   informationBlock: {
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    marginBottom: 20,
+    // marginBottom: 30,
     borderColor: "#000000",
     textAlign: "center",
     height: 250,
