@@ -111,7 +111,6 @@ export default function Map({ route, navigation }) {
         groupId: route.params.group.groupid,
       }),
     })
-      .then(console.log(route.params.group.groupid))
       .then((response) => response.json())
       .then((data) => console.log(data));
 
@@ -219,7 +218,6 @@ export default function Map({ route, navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setGroupData(data);
       });
   }, []);
@@ -308,12 +306,26 @@ export default function Map({ route, navigation }) {
             })}
           </ScrollView>
         </View>
-        {/* <View>
+
+        <View style={{
+          height: 45,
+          backgroundColor: 'white',
+          flex: 1,
+          justifyContent: 'center'
+        }}>
+          <Text style={{
+            color: 'black',
+            textAlign: 'center',
+            fontSize: 30,
+          }}>⬍</Text>
+        </View>
+
+        <View style={styles.controls}>
           <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlayAdd()} />
           <Button icon={<Icon name="arrow-left" type="evilicon" color="#ffffff" />} buttonStyle={styles.backButton} title=" Back to Groups" onPress={() => navigation.pop()} />
           <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Leave Group" onPress={() => toggleOverlayLeave()} />
           <Button icon={<Icon name="trash" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Delete Group" onPress={() => toggleOverlayDelete()} />
-        </View> */}
+        </View>
       </ScrollView>
     </>
   );
@@ -325,7 +337,7 @@ const styles = StyleSheet.create({
   },
   informationBlock: {
     textAlign: "center",
-    height: 250,
+    maxHeight: 250,
   },
   container: {
     backgroundColor: "#fff",
@@ -340,14 +352,6 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     marginBottom: 5,
     marginTop: 5,
-  },
-  leaveButton: {
-    backgroundColor: "red",
-    marginBottom: 10,
-  },
-  backButton : {
-    backgroundColor : "blue",
-    marginBottom: 10,
   },
   declineOverlay: {
     height: 180,
@@ -380,7 +384,21 @@ const styles = StyleSheet.create({
   },
   acceptButton: {
     backgroundColor: "#61955f",
-    marginBottom: 10,
+    height: 60,
+    borderColor: 'black',
+    marginBottom: 5,
+  },
+  leaveButton: {
+    backgroundColor: "red",
+    height: 60,
+    borderColor: 'black',
+    marginBottom: 5,
+  },
+  backButton : {
+    backgroundColor : "blue",
+    height: 60,
+    borderColor: 'black',
+    marginBottom: 5,
   },
   input: {
     height: 40,
@@ -390,5 +408,8 @@ const styles = StyleSheet.create({
   },
   addOverlay : {
     height: 300,
+  },
+  controls: {
+    // marginTop: 20,
   }
 });
