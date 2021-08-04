@@ -133,7 +133,6 @@ export default function Invitations() {
                           onPress={() => declineInvitation(inviteData.index, inviteData.id)}
                         />
                 </Overlay>
-
               </View>
 
               {invitations &&
@@ -145,8 +144,8 @@ export default function Invitations() {
                       <Card>
                         <Card.Title>Group Invitation</Card.Title>
                         <Card.Divider />
-                        <Text style={{ marginBottom: 10 }}>From : {invitation.from}</Text>
-                        <Text style={{ marginBottom: 10 }}>Group : {invitation.groupname}</Text>
+                        <Text style={{ marginBottom: 10, fontSize: 20 }}>From: {invitation.from}</Text>
+                        <Text style={{ marginBottom: 10, fontSize: 15 }}>Group: {invitation.groupname}</Text>
                         <Button
                           icon={<Icon name="check" color="#ffffff" />}
                           buttonStyle={styles.acceptButton}
@@ -178,14 +177,14 @@ const styles = StyleSheet.create({
   declineButton: {
     backgroundColor: "#955f5f",
     borderWidth: 1,
-    borderRadius: 15,
+    // borderRadius: 15,
     marginBottom: 10,
     borderColor: "#ffffff",
   },
   acceptButton: {
     backgroundColor: "#61955f",
     borderWidth: 1,
-    borderRadius: 15,
+    // borderRadius: 15,
     marginBottom: 10,
     borderColor: "#ffffff",
   },
