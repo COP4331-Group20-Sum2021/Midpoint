@@ -36,7 +36,8 @@ export default function About({ navigation }) {
                             deal with several edge cases that would make our database inefficient 
                             by introducing multiple checks for ownership, authentication, 
                             existence, and duplicates. It was fantastic working on Midpoint with 
-                            this team, and I'm proud of what we have developed.                        </Text>
+                            this team, and I'm proud of what we have developed.                  
+                        </Text>
                         </View>
 
                         <View style={styles.separator}/>
@@ -62,8 +63,8 @@ export default function About({ navigation }) {
                             manager for Heroku. I automated it to deploy every time a new push 
                             to the main branch was made. I also could pause that and do custom 
                             deployments if needed. I later made a second copy of our Heroku
-                            project to act as a staging envrionment that we could test a Git 
-                            branch as if it were live. Asside from that, I did development work 
+                            project to act as a staging environment that we could test a Git 
+                            branch as if it were live. Aside from that, I did development work 
                             where ever needed. I helped setup the backend server and API, worked
                             with the front end to fix bugs, and generally made my self available 
                             to help.
@@ -106,8 +107,8 @@ export default function About({ navigation }) {
                         <Text style={styles.memberName}>Jamie Henry</Text>
                         <Text style={styles.jobTitle}>API</Text>
                         <Text style={styles.description}>
-                            I worked mostly on the backend with creating API's and implementing the automatic swagger
-                            documentation for the project. I also came up with the algroithm for calculating the 
+                            I worked mostly on the backend with creating APIs and implementing the automatic swagger
+                            documentation for the project. I also came up with the algorithm for calculating the 
                             midpoint coordinate between multiple coordinates. I am excited to use what I have learned 
                             from this project in any future projects I want to create.
                         </Text>
@@ -159,7 +160,7 @@ export default function About({ navigation }) {
                             application. The biggest role I played in developing the Front End was creating the design 
                             for our website. For the design, I started by creating a prototype in Figma and then 
                             translating it into HTML and CSS. This process was my favorite thing about developing on the
-                            Front End because it allowed me to bring out my creative side. I also played a roll in
+                            Front End because it allowed me to bring out my creative side. I also played a role in
                             getting the functionality of our website working. I worked on the the profile page and
                             invitations page which showed me a bit of what React is made of. Overall, I felt this 
                             project was an excellent learning experience that I thoroughly enjoyed. Going into the 
