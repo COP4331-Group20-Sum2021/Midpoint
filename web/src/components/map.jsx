@@ -385,8 +385,12 @@ export default function Map({ group, setPage, invalidate }) {
         groupId: group.groupid,
       }),
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((response) => {
+        if (response.ok)
+          setGroupData({...groupData, grouplocations: groupData.grouplocations.filter(member => member.userId !== memberid)})
+        return response.json()
+      })
+      .then((data) => console.log(groupData));
   }
 
   function leaveCard() {
