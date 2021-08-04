@@ -347,7 +347,7 @@ export default function Map({ route, navigation }) {
         </Overlay>
 
         <View style={styles.informationBlock}>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled>
             {foundMidpoints && <Text style={styles.midpointListTitle}>Found {foundMidpoints.establishments.length} Midpoints</Text>}
             {foundMidpoints &&
               foundMidpoints.establishments.map((establishment, i) => {
@@ -376,7 +376,7 @@ export default function Map({ route, navigation }) {
         </View>
 
         <View style={styles.informationBlock}>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled>
             <Text style={styles.midpointListTitle}>List of Members</Text>
             {groupData &&
               groupData.grouplocations.map((member, i) => {
