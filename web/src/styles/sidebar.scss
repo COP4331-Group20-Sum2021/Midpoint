@@ -1,6 +1,6 @@
 .sidebar
 {
-    background-color: #7E94B4;
+    background-color: var(--secondary-color-400);
     width: 250px;
     height: 100vh;
     position: sticky;
@@ -21,7 +21,7 @@
 
             &:hover
             {
-                background-color: #5F7595;
+                background-color: var(--secondary-color-500);
                 border-left: 5px solid #FF4646;
             }
 
@@ -40,7 +40,7 @@
 
         #active
         {
-            background-color: #5F7595;
+            background-color: var(--secondary-color-500);
             border-left: 5px solid #FF4646;
         }
 

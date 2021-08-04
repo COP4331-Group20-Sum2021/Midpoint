@@ -8,7 +8,10 @@ export default function Nav() {
   let location = useLocation()
 
   return (
+    <>
+    <div id={style.block}></div>
     <nav className={style.nav} id={location.pathname === '/myprofile' || location.pathname === '/groups' || location.pathname === '/invitations' ? style.active : ""}>
+      
       <Link id={style.navLogo} to = '/'><img src='/MidpointLogo.png' id={style.navLogo} alt='logo' /></Link>
       <ul className={style.navItems}>
         <Link to='/' className={style.navItem}><li>Home</li></Link>
@@ -24,5 +27,6 @@ export default function Nav() {
         }
       </ul>
     </nav>
+    </>
   )
 }
