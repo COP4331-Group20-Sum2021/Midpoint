@@ -81,7 +81,7 @@ function checkParameters(params) {
     var status = 200;
     var error = '';
 
-    if (!checkParameters([userId, email, lat, lon, auth, expiration])) {
+    if (!checkParameters([userId, email.toLowerCase(), lat, lon, auth, expiration])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -90,7 +90,7 @@ function checkParameters(params) {
         const userData = userDoc.data();
         
         if(userData === undefined){
-            const userDocEmail = await userRef.doc(email).get();
+            const userDocEmail = await userRef.doc(email.toLowerCase()).get();
             const userDataEmail = userDocEmail.data();
             if(userDataEmail === undefined){
                 // BAD
@@ -106,10 +106,10 @@ function checkParameters(params) {
                     longitude: lon,
                     token: auth,
                     expiration: expiration,
-                    email: email
+                    email: email.toLowerCase()
                 };
                 const responseTwo = await userRef.doc(userId).set(data);
-                const response = await userRef.doc(email).delete();
+                const response = await userRef.doc(email.toLowerCase()).delete();
             }
         }
         else{
@@ -163,7 +163,7 @@ router.post('/register', async (req, res, next) => {
     var status = 200;
     var error = '';
 
-    if (!checkParameters([email, firstname, lastname])) {
+    if (!checkParameters([email.toLowerCase(), firstname, lastname])) {
         error = 'Incorrect parameters';
         status = 400;
     }
@@ -176,9 +176,9 @@ router.post('/register', async (req, res, next) => {
             longitude: -1,
             token: 'temp',
             expiration: "temp",
-            email: email
+            email: email.toLowerCase()
         }; 
-        const response = await db.collection('user').doc(email).set(data);
+        const response = await db.collection('user').doc(email.toLowerCase()).set(data);
     }
 
     var ret = { error: error };
