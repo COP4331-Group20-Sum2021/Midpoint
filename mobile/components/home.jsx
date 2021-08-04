@@ -45,7 +45,7 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
     information: {
-        backgroundColor: '#9FB3D1'
+        backgroundColor: '#212C3D'
     },
     seperator: {
         borderBottomColor: 'white',
