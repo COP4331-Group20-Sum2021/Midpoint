@@ -218,7 +218,7 @@ function getMidpoint(locations) {
 // receives userId/authToken
 // returns true if userId/authToken exists and authToken is not expired
 async function authorizeUser(userId, authToken) {
-    const currTime = Date.now();
+    //const currTime = Date.now();
     const userRef = db.collection('user').doc(userId);
 
     const userDoc = await userRef.get();
@@ -228,7 +228,7 @@ async function authorizeUser(userId, authToken) {
         return false;
 
     // check if input token matches user's token and it is not past expiration
-    if (userDoc.data().token === authToken && userDoc.data().expiration >= currTime) {
+    if (userDoc.data().token === authToken) {
         return true;
     }
 
