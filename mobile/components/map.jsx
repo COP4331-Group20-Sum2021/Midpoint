@@ -221,7 +221,11 @@ export default function Map({ route, navigation }) {
         groupId: route.params.group.groupid,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok)
+          setGroupData({...groupData, grouplocations: groupData.grouplocations.filter(member => member.userId !== memberid)})
+        return response.json()
+      })
       .then((data) => console.log(data));
   }
 
@@ -446,7 +450,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   declineOverlay: {
-    height: 180,
+    paddingBottom: 30,
   },
   overlayTitle: {
     textAlign: "center",
