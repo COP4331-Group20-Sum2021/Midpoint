@@ -17,10 +17,10 @@ function Cards({ isGroup, setPage, invalidate, navigation }) {
       console.log(isGroup[i]);
       console.log(setPage);
       return (
-        <Card id={cid} key={i}>
-          <Card.Title>{group.groupname}</Card.Title>
+        <Card id={cid} key={i} containerStyle={{backgroundColor: '#4C5E79', borderWidth: 0}}>
+          <Card.Title style={{color: 'white'}}>{group.groupname}</Card.Title>
           <Card.Divider />
-          <Text style={{fontSize: 20, textAlign: 'center'}}>{group.participants.length === 1 ? <Text>{group.participants.length} Member</Text> : <Text>{group.participants.length} Members</Text>}</Text>
+          <Text style={{fontSize: 20, textAlign: 'center', color: 'white'}}>{group.participants.length === 1 ? <Text>{group.participants.length} Member</Text> : <Text>{group.participants.length} Members</Text>}</Text>
           <Button buttonStyle={styles.acceptButton} onPress={() => navigation.push("Map", { group: group, testing: "gang" })} title="Visit Midpoint Map" />
         </Card>
       );
@@ -147,10 +147,10 @@ export default function Groups({ navigation }) {
       </Overlay>
 
       <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-        <View className="container" style={styles.information}>
-          <View className="groups">
+        <View style={styles.information}>
+          <View>
             <Text style={styles.title}>GROUPS</Text>
-            <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.newGroupButton} title=" New Group" onPress={() => toggleOverlay()} />
+            <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.newGroupButton} title=" New Group" onPress={() => toggleOverlay()} />
             <Cards navigation={navigation} isGroup={isGroup} invalidate={invalidate} />
           </View>
         </View>
@@ -160,30 +160,18 @@ export default function Groups({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  gCard: {
-    flex: 1,
-    borderColor: "black",
-    borderStyle: "solid",
-  },
-  ello: {
-    backgroundColor: "#955f5f",
-    borderWidth: 5,
-    borderRadius: 15,
-    marginBottom: 10,
-    borderColor: "#ffffff",
-  },
   newGroupButton: {
-    backgroundColor: "#61955f",
+    backgroundColor: "#438C63",
     marginBottom: 10,
     marginTop: 10,
     marginHorizontal: 10,
   },
   acceptButton: {
-    backgroundColor: "#61955f",
+    backgroundColor: "#438C63",
     marginTop: 10,
   },
   information: {
-    backgroundColor: "#9FB3D1",
+    backgroundColor: "#212C3D",
     height: height*3,
   },
   title: {
@@ -194,7 +182,6 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderWidth: 1,
     padding: 10,
     width: '100%'
   },
