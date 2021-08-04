@@ -178,7 +178,7 @@ export default function About({ navigation }) {
 
 const styles = StyleSheet.create({
     information: {
-        backgroundColor: '#9FB3D1',
+        backgroundColor: '#212C3D',
     },
     separator: {
         borderBottomColor: 'white',

@@ -98,6 +98,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
           <Marker
             coordinate={{ latitude: member.latitude, longitude: member.longitude }}
             pinColor='blue'
+            
           >
             <Callout>
               <View>
@@ -118,6 +119,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
                     longitude: establishment.longitude,
                   }}
                   pinColor={colorMap[establishment.type]}
+                  strokeWidth={100}
                 >
                   <Callout>
                     <View>
@@ -221,7 +223,11 @@ export default function Map({ route, navigation }) {
         groupId: route.params.group.groupid,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok)
+          setGroupData({...groupData, grouplocations: groupData.grouplocations.filter(member => member.userId !== memberid)})
+        return response.json()
+      })
       .then((data) => console.log(data));
   }
 
@@ -311,10 +317,9 @@ export default function Map({ route, navigation }) {
       });
   }, []);
 
-
   return (
     <>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: '#212C3D'}}>
         <View style={styles.mapContainer}>
           {groupData && (
             <IamTheMap midpoint={groupData.midpoint} members={groupData.grouplocations} filter={""} setFoundMidpoints={setFoundMidpoints}/>
@@ -347,7 +352,7 @@ export default function Map({ route, navigation }) {
         </Overlay>
 
         <View style={styles.informationBlock}>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled>
             {foundMidpoints && <Text style={styles.midpointListTitle}>Found {foundMidpoints.establishments.length} Midpoints</Text>}
             {foundMidpoints &&
               foundMidpoints.establishments.map((establishment, i) => {
@@ -369,14 +374,14 @@ export default function Map({ route, navigation }) {
           justifyContent: 'center'
         }}>
           <Text style={{
-            color: 'black',
+            color: '#283549',
             textAlign: 'center',
             fontSize: 30,
           }}>⬍</Text>
         </View>
 
         <View style={styles.informationBlock}>
-          <ScrollView>
+          <ScrollView nestedScrollEnabled>
             <Text style={styles.midpointListTitle}>List of Members</Text>
             {groupData &&
               groupData.grouplocations.map((member, i) => {
@@ -406,7 +411,7 @@ export default function Map({ route, navigation }) {
           justifyContent: 'center'
         }}>
           <Text style={{
-            color: 'black',
+            color: '#283549',
             textAlign: 'center',
             fontSize: 30,
           }}>⬍</Text>
@@ -425,7 +430,7 @@ export default function Map({ route, navigation }) {
 
 const styles = StyleSheet.create({
   mapContainer: {
-    height: 300,
+    height: 460,
   },
   informationBlock: {
     textAlign: "center",
@@ -446,7 +451,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   declineOverlay: {
-    height: 180,
+    paddingBottom: 30,
   },
   overlayTitle: {
     textAlign: "center",
@@ -461,14 +466,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     padding: 5,
-    backgroundColor: '#5F7595',
+    backgroundColor: '#212C3D',
     color: 'white',
   },
   innerBlock : {
     padding : 5,
     textAlign: "center",
-    backgroundColor: '#9FB3D1',
-    borderColor: '#5F7595',
+    backgroundColor: '#364761',
+    borderColor: '#212C3D',
     borderWidth: 1,
   },
   text: {

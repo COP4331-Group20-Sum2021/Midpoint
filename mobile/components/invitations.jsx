@@ -141,11 +141,11 @@ export default function Invitations() {
                     <>
                       {/* List Invites View */}
 
-                      <Card>
-                        <Card.Title>Group Invitation</Card.Title>
-                        <Card.Divider />
-                        <Text style={{ marginBottom: 10, fontSize: 20 }}>From: {invitation.from}</Text>
-                        <Text style={{ marginBottom: 10, fontSize: 15 }}>Group: {invitation.groupname}</Text>
+                      <Card containerStyle={{backgroundColor: '#364761', borderWidth: 0}}>
+                        <Card.Title style={{ fontSize: 25, color:'white' }}>Group Invitation</Card.Title>
+                        <Card.Divider color='white' />
+                        <Text style={{ marginBottom: 10, fontSize: 20, color:'white' }}>From: {invitation.from}</Text>
+                        <Text style={{ marginBottom: 10, fontSize: 15, color:'white' }}>Group: {invitation.groupname}</Text>
                         <Button
                           icon={<Icon name="check" color="#ffffff" />}
                           buttonStyle={styles.acceptButton}
@@ -176,20 +176,16 @@ export default function Invitations() {
 const styles = StyleSheet.create({
   declineButton: {
     backgroundColor: "#955f5f",
-    borderWidth: 1,
-    // borderRadius: 15,
     marginBottom: 10,
     borderColor: "#ffffff",
   },
   acceptButton: {
-    backgroundColor: "#61955f",
-    borderWidth: 1,
-    // borderRadius: 15,
+    backgroundColor: "#438C63",
     marginBottom: 10,
     borderColor: "#ffffff",
   },
   information: {
-    backgroundColor: "#9FB3D1",
+    backgroundColor: "#212C3D",
     height: height,
   },
   separator: {
