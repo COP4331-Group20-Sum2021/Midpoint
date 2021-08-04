@@ -38,6 +38,12 @@ export default function Login({ navigation }) {
         >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
             <View style={style.container}>
+                <Text style={{
+                    color: 'white',
+                    fontSize: 40,
+                    marginBottom: 20,
+                    fontWeight: 'bold'
+                }}>Login</Text>
                 <View style={style.section}>
                     <Text style={style.fieldName}>Email</Text>
                     <TextInput
@@ -79,22 +85,19 @@ export default function Login({ navigation }) {
 
 const style = StyleSheet.create({
     loginButton: {
-        backgroundColor: '#9FB3D1',
-        borderWidth: 1,
-        borderRadius: 10,
-        borderColor: 'black'
+        backgroundColor: '#364761',
     },
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 10,
-        backgroundColor: '#2A3C6B'
+        backgroundColor: '#212C3D'
     },
     section: {
         width: '90%',
         padding: 20,
-        backgroundColor: '#9FB3D1',
+        backgroundColor: '#364761',
         shadowColor: "black",
         shadowOpacity: .1,
         shadowRadius: 5,
