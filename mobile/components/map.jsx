@@ -425,7 +425,7 @@ export default function Map({ route, navigation }) {
 
 const styles = StyleSheet.create({
   mapContainer: {
-    height: 300,
+    height: 460,
   },
   informationBlock: {
     textAlign: "center",
