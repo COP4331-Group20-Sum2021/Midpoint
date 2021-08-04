@@ -259,24 +259,21 @@ export default function Map({ route, navigation }) {
 
         <View style={styles.informationBlock}>
           <ScrollView>
-          <Text style={styles.midpointListTitle}>List of Midpoints</Text>
-          {foundMidpoints &&
-            foundMidpoints.establishments.map((establishment) => {
-              console.log(establishment.name);
-              return (
-                <View style={styles.placeBlock}>
-                    <View style={styles.innerBlock}>
-                      <Text>Name: {establishment.name}</Text>
-                      <Text>Address: {establishment.address}</Text>
-                      <Text>Rating: {establishment.rating}</Text>
-                    </View>
-                </View>
-              );
-          })}
+            {foundMidpoints && <Text style={styles.midpointListTitle}>Found {foundMidpoints.establishments.length} Midpoints</Text>}
+            {foundMidpoints &&
+              foundMidpoints.establishments.map((establishment, i) => {
+                return (
+                  <View style={styles.innerBlock}>
+                    <Text style={styles.text}>Name: {establishment.name}</Text>
+                    <Text style={styles.text}>Address: {establishment.address}</Text>
+                    <Text style={styles.text}>Rating: {establishment.rating}</Text>
+                  </View>
+                );
+            })}
           </ScrollView>
         </View>
 
-        <View style={styles.informationBlock}>
+        {/* <View style={styles.informationBlock}>
           <ScrollView>
           <Text style={styles.midpointListTitle}>List of Members</Text>
 
@@ -301,13 +298,13 @@ export default function Map({ route, navigation }) {
               );
           })}
           </ScrollView>
-        </View>
-        <View>
+        </View> */}
+        {/* <View>
           <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlayAdd()} />
           <Button icon={<Icon name="arrow-left" type="evilicon" color="#ffffff" />} buttonStyle={styles.backButton} title=" Back to Groups" onPress={() => navigation.pop()} />
           <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Leave Group" onPress={() => toggleOverlayLeave()} />
           <Button icon={<Icon name="trash" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Delete Group" onPress={() => toggleOverlayDelete()} />
-        </View>
+        </View> */}
       </ScrollView>
     </>
   );
@@ -315,7 +312,7 @@ export default function Map({ route, navigation }) {
 
 const styles = StyleSheet.create({
   mapContainer: {
-    height: '75%',
+    height: 300,
   },
   informationBlock: {
     backgroundColor: "#ffffff",
@@ -323,7 +320,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: "#000000",
     textAlign: "center",
-    height: Dimensions.get("window").height / 7,
+    height: 250,
   },
   container: {
     backgroundColor: "#fff",
@@ -358,22 +355,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 40,
   },
-  placeBlock : {
-    height: Dimensions.get("window").height / 8,
-    borderWidth: 2,
-    backgroundColor: "#ffffff",
-    borderTopWidth: 2,
-    borderBottomWidth : 0,
-  },
   midpointListTitle : {
-    color : "#000000",
     textAlign: "center",
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: "bold",
+    padding: 5,
+    backgroundColor: '#5F7595',
+    color: 'white',
   },
   innerBlock : {
-    marginTop : 15,
+    padding : 5,
     textAlign: "center",
+    backgroundColor: '#9FB3D1',
+    borderColor: '#5F7595',
+    borderWidth: 1,
+  },
+  text: {
+    color: 'white',
   },
   acceptButton: {
     backgroundColor: "#61955f",
