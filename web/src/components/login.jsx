@@ -35,7 +35,7 @@ function LoginForm() {
         } else {
           setError(null)
           resetForm()
-          history.push('/myprofile')
+          history.push('/')
         }
       }}
       >

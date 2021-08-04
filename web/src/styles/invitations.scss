@@ -7,7 +7,7 @@
 {
     padding: 8rem 0 0 0;
     min-height: 100vh;
-    background-color: #9FB3D1;
+    background-color: var(--primary-color-100);
     flex: 8;
 
     .invitations 
@@ -21,9 +21,9 @@
         
         .invitations-title 
         {
-            background-color: #5f7595;
+            background-color: var(--secondary-color-500);
             border-radius: 5px;
-            border: 5px solid #5F7595;
+            border: 5px solid var(--secondary-color-500);
             box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
 
             h1 
@@ -42,11 +42,11 @@
 
         .table-style
         {
-            border: 5px solid #5F7595;
+            border: 5px solid var(--secondary-color-500);
             border-radius: 5px;
             display: grid;
             box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
-            background-color: #5f7595;
+            background-color: var(--secondary-color-500);
         }
 
         .invitations-table 
@@ -56,17 +56,22 @@
 
             thead 
             {
-                background-color: #5f7595;
+                background-color: var(--secondary-color-500);
             }
 
             tr
             {
-                border: 5px solid #5f7595;
+                border: 5px solid var(--secondary-color-500);
+            }
+
+            tbody 
+            {
+                background-color: var(--primary-color-100);
             }
 
             tr:nth-child(even)
             {
-                background-color: #869BBA;
+                background-color: var(--primary-color-200);
             }
 
             th 
@@ -92,70 +97,74 @@
                 column-gap: 0.5rem;
                 font-size: 1rem;
                 font-weight: 400;
-                border-radius: 50px;
+                border-radius: 10px;
                 margin: 0;
                 color: white;
                 padding: 5px;
                 cursor: pointer;
+                box-shadow: 0px 0px 11px -4px rgba(0, 0, 0, 0.25);
+                text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
             }
 
             #check-icon
             {
                 display: hidden;
-                color: #61955f;
+                color: #4C9F70;
                 background-color: white;
                 border: 2px solid white;
                 border-radius: 50%;
                 transition: all 250ms ease-in-out;
+                filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.25));
             }
 
             #close-icon
             {
-                color: #955f5f;
+                color: #9f4c4c;
                 background-color: white;
                 border: 2px solid white;
                 border-radius: 50%;
                 transition: all 250ms ease-in-out;
+                filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.25));
             }
             
             #accept-button
             {
-                border: 5px solid #61955f;
-                background-color: #61955f;
+                border: 5px solid #4C9F70;
+                background-color: #4C9F70;
                 transition: all 250ms ease-in-out;
 
                 &:hover
                 {
                     background-color: white;
                     border: 5px solid white;
-                    color: #61955f;
+                    color: #4C9F70;
 
                     #check-icon
                     {
-                        background-color: #61955f;
+                        background-color: #4C9F70;
                         color: white;
-                        border: 2px solid #61955f;
+                        border: 2px solid #4C9F70;
                     }
                 }
             }
 
             #decline-button
             {
-                border: 5px solid #955f5f;
-                background-color: #955f5f;
+                border: 5px solid #9f4c4c;
+                background-color: #9f4c4c;
                 transition: all 250ms ease-in-out;
 
                 &:hover
                 {
                     background-color: white;
                     border: 5px solid white;
-                    color: #955f5f;
+                    color: #9f4c4c;
 
                     #close-icon
                     {
-                        background-color: #955f5f;
+                        background-color: #9f4c4c;
                         color: white;
-                        border: 2px solid #955f5f;
+                        border: 2px solid #9f4c4c;
                     }
                 }
             }

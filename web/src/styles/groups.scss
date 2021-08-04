@@ -5,7 +5,7 @@
 .groups-content {
   padding: 8rem 0 0 0;
   min-height: 100vh;
-  background-color: #9fb3d1;
+  background-color: var(--primary-color-100);
   flex: 8;
 
   .groups {
@@ -20,9 +20,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: #5f7595;
+      background-color: var(--secondary-color-500);
       border-radius: 5px;
-      border: 5px solid #5f7595;
+      border: 5px solid var(--secondary-color-500);
       box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
 
       #create-new-button {
@@ -72,10 +72,10 @@
         justify-content: space-between;
         flex-direction: column;
         box-shadow: 4px 6px 11px -4px rgba(0, 0, 0, 0.25);
-        background-color: #5f7595;
+        background-color: var(--secondary-color-500);
         padding: 1rem;
         border-radius: 5px;
-        border: 5px solid #5f7595;
+        border: 5px solid var(--secondary-color-500);
         transition: all 250ms ease-in-out;
         row-gap: 2rem;
 

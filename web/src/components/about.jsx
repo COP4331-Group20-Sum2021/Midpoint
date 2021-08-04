@@ -122,11 +122,11 @@ export default function About() {
                             <h1>Kyle Olson</h1>
                             <h2>Front End/Mobile</h2>
                             <p>
-                                I worked entirely on the Front End on this project primarily using React for the web and React Native for the mobile. I also made this about page
-                                you are reading right now! I also created the framework of the mobile which includes setting up React Native mobile navigation using drawers and
-                                stacks. One of the hardest things about my job was smoothly transitioning from React to React Native. Although they are similar, React Native has
-                                unique syntax threw me off while building the mobile. This project overall was a fantastic learning experience by using the most popular web
-                                developer tools right now and I am excited to apply my newly acquired abilities to the next React project I make.
+                            I worked entirely on the Front End on this project primarily using React for the web and React Native for the mobile. Using React, I was able to implement 
+                            CRUD functionality for the Groups and Map page. I also made this about page you are reading right now! I also created the framework of the mobile which includes 
+                            setting up React Native mobile navigation using drawers and stacks. One of the hardest things about my job was smoothly transitioning from React to React Native. 
+                            Although they are similar, React Native has unique syntax threw me off while building the mobile. This project overall was a fantastic learning experience by using 
+                            the most popular web developer tools right now and I am excited to apply my newly acquired abilities to the next React project I make.
                             </p>
                         </div>
 

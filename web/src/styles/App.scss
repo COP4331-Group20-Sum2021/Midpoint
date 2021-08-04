@@ -1,39 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
-:root {}
+// ===============
+// ORIGINAL COLORS
+// ===============
+// --primary-color-100: #9FB3D1;
+// --primary-color-200: #869BBA;
+// --secondary-color-400: #7E94B4;
+// --secondary-color-500: #5F7595;
 
-html,
-body {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: white;
+// ===========
+// NEW COLORS
+// ===========
+// --primary-color-100: #212c3d;
+// --primary-color-200: #2b3b50;
+// --secondary-color-400: #283549;
+// --secondary-color-500: #364761;
+:root 
+{
+    --primary-color-100: #212c3d;
+    --primary-color-250: #233041;
+    --primary-color-200: #2b3b50;
+
+    --secondary-color-300: #425675;
+    --secondary-color-400: #283549;
+    --secondary-color-500: #364761;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+html, body 
+{
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background-color: white;
+}
+
+a 
+{
+    color: inherit;
+    text-decoration: none;
 }
 
 button, input, select, option
 {
-  font-family: Roboto;
+    font-family: Roboto;
 }
 
-* {
-  box-sizing: border-box;
+* 
+{
+    box-sizing: border-box;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+ul 
+{
+    list-style: none;
+    padding: 0;
 
-  li {
+    li 
+    {
     cursor: pointer;
-  }
+    }
 }
 
-input, textarea {
-  border: none;
-  outline: none;
+input, textarea 
+{
+    border: none;
+    outline: none;
 }
