@@ -249,7 +249,10 @@ export default function Map({ route, navigation }) {
 
         <Overlay isVisible={addUserVisible} onBackdropPress={toggleOverlayAdd} overlayStyle={styles.addOverlay}>
           <Text style={styles.overlayTitle}>Add New Member!</Text>
-          <Text>Email: </Text>
+          <Text style={{
+            fontSize: 15,
+            marginBottom: 5,
+          }}>Email</Text>
           <TextInput style={styles.input} placeholder="user@email.com" onChangeText={(text) => onChangeText(text)} />
           <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Yes." onPress={() => addMember(newUserEmail)} />
         </Overlay>
@@ -320,7 +323,7 @@ export default function Map({ route, navigation }) {
           }}>⬍</Text>
         </View>
 
-        <View style={styles.controls}>
+        <View>
           <Button icon={<Icon name="plus" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Add User" onPress={() => toggleOverlayAdd()} />
           <Button icon={<Icon name="arrow-left" type="evilicon" color="#ffffff" />} buttonStyle={styles.backButton} title=" Back to Groups" onPress={() => navigation.pop()} />
           <Button icon={<Icon name="minus" type="evilicon" color="#ffffff" />} buttonStyle={styles.leaveButton} title=" Leave Group" onPress={() => toggleOverlayLeave()} />
@@ -362,7 +365,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "black",
     marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   midpointListTitle : {
     textAlign: "center",
@@ -402,14 +405,13 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
+    width: '100%',
+    marginBottom: 10,
   },
   addOverlay : {
-    height: 300,
+    width: '95%',
+    paddingVertical: 20,
   },
-  controls: {
-    // marginTop: 20,
-  }
 });
