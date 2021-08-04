@@ -29,49 +29,46 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
       });
   }, [filter]);
 
-
   return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: midpoint.latitude,
-          longitude: midpoint.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {members.map((member) => {
-          return (
-            <Marker
-              coordinate={{ latitude: member.latitude, longitude: member.longitude }}
-            >
-            </Marker>
-          );
+    <MapView
+      style={styles.map}
+      provider={PROVIDER_GOOGLE}
+      initialRegion={{
+        latitude: midpoint.latitude,
+        longitude: midpoint.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+      }}
+    >
+      {members.map((member, i) => {
+        return (
+          <Marker
+            coordinate={{ latitude: member.latitude, longitude: member.longitude }}
+            pinColor='blue'
+          />
+        );
+      })}
+
+      {establishments &&
+          establishments.establishments.map((establishment, i) => {
+            return (
+              <Marker
+                coordinate={{
+                  latitude: establishment.latitude,
+                  longitude: establishment.longitude,
+                }}
+              />
+            );
         })}
 
-        {establishments &&
-            establishments.establishments.map((establishment) => {
-              return (
-                <Marker
-                  coordinate={{
-                    latitude: establishment.latitude,
-                    longitude: establishment.longitude,
-                  }}
-                />
-              );
-          })}
-
-        <Circle
-          center={{latitude: midpoint.latitude, longitude: midpoint.longitude}}
-          radius={3000}
-          strokeWidth={1}
-          strokeColor={"#7E94B4"}
-          fillColor={"rgba(0,0,120,0.4)"}
-        />
-      </MapView>
-    </View>
+      <Circle
+        center={{latitude: midpoint.latitude, longitude: midpoint.longitude}}
+        radius={3000}
+        strokeWidth={1}
+        strokeColor={"#7E94B4"}
+        fillColor={"rgba(0,0,120,0.4)"}
+      />
+    </MapView>
   );
 }
 
@@ -98,7 +95,6 @@ export default function Map({ route, navigation }) {
   
 
   const toggleOverlayAdd = () => {
-    console.log("Toggle ooga booga ");
     setaddUserGroupVisible(!addUserVisible);
   };
 
@@ -233,12 +229,10 @@ export default function Map({ route, navigation }) {
   return (
     <>
       <ScrollView>
-        <View>
-
-        {groupData && (
-          <IamTheMap midpoint={groupData.midpoint} members={groupData.grouplocations} filter={""} setFoundMidpoints={setFoundMidpoints}/>
-        )}
-
+        <View style={styles.mapContainer}>
+          {groupData && (
+            <IamTheMap midpoint={groupData.midpoint} members={groupData.grouplocations} filter={""} setFoundMidpoints={setFoundMidpoints}/>
+          )}
         </View>
         <Overlay isVisible={visibleDelete} onBackdropPress={toggleOverlayDelete} overlayStyle={styles.declineOverlay}>
           <Text style={styles.overlayTitle}>Are you sure you want to delete the group?</Text>
@@ -320,6 +314,9 @@ export default function Map({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  mapContainer: {
+    height: '75%',
+  },
   informationBlock: {
     backgroundColor: "#ffffff",
     borderWidth: 1,
@@ -328,20 +325,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     height: Dimensions.get("window").height / 7,
   },
-  userInfo: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 25,
-  },
   container: {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
   },
   map: {
-    width: Dimensions.get("window").width,
-    height: 2 * Dimensions.get("window").height / 3,
+    width: '100%',
+    height: '100%',
   },
   leaveMemberButton : {
     backgroundColor: "red",

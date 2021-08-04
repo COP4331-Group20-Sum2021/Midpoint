@@ -61,7 +61,6 @@ export default function Groups({ navigation }) {
 
   // Make Modal visible or invisible
   const toggleOverlay = () => {
-    console.log("Toggle ooga booga ");
     setVisible(!visible);
   };
 
@@ -142,8 +141,7 @@ export default function Groups({ navigation }) {
   return (
     <>
       <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={styles.declineOverlay}>
-        <Text style={styles.overlayTitle}>Create a group!</Text>
-        <Text>Group Name: </Text>
+        <Text style={styles.overlayTitle}>Group Name</Text>
         <TextInput style={styles.input} placeholder="new group name" onChangeText={(text) => onChangeText(text)} />
         <Button icon={<Icon name="check" type="evilicon" color="#ffffff" />} buttonStyle={styles.acceptButton} title=" Yes." onPress={() => createCard(groupname)} />
       </Overlay>
@@ -196,11 +194,17 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
     borderWidth: 1,
     padding: 10,
+    width: '100%'
   },
   declineOverlay: {
-    height: 200,
+    width: '95%',
+    paddingVertical: 20,
   },
+  overlayTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 5,
+  }
 });
