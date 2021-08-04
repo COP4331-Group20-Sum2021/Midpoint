@@ -5,6 +5,60 @@ import { Card, ListItem, Button, Icon, Overlay } from "react-native-elements";
 import { useAuth } from "../context/AuthContext";
 import MapView, { Marker, PROVIDER_GOOGLE, Circle, Callout } from "react-native-maps";
 
+const colorMap = {
+  restaurant: "red",
+  amusement_park: "purple",
+  aquarium: "purple",
+  art_gallery: "purple",
+  bakery: "red",
+  bar: "red",
+  beauty_salon: "orange",
+  bicycle_store: "orange",
+  book_store: "orange",
+  bowling_alley: "purple",
+  cafe: "red",
+  campground: "green",
+  car_dealer: "orange",
+  car_rental: "orange",
+  car_repair: "orange",
+  car_wash: "orange",
+  casino: "purple",
+  clothing_store: "orange",
+  convenience_store: "orange",
+  department_store: "orange",
+  electronics_store: "orange",
+  florist: "orange",
+  food: "red",
+  furniture_store: "orange",
+  gas_station: "orange",
+  gym: "purple",
+  hair_care: "orange",
+  hardware_store: "orange",
+  home_goods_store: "orange",
+  jewelry_store: "orange",
+  lodging: "purple",
+  library: "purple",
+  liquor_store: "orange",
+  meal_delivery: "purple",
+  meal_takeaway: "purple",
+  movie_theater: "purple",
+  museum: "purple",
+  night_club: "purple",
+  park: "green",
+  pet_store: "purple",
+  restaurant: "red",
+  school: "yellow",
+  shoe_store: "purple",
+  shopping_mall: "orange",
+  spa: "purple",
+  stadium: "purple",
+  store: "orange",
+  supermarket: "orange",
+  tourist_attraction: "purple",
+  zoo: "purple",
+  recreation: "green",
+};
+
 function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
   const [establishments, setEstablishments] = useState();
   
@@ -56,22 +110,43 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
 
       {establishments &&
           establishments.establishments.map((establishment, i) => {
-            return (
-              <Marker
-                coordinate={{
-                  latitude: establishment.latitude,
-                  longitude: establishment.longitude,
-                }}
-              >
-                <Callout>
-                  <View>
-                    <Text style={{color: '#5F7595'}}>{establishment.name}</Text>
-                    <Text style={{color: '#5F7595'}}>{establishment.address}</Text>
-                    <Text style={{color: '#5F7595'}}>★ {establishment.rating}</Text>
-                  </View>
-                </Callout>
-              </Marker>
-            );
+            if (colorMap[establishment.type]) {
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: establishment.latitude,
+                    longitude: establishment.longitude,
+                  }}
+                  pinColor={colorMap[establishment.type]}
+                >
+                  <Callout>
+                    <View>
+                      <Text style={{color: '#5F7595'}}>{establishment.name}</Text>
+                      <Text style={{color: '#5F7595'}}>{establishment.address}</Text>
+                      <Text style={{color: '#5F7595'}}>★ {establishment.rating}</Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              );
+            } else {
+              return (
+                <Marker
+                  coordinate={{
+                    latitude: establishment.latitude,
+                    longitude: establishment.longitude,
+                  }}
+                  pinColor='wheat'
+                >
+                  <Callout>
+                    <View>
+                      <Text style={{color: '#5F7595'}}>{establishment.name}</Text>
+                      <Text style={{color: '#5F7595'}}>{establishment.address}</Text>
+                      <Text style={{color: '#5F7595'}}>★ {establishment.rating}</Text>
+                    </View>
+                  </Callout>
+                </Marker>
+              )
+            }
         })}
 
       <Circle
