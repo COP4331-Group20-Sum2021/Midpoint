@@ -59,7 +59,7 @@ function Groups({ setPage }) {
 
   useEffect(() => {
     async function run() {
-      const res = await fetch("https://group20-midpoint.herokuapp.com/api/listgroups", {
+      const res = await fetch("https://group20-midpoint-stg.herokuapp.com/api/listgroups", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -82,7 +82,7 @@ function Groups({ setPage }) {
 
   // CRUD Functionality
   function createCard(groupName) {
-    fetch("https://group20-midpoint.herokuapp.com/api/creategroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/creategroup", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -99,7 +99,7 @@ function Groups({ setPage }) {
       .then(() => setStale(!stale));
   }
   function deleteCard(group) {
-    fetch("https://group20-midpoint.herokuapp.com/api/deletegroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/deletegroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -117,7 +117,7 @@ function Groups({ setPage }) {
       .then(() => setStale(!stale));
   }
   function editCard(group, newName) {
-    fetch("https://group20-midpoint.herokuapp.com/api/editgroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/editgroup", {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -137,7 +137,7 @@ function Groups({ setPage }) {
       .then(() => setStale(!stale));
   }
   function kickCard(group) {
-    fetch("https://group20-midpoint.herokuapp.com/api/kickfromgroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/kickfromgroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -156,7 +156,7 @@ function Groups({ setPage }) {
   }
 
   function leaveCard(group) {
-    fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/removemyself", {
       method: "DELETE",
       headers: {
         Accept: "application/json",

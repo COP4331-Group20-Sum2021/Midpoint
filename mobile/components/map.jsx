@@ -63,7 +63,7 @@ function IamTheMap({ midpoint, members, setFoundMidpoints, filter}) {
   const [establishments, setEstablishments] = useState();
   
   useEffect(() => {
-    fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/getestablishments", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -189,7 +189,7 @@ export default function Map({ route, navigation }) {
   };
 
   function addMember(newEmail) {
-    fetch("https://group20-midpoint.herokuapp.com/api/inviteparticipant", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/inviteparticipant", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -210,7 +210,7 @@ export default function Map({ route, navigation }) {
   }
 
   function kickMember(memberid) {
-    fetch("https://group20-midpoint.herokuapp.com/api/kickfromgroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/kickfromgroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -232,7 +232,7 @@ export default function Map({ route, navigation }) {
   }
 
   function leaveCard() {
-    fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/removemyself", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -249,7 +249,7 @@ export default function Map({ route, navigation }) {
   }
 
   function deleteCard() {
-    fetch("https://group20-midpoint.herokuapp.com/api/deletegroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/deletegroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -299,7 +299,7 @@ export default function Map({ route, navigation }) {
   }
 
   useEffect(() => {
-    fetch("https://group20-midpoint.herokuapp.com/api/retrievegroupdata", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/retrievegroupdata", {
       method: "POST",
       headers: {
         Accept: "application/json",

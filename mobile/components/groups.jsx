@@ -81,7 +81,7 @@ export default function Groups({ navigation }) {
   };
 
   function populateGroups() {
-    fetch("https://group20-midpoint.herokuapp.com/api/listgroups", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/listgroups", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -98,7 +98,7 @@ export default function Groups({ navigation }) {
 
   useEffect(() => {
     async function run() {
-      const res = await fetch("https://group20-midpoint.herokuapp.com/api/listgroups", {
+      const res = await fetch("https://group20-midpoint-stg.herokuapp.com/api/listgroups", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -120,7 +120,7 @@ export default function Groups({ navigation }) {
   }, [stale]);
 
   function createCard(groupname) {
-    fetch("https://group20-midpoint.herokuapp.com/api/creategroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/creategroup", {
       method: "POST",
       headers: {
         Accept: "application/json",

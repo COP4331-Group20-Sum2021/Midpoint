@@ -82,7 +82,7 @@ function WholeMap({ members, midpoint, setFoundMidpoints, filter, clickEstablish
   // UNCOMMENT THIS TO SHOW ENDPOINT ON MAP
   useEffect(() => {
     setLoading(true)
-    fetch("https://group20-midpoint.herokuapp.com/api/getestablishments", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/getestablishments", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -237,7 +237,7 @@ export default function Map({ group, setPage, invalidate }) {
   //        Populate Data       //
   ////////////////////////////////
   useEffect(() => {
-    fetch("https://group20-midpoint.herokuapp.com/api/retrievegroupdata", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/retrievegroupdata", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -261,7 +261,7 @@ export default function Map({ group, setPage, invalidate }) {
   //     CRUD Functionality     //
   ////////////////////////////////
   function createCard(groupName) {
-    fetch("https://group20-midpoint.herokuapp.com/api/creategroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/creategroup", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -279,7 +279,7 @@ export default function Map({ group, setPage, invalidate }) {
   }
 
   function deleteCard(group) {
-    fetch("https://group20-midpoint.herokuapp.com/api/deletegroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/deletegroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -297,7 +297,7 @@ export default function Map({ group, setPage, invalidate }) {
   }
 
   function editCard(group, newName) {
-    fetch("https://group20-midpoint.herokuapp.com/api/editgroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/editgroup", {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -318,7 +318,7 @@ export default function Map({ group, setPage, invalidate }) {
   }
 
   function kickCard(group) {
-    fetch("https://group20-midpoint.herokuapp.com/api/kickfromgroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/kickfromgroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -337,7 +337,7 @@ export default function Map({ group, setPage, invalidate }) {
   }
 
   function leaveCard() {
-    fetch("https://group20-midpoint.herokuapp.com/api/removemyself", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/removemyself", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -359,7 +359,7 @@ export default function Map({ group, setPage, invalidate }) {
   }
 
   function addMember(group, newEmail) {
-    fetch("https://group20-midpoint.herokuapp.com/api/inviteparticipant", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/inviteparticipant", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -378,7 +378,7 @@ export default function Map({ group, setPage, invalidate }) {
   }
 
   function kickMember(memberid) {
-    fetch("https://group20-midpoint.herokuapp.com/api/kickfromgroup", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/kickfromgroup", {
       method: "DELETE",
       headers: {
         Accept: "application/json",

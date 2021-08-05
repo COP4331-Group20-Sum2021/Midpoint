@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
         data['lon'] = lon
 
         if (data.userId && target.emailVerified) {
-          fetch('https://group20-midpoint.herokuapp.com/api/login', {
+          fetch('https://group20-midpoint-stg.herokuapp.com/api/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
     return auth.createUserWithEmailAndPassword(email, password)
       .then(async user => {
         user.user.sendEmailVerification()
-        await fetch('https://group20-midpoint.herokuapp.com/api/register', {
+        await fetch('https://group20-midpoint-stg.herokuapp.com/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

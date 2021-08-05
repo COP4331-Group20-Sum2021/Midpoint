@@ -54,7 +54,7 @@ export default function Profile() {
   const [profile, setProfile] = useState(undefined);
   React.useEffect(() => {
     // navigator.geolocation.getCurrentPosition(success, null, { enableHighAccuracy: true });
-    fetch("https://group20-midpoint.herokuapp.com/api/getuserdata", {
+    fetch("https://group20-midpoint-stg.herokuapp.com/api/getuserdata", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

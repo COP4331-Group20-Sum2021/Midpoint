@@ -11,7 +11,7 @@ export default function Invitations() {
 
   useEffect(() => {
     // const intervalId = setInterval(() => {
-      fetch('https://group20-midpoint.herokuapp.com/api/listinvites', {
+      fetch('https://group20-midpoint-stg.herokuapp.com/api/listinvites', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -33,7 +33,7 @@ export default function Invitations() {
 
   function acceptInvitation(index, id, gid)
   {
-    fetch('https://group20-midpoint.herokuapp.com/api/acceptinvitation', {
+    fetch('https://group20-midpoint-stg.herokuapp.com/api/acceptinvitation', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -58,7 +58,7 @@ export default function Invitations() {
 
   function declineInvitation(index, id)
   {
-    fetch('https://group20-midpoint.herokuapp.com/api/declineinvitation', {
+    fetch('https://group20-midpoint-stg.herokuapp.com/api/declineinvitation', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
