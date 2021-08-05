@@ -145,6 +145,8 @@ router.post('/listgroups', async (req, res, next) => {
 
                 allGroups.push({ groupid: `${currGroupMember.groupid}`, groupname: groupData.groupname, participants: groupMembers});
             }
+
+            allGroups.sort((a, b) => (a.groupname > b.groupname) ? 1 : ((b.groupname > a.groupname) ? -1 : 0))
             
             console.log(allGroups);
         }
