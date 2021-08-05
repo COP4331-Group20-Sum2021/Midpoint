@@ -1,4 +1,5 @@
 const express = require('express');
+const request = require('request');
 const { admin, db } = require('../auth/firebase');
 const key = process.env.GOOGLE_API_KEY;
 const router = express.Router();
@@ -179,6 +180,8 @@ router.post('/register', async (req, res, next) => {
             email: email.toLowerCase()
         }; 
         const response = await db.collection('user').doc(email.toLowerCase()).set(data);
+
+        sendMessageOnRegister(data);
     }
 
     var ret = { error: error };
@@ -230,5 +233,29 @@ router.post('/getuserdata', async (req, res, next) => {
 
     res.status(status).json(ret);
 });
+
+function sendMessageOnRegister(user) {
+    if (process.env.DISCORD_WEBHOOK) {
+        const discordJson = {
+            content: `[USER REGRISTRATION]: User ${user.firstname} ${user.lastname} registered with email ${user.email}`
+        }
+        
+        const options  = {
+            method: 'POST',
+            url: process.env.DISCORD_WEBHOOK,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(discordJson)
+        }
+
+        request(options, function(error, response) {
+            if (error) {
+                // quietly fail for now
+                console.error(error);
+            }
+        })
+    }
+}
 
 module.exports = router;

@@ -14,6 +14,7 @@
         "express": "^4.17.1",
         "firebase-admin": "^9.10.0",
         "node-navigator": "^1.0.1",
+        "request": "^2.88.2",
         "swagger-ui-express": "^4.1.6",
         "swagger-jsdoc": "^6.1.0"
     }
